@@ -31,28 +31,6 @@ LORA_WEIGHT_NAME = "pytorch_lora_weights.safetensors"
 _LORA_EXPECTED_SIZE = 849_544_392
 
 
-def _comfy_tqdm(total_bytes: int):
-    """Bridge hf_hub_download's tqdm into ComfyUI's ProgressBar.
-
-    Returns a tqdm subclass that pipes byte-level progress through to
-    `comfy.utils.ProgressBar` so the queue UI shows real-time progress
-    for the ~810 MB LoRA download.
-    """
-    import comfy.utils
-    import tqdm as _tqdm_mod
-
-    pbar = comfy.utils.ProgressBar(total_bytes)
-
-    class _ComfyTqdm(_tqdm_mod.tqdm):
-        def update(self, n=1):
-            ret = super().update(n)
-            if n:
-                pbar.update_absolute(min(self.n, total_bytes), total_bytes)
-            return ret
-
-    return _ComfyTqdm
-
-
 def _download_lora(repo_id: str, subfolder: str) -> Path:
     """Download the HY-Pano-2 LoRA file into ComfyUI/models/hypano2/<subfolder>/.
 
@@ -82,7 +60,6 @@ def _download_lora(repo_id: str, subfolder: str) -> Path:
         repo_id=repo_id,
         filename=f"{subfolder}/{LORA_WEIGHT_NAME}" if subfolder else LORA_WEIGHT_NAME,
         local_dir=str(get_hypano2_models_path()),
-        tqdm_class=_comfy_tqdm(_LORA_EXPECTED_SIZE),
     )
     log.info("LoRA downloaded to %s", lora_path)
     return target_dir
