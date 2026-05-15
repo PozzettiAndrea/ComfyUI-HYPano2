@@ -38,6 +38,7 @@ huggingface_hub = { version = "*", extras = ["cli"] }
 loguru = ">=0.7.3"
 pillow = "*"
 comfy-aimdo = "*"
+scipy = "*"
 # diffusers.load_lora_weights routes through PEFT for transformer LoRAs
 # (the HY-Pano-2 weights target the Qwen-Image-Edit transformer).
 peft = ">=0.13"
