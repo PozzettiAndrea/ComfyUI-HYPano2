@@ -12,15 +12,14 @@
 av = "*"
 
 [cuda]
-# flash_attn and sageattention are both consumed via diffusers'
-# transformer.set_attention_backend("flash" | "sage"). The actual choice is
-# driven by ComfyUI's startup detection (--use-sage-attention /
-# --use-flash-attention CLI flags), so installing both lets the user pick
-# at launch time without us hard-coding a backend.
-# cuda-wheels has prebuilt wheels for both on cu128 / py3.13 / torch 2.8;
-# sageattention v2.2.0 ships a native SM 8.6 cubin so consumer Ampere
-# (3090 / 3080 / 3070 / 3060) gets a native binary, not JIT fallback.
-packages = ["flash_attn", "sageattention"]
+# flash_attn drives diffusers' transformer.set_attention_backend("flash"),
+# picked up at runtime when ComfyUI was launched with --use-flash-attention.
+# sageattention v2.2.0 is intentionally NOT included — its wheel has a
+# circular import (sageattention/quant.py:20 imports `_fused` before
+# sageattention/__init__.py finishes loading), which diffusers' eager
+# attention_dispatch.py probe surfaces as a fatal ImportError. Revisit
+# once that ships fixed.
+packages = ["flash_attn"]
 
 [pypi-dependencies]
 # Hard pins from upstream `repo/hyworld2/panogen/requirements.txt`.
