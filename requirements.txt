@@ -1,2 +1,5 @@
 # Process isolation for ComfyUI nodes
 comfy-env==0.3.89
+# Required by ComfyUI's host comfy.model_management; our loader imports it
+# for the precision=auto resolution path.
+comfy-aimdo

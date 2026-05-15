@@ -37,6 +37,10 @@ numpy = ">=2.2,<3"
 huggingface_hub = { version = "*", extras = ["cli"] }
 loguru = ">=0.7.3"
 pillow = "*"
+# Required by ComfyUI's comfy.model_management import chain. The host env
+# already has it (via our root requirements.txt); the worker env needs its
+# own copy because comfy.model_management imports it eagerly.
+comfy-aimdo = "*"
 # diffusers.load_lora_weights routes through PEFT for transformer LoRAs
 # (the HY-Pano-2 weights target the Qwen-Image-Edit transformer).
 peft = ">=0.13"
