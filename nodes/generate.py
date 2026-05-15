@@ -372,13 +372,12 @@ class HYPano2Generate(io.ComfyNode):
     # ------------------------------------------------------------------
     @classmethod
     def _get_pipeline(cls, handle: dict):
-        vram_mode = handle.get("vram_mode", "comfy")
         blocks_per_group = int(handle.get("blocks_per_group", 4))
+        dtype_str = handle.get("dtype") or handle.get("torch_dtype", "bf16")
         key = (
             handle["base_path"],
             handle["lora_dir"],
-            handle["torch_dtype"],
-            vram_mode,
+            dtype_str,
             blocks_per_group,
         )
         if cls._pipeline is not None and cls._pipeline_key == key:
@@ -390,8 +389,8 @@ class HYPano2Generate(io.ComfyNode):
         cls._teardown()
 
         log.info(
-            "HYPano2Generate: building PanoDiffusionPipeline (base=%s, vram_mode=%s, blocks_per_group=%d)",
-            handle["base_path"], vram_mode, blocks_per_group,
+            "HYPano2Generate: building PanoDiffusionPipeline (base=%s, dtype=%s, blocks_per_group=%d)",
+            handle["base_path"], dtype_str, blocks_per_group,
         )
         log.info("HYPano2Generate: %s", _vram_summary("pre-build "))
 
@@ -399,7 +398,11 @@ class HYPano2Generate(io.ComfyNode):
         # want to pay it at worker spawn time.
         from .hypano2 import PanoDiffusionPipeline
 
-        dtype = torch.bfloat16 if handle["torch_dtype"] == "bf16" else torch.float16
+        dtype = {
+            "bf16": torch.bfloat16,
+            "fp16": torch.float16,
+            "fp32": torch.float32,
+        }[dtype_str]
 
         t0 = time.perf_counter()
         pipe = PanoDiffusionPipeline.from_pretrained(
@@ -444,18 +447,17 @@ class HYPano2Generate(io.ComfyNode):
         # --use-flash-attention launch flags drive both ComfyUI core and us.
         cls._wire_attention_backend(pipe)
 
+        # ComfyUI-native VRAM management: text_encoder + VAE GPU-resident,
+        # transformer streams blocks via diffusers group_offloading with a
+        # 2nd CUDA stream, wrapped in a ModelPatcher so comfy's eviction
+        # bookkeeping sees us. On a HIGH_VRAM machine `unet_offload_device`
+        # is the GPU, so group_offloading effectively becomes a no-op and
+        # the whole pipeline stays resident — same code path, no toggle.
         t0 = time.perf_counter()
-        if vram_mode == "comfy":
-            cls._wire_comfy_vram(pipe, blocks_per_group)
-        elif vram_mode == "model":
-            # Whole-module swap. Faster but needs >=48 GB free VRAM at peak
-            # (the transformer alone is ~40 GB) — will OOM on consumer cards.
-            pipe.enable_model_cpu_offload()
-        else:  # "off"
-            pipe = pipe.to("cuda")
+        cls._wire_comfy_vram(pipe, blocks_per_group)
         log.info(
-            "HYPano2Generate: vram_mode=%s wired in %.1fs.  %s",
-            vram_mode, time.perf_counter() - t0, _vram_summary(),
+            "HYPano2Generate: VRAM wiring done in %.1fs.  %s",
+            time.perf_counter() - t0, _vram_summary(),
         )
 
         log.info("HYPano2Generate: pipeline + LoRA ready.")

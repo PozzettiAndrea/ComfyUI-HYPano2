@@ -47,20 +47,23 @@ These would clash with ComfyUI's host venv (and with sibling packs like
 
 ## VRAM
 
-The loader exposes a 3-way `vram_mode` toggle plus a `blocks_per_group` knob:
+VRAM management is **automatic** — we wrap the transformer in
+`comfy.model_patcher.ModelPatcher` and use diffusers' `apply_group_offloading` with
+a second CUDA stream prefetching the next group of transformer blocks while the
+current group's forward runs. Text encoder + VAE stay GPU-resident. On a HIGH_VRAM
+machine (`mm.unet_offload_device()` returns the GPU) `apply_group_offloading`
+becomes a no-op and the whole pipeline stays loaded; no user toggle needed.
 
-| `vram_mode` | Approach | Min free VRAM |
-|---|---|---|
-| `comfy` (default) | ComfyUI `ModelPatcher` co-operative bookkeeping + diffusers `apply_group_offloading` on the transformer with a second CUDA stream prefetching the next group while the current group's forward runs. Other queued workflows can evict the transformer between calls. | ~12 GB |
-| `model` | `enable_model_cpu_offload()` — whole-submodule swap. The Qwen-Image-Edit transformer alone is ~40 GB bf16, so this OOMs on anything smaller than ~48 GB. | ~48 GB |
-| `off` | Pipeline fully resident on GPU. Fastest. | ~48 GB |
-
-`blocks_per_group` (default 4) sets how many of the transformer's 60 blocks live on
-GPU at once when `vram_mode=comfy`. 4 → ~2.7 GB peak resident for the transformer's
-block stack; bump it for faster runs if you have VRAM headroom, drop it if you OOM.
+The one tunable on the loader is `blocks_per_group` (default 4) — how many of the
+60 transformer blocks live on GPU at once. 4 → ~2.7 GB peak resident for the block
+stack on a 24 GB card. Bump it for faster runs if you have VRAM headroom, drop it
+if you OOM.
 
 VAE slicing + tiling are always enabled so the final decode step doesn't spike VRAM
 at high output resolutions.
+
+The `precision` field (default `auto`) follows the standard ComfyUI pattern:
+`mm.should_use_bf16` → bf16 on Ampere+, else `mm.should_use_fp16` → fp16, else fp32.
 
 ## Attention kernel
 

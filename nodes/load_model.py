@@ -168,37 +168,25 @@ class HYPano2LoadModel(io.ComfyNode):
                     tooltip="Subfolder inside the LoRA repo. Default: HY-Pano-2.0.",
                 ),
                 io.Combo.Input(
-                    "torch_dtype",
-                    options=["bf16", "fp16"],
-                    default="bf16",
+                    "precision",
+                    options=["auto", "bf16", "fp16", "fp32"],
+                    default="auto",
+                    optional=True,
                     tooltip=(
-                        "Inference dtype. Upstream defaults to bf16 — keep that "
-                        "unless your GPU lacks bf16 support."
-                    ),
-                ),
-                io.Combo.Input(
-                    "vram_mode",
-                    options=["comfy", "model", "off"],
-                    default="comfy",
-                    tooltip=(
-                        "VRAM management strategy.\n"
-                        "  comfy: ComfyUI ModelPatcher + diffusers block-level "
-                        "group offloading on the transformer (CUDA-stream "
-                        "prefetched). Co-operative with other queued workflows. "
-                        "Fits 24 GB. Default.\n"
-                        "  model: diffusers' enable_model_cpu_offload (whole-"
-                        "submodule swap). Needs >=48 GB VRAM.\n"
-                        "  off: keep the pipeline on GPU. H100/H200/A100-80G only."
+                        "Inference precision. auto: bf16 on Ampere+, fp16 on "
+                        "Volta/Turing, fp32 on older GPUs. Upstream HY-Pano-2 "
+                        "trains in bf16."
                     ),
                 ),
                 io.Int.Input(
                     "blocks_per_group",
                     default=4, min=1, max=16, step=1,
+                    optional=True,
                     tooltip=(
-                        "When vram_mode=comfy, number of transformer blocks "
-                        "resident on GPU at once. 4 -> ~2.7 GB peak resident "
-                        "on the 60-block Qwen-Image-Edit transformer. Increase "
-                        "if you have VRAM headroom (faster), decrease if you OOM."
+                        "Transformer blocks resident on GPU at once during "
+                        "denoising. 4 -> ~2.7 GB peak resident on the 60-block "
+                        "Qwen-Image-Edit transformer. Bump for more VRAM "
+                        "headroom (faster), drop if you OOM."
                     ),
                 ),
             ],
@@ -218,13 +206,26 @@ class HYPano2LoadModel(io.ComfyNode):
         base_model: str = DEFAULT_BASE_REPO,
         lora_repo: str = DEFAULT_LORA_REPO,
         lora_subfolder: str = DEFAULT_LORA_SUBFOLDER,
-        torch_dtype: str = "bf16",
-        vram_mode: str = "comfy",
+        precision: str = "auto",
         blocks_per_group: int = 4,
     ):
+        # Resolve precision now (matches TRELLIS2's pattern). mm.should_use_bf16
+        # checks the GPU compute capability, so 'auto' lands on bf16 for any
+        # Ampere+ card and fp16 for older Volta/Turing.
+        import comfy.model_management as mm
+        device = mm.get_torch_device()
+        if precision == "auto":
+            if mm.should_use_bf16(device):
+                dtype_str = "bf16"
+            elif mm.should_use_fp16(device):
+                dtype_str = "fp16"
+            else:
+                dtype_str = "fp32"
+        else:
+            dtype_str = precision
         log.info(
-            "HYPano2LoadModel: base=%s lora=%s/%s dtype=%s vram_mode=%s blocks_per_group=%d",
-            base_model, lora_repo, lora_subfolder, torch_dtype, vram_mode, blocks_per_group,
+            "HYPano2LoadModel: base=%s lora=%s/%s precision=%s -> %s blocks_per_group=%d",
+            base_model, lora_repo, lora_subfolder, precision, dtype_str, blocks_per_group,
         )
 
         lora_dir = _download_lora(lora_repo, lora_subfolder)
@@ -234,8 +235,7 @@ class HYPano2LoadModel(io.ComfyNode):
             "base_path": base_path,
             "lora_dir": str(lora_dir),
             "lora_weight_name": LORA_WEIGHT_NAME,
-            "torch_dtype": torch_dtype,
-            "vram_mode": vram_mode,
+            "dtype": dtype_str,           # IPC-safe string; resolved in generate
             "blocks_per_group": int(blocks_per_group),
         }
         return io.NodeOutput(handle)
