@@ -54,6 +54,70 @@ def circular_blend_edges(image: Image.Image, blend_width: int = 32) -> Image.Ima
     return Image.fromarray(arr[:, :-blend_width].astype(np.uint8))
 
 
+class HYPano2NormRescaledCFG(io.ComfyNode):
+    """Patch a MODEL to match HY-Pano-2's upstream CFG formula.
+
+    Upstream `pipeline_qwen_pano.py` doesn't do plain CFG — it does a
+    *norm-rescaled* CFG:
+
+        comb = uncond + cfg * (cond - uncond)
+        out  = comb * (||cond||_per_token / ||comb||_per_token)
+
+    The rescale forces the post-CFG prediction's magnitude to match the
+    conditional prediction's, which prevents the over-saturated / "baked"
+    look that standard CFG produces at high scales (we ship cfg=7.5).
+
+    ComfyUI exposes `set_model_sampler_post_cfg_function`, which fires
+    after the standard blend. Upstream rescales in noise-prediction space;
+    ComfyUI hands us denoised x_0 estimates, so we round-trip via
+    `eps = (x - x_0) / sigma` to apply the rescale in the right space.
+    """
+
+    @classmethod
+    def define_schema(cls):
+        return io.Schema(
+            node_id="HYPano2NormRescaledCFG",
+            display_name="HY-Pano-2 Norm-Rescaled CFG",
+            category="HYPano2",
+            inputs=[io.Model.Input("model")],
+            outputs=[io.Model.Output(display_name="model")],
+        )
+
+    @classmethod
+    def execute(cls, model):
+        m = model.clone()
+
+        def _post_cfg(args):
+            cond_x0 = args["cond_denoised"]
+            comb_x0 = args["denoised"]
+            x = args["input"]
+            sigma = args["sigma"]
+
+            # Broadcast sigma [B] -> [B, 1, ..., 1] across non-batch dims.
+            sigma_b = sigma.reshape(-1, *(1,) * (x.ndim - 1)).to(x.dtype)
+            # Avoid div-by-zero at the very first / very last step of the
+            # schedule where sigma can be tiny.
+            sigma_b = sigma_b.clamp(min=1e-6)
+
+            cond_eps = (x - cond_x0) / sigma_b
+            comb_eps = (x - comb_x0) / sigma_b
+
+            # Norm per spatial location over the channel dim (latent C).
+            # Closest analog to upstream's per-token norm over hidden_dim:
+            # each latent (B, h, w) corresponds to one transformer token,
+            # and that token's hidden features get linearly projected into
+            # the C latent channels.
+            cond_norm = torch.linalg.vector_norm(cond_eps, dim=1, keepdim=True)
+            comb_norm = torch.linalg.vector_norm(comb_eps, dim=1, keepdim=True).clamp_min(1e-8)
+            rescaled_eps = comb_eps * (cond_norm / comb_norm)
+
+            # Back to x_0 space (what ComfyUI's sampler will consume).
+            return x - sigma_b * rescaled_eps
+
+        m.set_model_sampler_post_cfg_function(_post_cfg)
+        return io.NodeOutput(m)
+
+
 class HYPano2BlendEdges(io.ComfyNode):
     """Cross-fade the left/right edges of an ERP panorama so the seam disappears."""
 

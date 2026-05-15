@@ -43,10 +43,17 @@ safetensors mmap → `ModelPatcher.partially_load` → weight-function streaming
   HuggingFace into `models/diffusion_models/`, `models/text_encoders/`, `models/vae/`,
   `models/loras/`.
 
-  | `precision` | UNet on disk | Text encoder | Fits |
+  | `precision` | UNet weight format | Text encoder | Fits |
   |---|---|---|---|
-  | `fp8` (default) | 20 GB | 9 GB | 24 GB VRAM + 16 GB RAM |
-  | `bf16` | 41 GB | 16 GB | ≥48 GB VRAM, or 24 GB VRAM + ≥48 GB free RAM |
+  | `fp8` (default) | fp8mixed (~20 GB, fp8 + per-tensor scales) | fp8_scaled (~9 GB) | 24 GB VRAM + 16 GB RAM |
+  | `bf16` | bf16 (~41 GB, gold standard) | bf16 (~16 GB) | ≥48 GB VRAM, or 24 GB VRAM + ≥48 GB free RAM |
+  | `fp8_raw` | fp8_e4m3fn (~20 GB, unscaled cast) | fp8_scaled (~9 GB) | 24 GB VRAM, slightly worse numerics |
+
+- **`HY-Pano-2 Norm-Rescaled CFG`** — patches a MODEL with upstream's CFG formula
+  (matches `pipeline_qwen_pano.py`): standard CFG blend, then per-spatial-location
+  norm rescale so the combined prediction's magnitude matches the conditional. Cuts
+  over-saturation at high `cfg`. Drops in between `LoraLoaderModelOnly` and
+  `KSampler`.
 - **`HY-Pano-2 Blend ERP Edges`** — cross-fade the left/right edges of an ERP panorama
   so the seam disappears. Standalone IMAGE → IMAGE node; works on any panorama, not
   just ones produced by this workflow (handy for chaining with [`ComfyUI-HYWM2`](https://github.com/PozzettiAndrea/ComfyUI-HYWM2)'s `SamplePanorama`).

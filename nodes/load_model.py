@@ -17,10 +17,16 @@ log = logging.getLogger("hypano2")
 
 _FILES = {
     "diffusion_models": {
-        "bf16": ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
-                 "split_files/diffusion_models/qwen_image_edit_2509_bf16.safetensors"),
-        "fp8":  ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
-                 "split_files/diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors"),
+        "bf16":    ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
+                    "split_files/diffusion_models/qwen_image_edit_2509_bf16.safetensors"),
+        # fp8 = the scale-augmented hybrid (per-tensor scales recover most of
+        # bf16's dynamic range). Same VRAM as raw fp8_e4m3fn, materially better
+        # numerics. This is what `precision=fp8` resolves to by default.
+        "fp8":     ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
+                    "split_files/diffusion_models/qwen_image_edit_2509_fp8mixed.safetensors"),
+        # Raw fp8 cast — kept for users who explicitly want it. Lower quality.
+        "fp8_raw": ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
+                    "split_files/diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors"),
     },
     "text_encoders": {
         "bf16": ("Comfy-Org/Qwen-Image_ComfyUI",
@@ -176,15 +182,18 @@ class HYPano2DownloadModels(io.ComfyNode):
             inputs=[
                 io.Combo.Input(
                     "precision",
-                    options=["fp8", "bf16"],
+                    options=["fp8", "bf16", "fp8_raw"],
                     default="fp8",
                     tooltip=(
-                        "fp8 (default): ~20 GB UNet + ~9 GB text encoder. "
-                        "Fits a 24 GB card with the text encoder swapping in "
-                        "and out around the sampler. "
-                        "bf16: ~41 GB UNet + ~16 GB text encoder. Only viable "
-                        "on >=48 GB VRAM cards, or 24 GB VRAM + >=48 GB free "
-                        "host RAM."
+                        "fp8 (default): fp8mixed UNet (~20 GB) — fp8 weights "
+                        "with per-tensor scale factors that recover most of "
+                        "bf16's dynamic range. Plus fp8_scaled text encoder "
+                        "(~9 GB). Fits a 24 GB card.\n"
+                        "bf16: bf16 UNet (~41 GB) + bf16 text encoder (~16 GB). "
+                        "Gold standard, only viable on >=48 GB VRAM rigs.\n"
+                        "fp8_raw: unscaled fp8_e4m3fn UNet — same size as fp8 "
+                        "but worse numerics. Kept for users who specifically "
+                        "want the raw cast."
                     ),
                 ),
             ],
@@ -195,11 +204,14 @@ class HYPano2DownloadModels(io.ComfyNode):
 
     @classmethod
     def execute(cls, precision: str = "fp8"):
+        # fp8 and fp8_raw both pair with the fp8_scaled text encoder — the TE
+        # only has fp8_scaled and bf16 variants on Comfy-Org's mirror.
+        te_precision = "bf16" if precision == "bf16" else "fp8"
         manifest = [
-            (*_FILES["diffusion_models"][precision], "diffusion_models"),
-            (*_FILES["text_encoders"][precision],    "text_encoders"),
-            (*_FILES["vae"]["any"],                  "vae"),
-            (*_FILES["loras"]["any"],                "loras"),
+            (*_FILES["diffusion_models"][precision],    "diffusion_models"),
+            (*_FILES["text_encoders"][te_precision],    "text_encoders"),
+            (*_FILES["vae"]["any"],                     "vae"),
+            (*_FILES["loras"]["any"],                   "loras"),
         ]
         sized = _probe_sizes(manifest)
         total = max(sum(s for *_, s in sized), 1)
