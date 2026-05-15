@@ -1,17 +1,23 @@
-"""ComfyUI-HYPano2 Prestartup Script."""
+"""ComfyUI-HYPano2 prestartup: copy bundled example images into ComfyUI/input/.
 
+Each `assets/<scene>/<file>` lands at `ComfyUI/input/<scene>/<file>` so the
+LoadImage node's file picker can browse them.
+"""
+
+import shutil
 from pathlib import Path
-
-from comfy_env import setup_env, copy_files
-
-setup_env()
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 COMFYUI_DIR = SCRIPT_DIR.parent.parent
+ASSETS = SCRIPT_DIR / "assets"
+TARGET = COMFYUI_DIR / "input"
 
-# Copy bundled example images into ComfyUI's `input/` so each `assets/<scene>/`
-# subdir shows up in `LoadImage`'s file picker. The recursive `**/*` glob means
-# `assets/office/office.jpg` lands at `input/office/office.jpg` and the scene
-# subdirs become folders the user can pick from. Same pattern HYWM2 and
-# DepthAnythingV3 use.
-copy_files(SCRIPT_DIR / "assets", COMFYUI_DIR / "input", "**/*")
+if ASSETS.is_dir():
+    for src in ASSETS.rglob("*"):
+        if not src.is_file():
+            continue
+        dst = TARGET / src.relative_to(ASSETS)
+        if dst.exists():
+            continue
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dst)

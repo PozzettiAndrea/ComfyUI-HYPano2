@@ -1,14 +1,12 @@
-from .load_model import HYPano2LoadModel
-from .generate import HYPano2Generate, HYPano2BlendEdges
+from .load_model import HYPano2DownloadModels
+from .generate import HYPano2BlendEdges
 
 NODE_CLASS_MAPPINGS = {
-    "HYPano2LoadModel": HYPano2LoadModel,
-    "HYPano2Generate": HYPano2Generate,
+    "HYPano2DownloadModels": HYPano2DownloadModels,
     "HYPano2BlendEdges": HYPano2BlendEdges,
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "HYPano2LoadModel": "(Down)Load HY-Pano-2 Model",
-    "HYPano2Generate": "HY-Pano-2 Generate",
+    "HYPano2DownloadModels": "(Down)Load HY-Pano-2 stack",
     "HYPano2BlendEdges": "HY-Pano-2 Blend ERP Edges",
 }

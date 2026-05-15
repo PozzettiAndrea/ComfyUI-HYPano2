@@ -2,78 +2,61 @@
 
 ComfyUI wrapper for **HY-Pano 2.0** — Tencent's panorama generator from the HY-World 2.0 pipeline.
 
-Image → 360° equirectangular panorama, via Qwen-Image-Edit-2509 + the HY-Pano-2 LoRA.
+Image → 360° equirectangular panorama, via ComfyUI's native Qwen-Image-Edit-2509 support + the HY-Pano-2 LoRA.
 
 | | |
 |---|---|
 | Upstream | [Tencent-Hunyuan/HY-World-2.0 → `hyworld2/panogen/`](https://github.com/Tencent-Hunyuan/HY-World-2.0/tree/main/hyworld2/panogen) |
 | Weights | [tencent/HY-World-2.0 → `HY-Pano-2.0/pytorch_lora_weights.safetensors`](https://huggingface.co/tencent/HY-World-2.0/blob/main/HY-Pano-2.0/pytorch_lora_weights.safetensors) (~810 MB) |
-| Base    | [Qwen/Qwen-Image-Edit-2509](https://huggingface.co/Qwen/Qwen-Image-Edit-2509) (~40 GB) |
+| Base    | [Comfy-Org/Qwen-Image-Edit_ComfyUI → `qwen_image_edit_2509_bf16.safetensors`](https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI) (~41 GB; ~20 GB fp8 variant available) |
 | License | Tencent Hunyuan Community License + Qwen License (read both before redistribution) |
 
 ## What's in scope
 
-Only the **Qwen-Image-Edit backend** from upstream is wrapped. The alternative full-stack
-HunyuanImage-3 backend (~80B parameters, 32-shard safetensors, ~162 GB) is **out of scope**:
-it requires H100/H200-class multi-GPU sharding via `device_map="auto"` and is not realistic
-for typical ComfyUI installs.
+Only the Qwen-Image-Edit backend from upstream is wrapped. The alternative HunyuanImage-3
+backend (~80B parameters) is **out of scope** — it requires H100-class multi-GPU sharding
+and is not realistic for typical ComfyUI installs.
+
+## How it works
+
+There is no custom inference code in this pack. Everything runs through ComfyUI's native
+Qwen-Image-Edit support:
+
+- `UNETLoader` mmaps `qwen_image_edit_2509_*.safetensors` from `models/diffusion_models/`.
+- `CLIPLoader` (type=`qwen_image`) loads the Qwen-VL text encoder from `models/text_encoders/`.
+- `VAELoader` loads `qwen_image_vae.safetensors` from `models/vae/`.
+- `LoraLoaderModelOnly` applies the HY-Pano-2 LoRA from `models/loras/`.
+- `TextEncodeQwenImageEditPlus` (from `comfy_extras.nodes_qwen`) is the exact in-tree
+  equivalent of diffusers' `QwenImageEditPlusPipeline.encode_prompt` — tokenizes prompt +
+  reference images and emits a `reference_latents` conditioning.
+- `KSampler` runs the denoising loop.
+- `VAEDecode` produces the ERP image.
+- `HYPano2BlendEdges` (this pack) cross-fades the wrap-around seam.
+
+Because the pack rides on stock ComfyUI, VRAM/RAM management comes for free:
+safetensors mmap → `ModelPatcher.partially_load` → weight-function streaming. Fits on
+24 GB cards without `--lowvram`, fits on 32 GB RAM machines without thrashing.
 
 ## Nodes
 
-- **`(Down)Load HY-Pano-2 Model`** — resolves the Qwen base + LoRA on disk. Downloads the ~810 MB LoRA on first run.
-- **`HY-Pano-2 Generate`** — image → 360° ERP panorama.
-- **`HY-Pano-2 Blend ERP Edges`** — standalone seam blender; works on any ERP panorama (handy
-  for chaining with [ComfyUI-HYWM2](https://github.com/PozzettiAndrea/ComfyUI-HYWM2)'s `SamplePanorama`).
+- **`(Down)Load HY-Pano-2 stack`** — one-click downloader. Fetches the four files from
+  HuggingFace into `models/diffusion_models/`, `models/text_encoders/`, `models/vae/`,
+  `models/loras/`. Pick `bf16` (best quality, ~57 GB total on disk) or `fp8` (~30 GB,
+  fits 24 GB cards more comfortably).
+- **`HY-Pano-2 Blend ERP Edges`** — cross-fade the left/right edges of an ERP panorama
+  so the seam disappears. Standalone IMAGE → IMAGE node; works on any panorama, not
+  just ones produced by this workflow (handy for chaining with [`ComfyUI-HYWM2`](https://github.com/PozzettiAndrea/ComfyUI-HYWM2)'s `SamplePanorama`).
+
+## Workflow
+
+`workflows/image_to_panorama.json` wires the full graph using stock loaders.
 
 ## Pairing with ComfyUI-HYWM2
 
-This pack covers the **panorama generation** stage of HY-World 2.0. To go from a generated
-panorama to a 3DGS world, chain into [`ComfyUI-HYWM2`](https://github.com/PozzettiAndrea/ComfyUI-HYWM2):
-
 ```
-LoadImage → HYPano2Generate → HYWM2SamplePanorama → HYWM2Reconstruct → splat / mesh viewers
+LoadImage → [Qwen-Image-Edit-2509 + HY-Pano-2 LoRA] → HYPano2BlendEdges
+          → HYWM2SamplePanorama → HYWM2Reconstruct → splat / mesh viewers
 ```
-
-## Why a separate isolated env
-
-Upstream's pipeline imports private helpers from
-`diffusers.pipelines.qwenimage.pipeline_qwenimage_edit_plus`
-(`calculate_shift`, `retrieve_timesteps`, `calculate_dimensions`). Minor-version drift in
-`diffusers` breaks the import, so we hard-pin `diffusers==0.36.0` together with
-`transformers==4.57.1`, `tokenizers==0.22.0`, `safetensors==0.7.0`, and `numpy==2.2.0`.
-These would clash with ComfyUI's host venv (and with sibling packs like
-`ComfyUI-HYWM2` that pin `numpy<2`), so the nodes run inside an isolated
-[`comfy-env`](https://github.com/PozzettiAndrea/comfy-env) subprocess.
-
-## VRAM
-
-VRAM management is **fully automatic** — no user knobs. The loader wraps the
-transformer in `comfy.model_patcher.ModelPatcher`; the transformer's block-residency
-budget is computed at run time from `comfy.model_management.get_free_memory(device)`
-(half of free minus a 4 GB activation reserve). On a 24 GB consumer card the
-transformer streams via diffusers' `apply_group_offloading` with a second CUDA
-stream prefetching the next group; on an H100/A100-80G the budget exceeds the
-block count and group offload collapses to a single all-resident group — same
-code path.
-
-VAE slicing + tiling are always enabled so the decode step doesn't spike VRAM at
-high output resolutions. `precision` (default `auto`) follows the standard ComfyUI
-pattern: `mm.should_use_bf16` → bf16 on Ampere+, else `mm.should_use_fp16` → fp16,
-else fp32.
-
-## Attention kernel
-
-The transformer's attention backend follows **ComfyUI's startup-time detection** —
-launch ComfyUI with one of `--use-sage-attention`, `--use-flash-attention`, or no flag
-(torch SDPA fallback), and our node automatically calls
-`pipe.transformer.set_attention_backend(...)` with the matching diffusers backend
-(`sage`, `flash`, `xformers`, or `native`). Single source of truth: no separate
-combo box on our node, no settings drift between core ComfyUI samplers and HYPano2.
-
-Both `flash_attn` (v2.8.3) and `sageattention` (v2.2.0) are auto-installed via
-[`cuda-wheels`](https://github.com/PozzettiAndrea/cuda-wheels) — prebuilt for cu128 /
-py3.13 / torch 2.8, with a native SM 8.6 cubin for Ampere consumer cards (no JIT
-fallback on a 3090).
 
 ## Citation
 

@@ -1,2 +1,1 @@
-# Process isolation for ComfyUI nodes
-comfy-env==0.3.89
+huggingface_hub
