@@ -439,12 +439,6 @@ class HYPano2Generate(io.ComfyNode):
             except AttributeError:
                 pass
 
-        # Attention backend: read whatever ComfyUI picked at startup
-        # (sage > xformers > flash > pytorch SDPA) and forward to diffusers.
-        # Single source of truth — the user's --use-sage-attention /
-        # --use-flash-attention launch flags drive both ComfyUI core and us.
-        cls._wire_attention_backend(pipe)
-
         # Attention backend follows ComfyUI's startup-time pick: --use-sage-
         # attention / --use-flash-attention launch flags drive both ComfyUI
         # core and our transformer. Single source of truth.
