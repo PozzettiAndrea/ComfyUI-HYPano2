@@ -1,3 +1,4 @@
+from . import log_hooks  # noqa: F401  — installs comfy.model_management log hooks
 from .load_model import HYPano2DownloadModels
 from .generate import HYPano2BlendEdges
 

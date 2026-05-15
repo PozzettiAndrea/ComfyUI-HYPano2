@@ -104,12 +104,15 @@ class HYPano2DownloadModels(io.ComfyNode):
             inputs=[
                 io.Combo.Input(
                     "precision",
-                    options=["bf16", "fp8"],
-                    default="bf16",
+                    options=["fp8", "bf16"],
+                    default="fp8",
                     tooltip=(
-                        "bf16: ~41 GB UNet + ~16 GB text encoder, best quality. "
-                        "fp8: ~20 GB UNet + ~9 GB text encoder, fits 24 GB cards "
-                        "with room to spare."
+                        "fp8 (default): ~20 GB UNet + ~9 GB text encoder. "
+                        "Fits a 24 GB card with the text encoder swapping in "
+                        "and out around the sampler. "
+                        "bf16: ~41 GB UNet + ~16 GB text encoder. Only viable "
+                        "on >=48 GB VRAM cards, or 24 GB VRAM + >=48 GB free "
+                        "host RAM."
                     ),
                 ),
             ],
