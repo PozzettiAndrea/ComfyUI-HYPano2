@@ -6,6 +6,7 @@ in the right ComfyUI subdirectories.
 """
 
 import logging
+from contextlib import contextmanager
 from pathlib import Path
 
 import folder_paths
@@ -14,9 +15,6 @@ from comfy_api.latest import io
 log = logging.getLogger("hypano2")
 
 
-# All files come from Comfy-Org's ComfyUI-packaged Qwen mirrors and tencent's
-# HY-World-2.0 repo. Files are dropped under each input's standard ComfyUI
-# subdirectory so the matching native loaders see them immediately.
 _FILES = {
     "diffusion_models": {
         "bf16": ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
@@ -53,12 +51,7 @@ def _target_dir(comfy_folder: str) -> Path:
 
 
 def _download(repo_id: str, filename: str, comfy_folder: str) -> Path:
-    """Download `filename` from `repo_id` into ComfyUI's `comfy_folder`.
-
-    Files land flat in the folder (basename only), matching what `UNETLoader`
-    and friends list in their dropdowns. Idempotent: if the destination
-    already exists with non-zero size we skip the network call.
-    """
+    """Download `filename` from `repo_id` into ComfyUI's `comfy_folder`."""
     from huggingface_hub import hf_hub_download
 
     dest_dir = _target_dir(comfy_folder)
@@ -70,8 +63,6 @@ def _download(repo_id: str, filename: str, comfy_folder: str) -> Path:
 
     log.info("HYPano2DownloadModels: fetching %s : %s  ->  %s", repo_id, filename, dest_dir)
     local = hf_hub_download(repo_id=repo_id, filename=filename)
-    # hf_hub_download returns the symlink in its blobs cache; copy or
-    # symlink to the ComfyUI dir so loaders find it by basename.
     try:
         dest.symlink_to(local)
     except OSError:
@@ -80,13 +71,68 @@ def _download(repo_id: str, filename: str, comfy_folder: str) -> Path:
     return dest
 
 
+def _probe_sizes(manifest):
+    """Resolve each (repo, filename) to its remote size via HfApi.
+
+    Returns a list parallel to `manifest` with `size_bytes` appended (0 on
+    lookup failure — ProgressBar tolerates a slight under-count).
+    """
+    from huggingface_hub import HfApi
+    api = HfApi()
+    by_repo = {}
+    for i, (repo_id, fname, folder) in enumerate(manifest):
+        by_repo.setdefault(repo_id, []).append((i, fname))
+    sizes = [0] * len(manifest)
+    for repo_id, items in by_repo.items():
+        try:
+            info = api.get_paths_info(repo_id=repo_id, paths=[fname for _, fname in items])
+            size_by_path = {p.path: getattr(p, "size", 0) or 0 for p in info}
+        except Exception as e:
+            log.warning("HYPano2DownloadModels: size probe failed for %s (%s)", repo_id, e)
+            size_by_path = {}
+        for idx, fname in items:
+            sizes[idx] = size_by_path.get(fname, 0)
+    return [(*m, sz) for m, sz in zip(manifest, sizes)]
+
+
+@contextmanager
+def _hf_progress_into_pbar(pbar, offset_ref, total):
+    """Bridge huggingface_hub's internal tqdm into ComfyUI's ProgressBar.
+
+    hf_hub_download writes its own bytes/sec tqdm to the console (we leave
+    that alone). We additionally patch tqdm.update so every chunk also
+    pushes `offset_ref[0] + tqdm.n` into the ComfyUI queue progress bar.
+    `offset_ref[0]` advances by the file's full size between downloads so
+    the bar climbs monotonically across all files.
+    """
+    import huggingface_hub.utils.tqdm as hf_tqdm
+    original = hf_tqdm.tqdm.update
+
+    def _patched(self, n=1):
+        ret = original(self, n)
+        try:
+            current = offset_ref[0] + int(self.n or 0)
+            if current > total:
+                current = total
+            pbar.update_absolute(current, total)
+        except Exception:
+            pass
+        return ret
+
+    hf_tqdm.tqdm.update = _patched
+    try:
+        yield
+    finally:
+        hf_tqdm.tqdm.update = original
+
+
 class HYPano2DownloadModels(io.ComfyNode):
     """Download Qwen-Image-Edit-2509 + Qwen-VL text encoder + Qwen VAE + HY-Pano-2 LoRA.
 
     Drops files in `models/diffusion_models/`, `models/text_encoders/`,
-    `models/vae/`, `models/loras/`. Pick `bf16` for max quality on a card
-    with the headroom, `fp8` to fit a 24 GB consumer card more comfortably.
-    Idempotent — re-running with the same `precision` is a no-op.
+    `models/vae/`, `models/loras/`. Pick `fp8` (default) to fit a 24 GB card,
+    `bf16` for max quality on a ≥48 GB rig. Idempotent — re-runs with the
+    same precision are a no-op.
     """
 
     @classmethod
@@ -95,6 +141,7 @@ class HYPano2DownloadModels(io.ComfyNode):
             node_id="HYPano2DownloadModels",
             display_name="(Down)Load HY-Pano-2 stack",
             category="HYPano2",
+            is_output_node=True,
             description=(
                 "Downloads Qwen-Image-Edit-2509, the Qwen-VL text encoder, "
                 "the Qwen Image VAE, and the HY-Pano-2 LoRA into ComfyUI's "
@@ -122,17 +169,33 @@ class HYPano2DownloadModels(io.ComfyNode):
         )
 
     @classmethod
-    def execute(cls, precision: str = "bf16"):
-        unet  = _download(*_FILES["diffusion_models"][precision], "diffusion_models")
-        te    = _download(*_FILES["text_encoders"][precision],    "text_encoders")
-        vae   = _download(*_FILES["vae"]["any"],                  "vae")
-        lora  = _download(*_FILES["loras"]["any"],                "loras")
-        status = (
-            f"UNet:  {unet.name}\n"
-            f"CLIP:  {te.name}\n"
-            f"VAE:   {vae.name}\n"
-            f"LoRA:  {lora.name}\n"
-            f"Use UNETLoader / CLIPLoader / VAELoader / LoraLoader to load."
+    def execute(cls, precision: str = "fp8"):
+        manifest = [
+            (*_FILES["diffusion_models"][precision], "diffusion_models"),
+            (*_FILES["text_encoders"][precision],    "text_encoders"),
+            (*_FILES["vae"]["any"],                  "vae"),
+            (*_FILES["loras"]["any"],                "loras"),
+        ]
+        sized = _probe_sizes(manifest)
+        total = max(sum(s for *_, s in sized), 1)
+        log.info(
+            "HYPano2DownloadModels: %d files, total %.1f GB to fetch (cached files skipped).",
+            len(sized), total / 1e9,
         )
-        log.info("HYPano2DownloadModels: %s", status.replace("\n", " | "))
+
+        import comfy.utils
+        pbar = comfy.utils.ProgressBar(total)
+        offset = [0]
+        results = []
+        with _hf_progress_into_pbar(pbar, offset, total):
+            for repo_id, fname, folder, size in sized:
+                dest = _download(repo_id, fname, folder)
+                offset[0] += size
+                pbar.update_absolute(offset[0], total)
+                results.append((folder, dest.name))
+
+        status = "\n".join(
+            f"{folder:>16}: {name}" for folder, name in results
+        ) + "\nUse UNETLoader / CLIPLoader / VAELoader / LoraLoaderModelOnly to load."
+        log.info("HYPano2DownloadModels: done. %s", status.replace("\n", " | "))
         return io.NodeOutput(status)

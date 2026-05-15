@@ -91,7 +91,7 @@
       "properties": {"Node name for S&R": "SaveImage"},
       "widgets_values": ["hypano2"]},
 
-    {"id": 13, "type": "HYPano2DownloadModels", "pos": [40, 900], "size": [320, 90], "flags": {}, "order": 12, "mode": 4,
+    {"id": 13, "type": "HYPano2DownloadModels", "pos": [40, 900], "size": [320, 90], "flags": {}, "order": 12, "mode": 0,
       "inputs": [], "outputs": [{"name": "status", "type": "STRING", "links": null}],
       "properties": {"Node name for S&R": "HYPano2DownloadModels"},
       "widgets_values": ["fp8"]}
