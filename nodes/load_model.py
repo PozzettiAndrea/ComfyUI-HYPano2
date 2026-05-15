@@ -8,6 +8,7 @@ inference node = "build pipeline + run forward".
 """
 
 import logging
+from contextlib import contextmanager
 from pathlib import Path
 
 from comfy_api.latest import io
@@ -29,6 +30,43 @@ LORA_WEIGHT_NAME = "pytorch_lora_weights.safetensors"
 
 # Bytes in the LoRA file on HuggingFace (per the model card json).
 _LORA_EXPECTED_SIZE = 849_544_392
+
+
+@contextmanager
+def _comfy_hf_progress(total_bytes: int):
+    """Wire huggingface_hub's internal tqdm into ComfyUI's ProgressBar.
+
+    huggingface_hub >=1.x exposes a `tqdm_class` kwarg on hf_hub_download,
+    but the 0.36.x branch we're pinned to (transformers 4.57.1 caps it at
+    <1.0) doesn't — so we monkey-patch the tqdm subclass it uses for the
+    duration of the download instead. Every chunk update pushes bytes into
+    `comfy.utils.ProgressBar` so the queue UI shows live byte progress for
+    the ~810 MB LoRA download.
+    """
+    try:
+        import comfy.utils
+        import huggingface_hub.utils.tqdm as hf_tqdm_mod
+        import huggingface_hub.file_download as fd
+    except ImportError:
+        yield
+        return
+
+    pbar = comfy.utils.ProgressBar(total_bytes)
+    original_update = hf_tqdm_mod.tqdm.update
+
+    def _patched_update(self, n=1):
+        ret = original_update(self, n)
+        if n and getattr(self, "total", None):
+            pbar.update_absolute(min(self.n, total_bytes), total_bytes)
+        return ret
+
+    hf_tqdm_mod.tqdm.update = _patched_update
+    # `file_download.tqdm` is a re-export of the same class, so patching the
+    # class object covers both call sites.
+    try:
+        yield
+    finally:
+        hf_tqdm_mod.tqdm.update = original_update
 
 
 def _download_lora(repo_id: str, subfolder: str) -> Path:
@@ -56,11 +94,12 @@ def _download_lora(repo_id: str, subfolder: str) -> Path:
     from huggingface_hub import hf_hub_download
 
     log.info("Downloading %s/%s from %s ...", subfolder, LORA_WEIGHT_NAME, repo_id)
-    hf_hub_download(
-        repo_id=repo_id,
-        filename=f"{subfolder}/{LORA_WEIGHT_NAME}" if subfolder else LORA_WEIGHT_NAME,
-        local_dir=str(get_hypano2_models_path()),
-    )
+    with _comfy_hf_progress(_LORA_EXPECTED_SIZE):
+        hf_hub_download(
+            repo_id=repo_id,
+            filename=f"{subfolder}/{LORA_WEIGHT_NAME}" if subfolder else LORA_WEIGHT_NAME,
+            local_dir=str(get_hypano2_models_path()),
+        )
     log.info("LoRA downloaded to %s", lora_path)
     return target_dir
 
