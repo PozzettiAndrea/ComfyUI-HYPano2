@@ -372,13 +372,11 @@ class HYPano2Generate(io.ComfyNode):
     # ------------------------------------------------------------------
     @classmethod
     def _get_pipeline(cls, handle: dict):
-        blocks_per_group = int(handle.get("blocks_per_group", 4))
         dtype_str = handle.get("dtype") or handle.get("torch_dtype", "bf16")
         key = (
             handle["base_path"],
             handle["lora_dir"],
             dtype_str,
-            blocks_per_group,
         )
         if cls._pipeline is not None and cls._pipeline_key == key:
             return cls._pipeline
@@ -389,8 +387,8 @@ class HYPano2Generate(io.ComfyNode):
         cls._teardown()
 
         log.info(
-            "HYPano2Generate: building PanoDiffusionPipeline (base=%s, dtype=%s, blocks_per_group=%d)",
-            handle["base_path"], dtype_str, blocks_per_group,
+            "HYPano2Generate: building PanoDiffusionPipeline (base=%s, dtype=%s)",
+            handle["base_path"], dtype_str,
         )
         log.info("HYPano2Generate: %s", _vram_summary("pre-build "))
 
@@ -447,145 +445,87 @@ class HYPano2Generate(io.ComfyNode):
         # --use-flash-attention launch flags drive both ComfyUI core and us.
         cls._wire_attention_backend(pipe)
 
-        # ComfyUI-native VRAM management: text_encoder + VAE GPU-resident,
-        # transformer streams blocks via diffusers group_offloading with a
-        # 2nd CUDA stream, wrapped in a ModelPatcher so comfy's eviction
-        # bookkeeping sees us. On a HIGH_VRAM machine `unet_offload_device`
-        # is the GPU, so group_offloading effectively becomes a no-op and
-        # the whole pipeline stays resident — same code path, no toggle.
-        t0 = time.perf_counter()
-        cls._wire_comfy_vram(pipe, blocks_per_group)
-        log.info(
-            "HYPano2Generate: VRAM wiring done in %.1fs.  %s",
-            time.perf_counter() - t0, _vram_summary(),
-        )
-
-        log.info("HYPano2Generate: pipeline + LoRA ready.")
-
-        cls._pipeline = pipe
-        cls._pipeline_key = key
-        return pipe
-
-    # ------------------------------------------------------------------
-    # Backend wiring helpers
-    # ------------------------------------------------------------------
-    @staticmethod
-    def _comfy_attention_backend() -> str | None:
-        """Read ComfyUI's startup-time attention pick and translate to a
-        diffusers attention-backend name. Returns None if comfy isn't
-        importable (let diffusers keep its default).
-        """
-        try:
-            import comfy.model_management as mm
-        except ImportError:
-            return None
-        if mm.sage_attention_enabled():
-            return "sage"
-        if mm.xformers_enabled():
-            return "xformers"
-        if mm.flash_attention_enabled():
-            return "flash"
-        if mm.pytorch_attention_enabled():
-            return "native"  # diffusers' name for torch SDPA
-        return None
-
-    @classmethod
-    def _wire_attention_backend(cls, pipe):
-        backend = cls._comfy_attention_backend()
-        if backend is None:
-            log.info("HYPano2Generate: attention backend = diffusers default (no ComfyUI signal).")
-            return
-        try:
-            pipe.transformer.set_attention_backend(backend)
-            log.info("HYPano2Generate: attention backend = %s (from ComfyUI).", backend)
-        except Exception as e:
-            # Some backend names aren't supported by every pipeline; degrade
-            # to default rather than fail the build.
-            log.warning(
-                "HYPano2Generate: set_attention_backend(%r) failed (%s); using default.",
-                backend, e,
-            )
-
-    @classmethod
-    def _wire_comfy_vram(cls, pipe, blocks_per_group: int):
-        """Set up the ComfyUI-native VRAM story:
-
-        - text_encoder + VAE on GPU (small enough to fit alongside a
-          partially-resident transformer; saves one PCIe round-trip per call
-          for the text encoder, which runs once per generation).
-        - transformer streams its blocks via diffusers' group_offloading
-          with a 2nd CUDA stream prefetching the next group while the
-          current group's forward runs.
-        - ModelPatcher wraps the transformer so ComfyUI's load_models_gpu /
-          eviction bookkeeping treats us as a co-operative VRAM user.
-        """
+        # Attention backend follows ComfyUI's startup-time pick: --use-sage-
+        # attention / --use-flash-attention launch flags drive both ComfyUI
+        # core and our transformer. Single source of truth.
         import comfy.model_management as mm
+        if mm.sage_attention_enabled():
+            backend = "sage"
+        elif mm.xformers_enabled():
+            backend = "xformers"
+        elif mm.flash_attention_enabled():
+            backend = "flash"
+        elif mm.pytorch_attention_enabled():
+            backend = "native"
+        else:
+            backend = None
+        if backend:
+            try:
+                pipe.transformer.set_attention_backend(backend)
+                log.info("HYPano2Generate: attention backend = %s (from ComfyUI).", backend)
+            except Exception as e:
+                log.warning("HYPano2Generate: set_attention_backend(%r) failed (%s).", backend, e)
+
+        # Bring text encoder + VAE onto the load device; they're small and
+        # run once per generation, so no point streaming them. The
+        # transformer is the only thing that needs a memory plan.
         import comfy.model_patcher
         from diffusers.hooks import apply_group_offloading
 
         load_dev = mm.get_torch_device()
-        offload_dev = mm.unet_offload_device()  # cpu unless HIGH_VRAM
-
-        # Small components: full GPU residency.
-        log.info("HYPano2Generate: text_encoder + VAE -> %s", load_dev)
+        offload_dev = mm.unet_offload_device()  # GPU on HIGH_VRAM, else CPU
         pipe.text_encoder.to(load_dev)
         pipe.vae.to(load_dev)
 
+        # Auto-budget the transformer's block residency from comfy's
+        # free-VRAM reading: aim for ~half of (free - 4 GB activation
+        # reserve), so we leave headroom for KV / scheduler / decode peak.
+        # On HIGH_VRAM the budget exceeds the block count and group_offload
+        # collapses to a single all-resident group — same code path.
+        blocks = pipe.transformer.transformer_blocks
+        per_block_bytes = sum(p.numel() * p.element_size() for p in blocks[0].parameters())
+        free = mm.get_free_memory(load_dev)
+        budget = max(0, free - 4 * 1024**3) // 2
+        blocks_per_group = min(max(1, int(budget // max(per_block_bytes, 1))), len(blocks))
         log.info(
-            "HYPano2Generate: applying group_offloading on transformer "
-            "(blocks_per_group=%d, use_stream=True, onload=%s, offload=%s) ...",
-            blocks_per_group, load_dev, offload_dev,
+            "HYPano2Generate: free=%.1fGB per_block=%.0fMB -> blocks_per_group=%d/%d",
+            free / 1e9, per_block_bytes / 1e6, blocks_per_group, len(blocks),
         )
+
         apply_group_offloading(
             pipe.transformer,
             onload_device=load_dev,
             offload_device=offload_dev,
             offload_type="block_level",
             num_blocks_per_group=blocks_per_group,
-            use_stream=True,                # overlap H->D with compute
-            record_stream=True,             # safe with autograd disabled
-            low_cpu_mem_usage=False,        # we have host RAM
+            use_stream=True,           # overlap H->D with compute
+            record_stream=True,        # safe with autograd disabled
+            low_cpu_mem_usage=False,
         )
 
-        # ModelPatcher: bookkeeping only — group_offloading already owns the
-        # transformer's params, so we set load_device == offload_device so
-        # ComfyUI's load_models_gpu doesn't try to .to() the module behind
-        # our back. The `size` estimate tells ComfyUI how much VRAM we're
-        # actually using so its eviction budget makes sense.
+        # ModelPatcher tells comfy's load_models_gpu / cleanup_models that
+        # we're holding VRAM. group_offloading already owns the device
+        # moves on the transformer's params, so we set load_device ==
+        # offload_device to keep comfy from .to()-ing the module behind our
+        # back. The size hint reflects what's *actually* resident, not the
+        # full ~40 GB transformer, so eviction decisions stay realistic.
+        total_params_bytes = sum(p.numel() * p.element_size() for p in pipe.transformer.parameters())
+        non_block_bytes = total_params_bytes - per_block_bytes * len(blocks)
+        resident_bytes = int(non_block_bytes + per_block_bytes * min(blocks_per_group * 2, len(blocks)))
         cls._patcher = comfy.model_patcher.ModelPatcher(
             pipe.transformer,
             load_device=load_dev,
             offload_device=load_dev,
-            size=cls._estimate_resident_bytes(pipe.transformer, blocks_per_group),
+            size=resident_bytes,
         )
-        log.info("HYPano2Generate: ModelPatcher registered (size=%.1fGB).",
-                 cls._patcher.size / 1e9)
+        log.info(
+            "HYPano2Generate: pipeline ready. ModelPatcher size=%.1fGB.  %s",
+            resident_bytes / 1e9, _vram_summary(),
+        )
 
-    @staticmethod
-    def _estimate_resident_bytes(transformer, blocks_per_group: int) -> int:
-        """Approximate VRAM footprint with group offload active.
-
-        Counts every non-block param fully + blocks_per_group * 2 blocks of
-        block params (factor 2 = the prefetched next group plus current).
-        Used as the `size` hint to ModelPatcher so ComfyUI's eviction logic
-        doesn't think we're using the full 40 GB.
-        """
-        def _params_bytes(mod) -> int:
-            total = 0
-            for p in mod.parameters(recurse=True):
-                total += p.numel() * p.element_size()
-            return total
-
-        blocks = getattr(transformer, "transformer_blocks", None)
-        if blocks is None or len(blocks) == 0:
-            return _params_bytes(transformer)
-
-        per_block = _params_bytes(blocks[0])
-        # Everything that isn't a transformer_block param.
-        total_params = _params_bytes(transformer)
-        non_block_params = total_params - per_block * len(blocks)
-        resident_blocks = min(blocks_per_group * 2, len(blocks))
-        return int(non_block_params + per_block * resident_blocks)
+        cls._pipeline = pipe
+        cls._pipeline_key = key
+        return pipe
 
     @classmethod
     def _teardown(cls):

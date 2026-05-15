@@ -174,19 +174,8 @@ class HYPano2LoadModel(io.ComfyNode):
                     optional=True,
                     tooltip=(
                         "Inference precision. auto: bf16 on Ampere+, fp16 on "
-                        "Volta/Turing, fp32 on older GPUs. Upstream HY-Pano-2 "
-                        "trains in bf16."
-                    ),
-                ),
-                io.Int.Input(
-                    "blocks_per_group",
-                    default=4, min=1, max=16, step=1,
-                    optional=True,
-                    tooltip=(
-                        "Transformer blocks resident on GPU at once during "
-                        "denoising. 4 -> ~2.7 GB peak resident on the 60-block "
-                        "Qwen-Image-Edit transformer. Bump for more VRAM "
-                        "headroom (faster), drop if you OOM."
+                        "Volta/Turing, fp32 on older. Upstream HY-Pano-2 trains "
+                        "in bf16."
                     ),
                 ),
             ],
@@ -207,7 +196,6 @@ class HYPano2LoadModel(io.ComfyNode):
         lora_repo: str = DEFAULT_LORA_REPO,
         lora_subfolder: str = DEFAULT_LORA_SUBFOLDER,
         precision: str = "auto",
-        blocks_per_group: int = 4,
     ):
         # Resolve precision now (matches TRELLIS2's pattern). mm.should_use_bf16
         # checks the GPU compute capability, so 'auto' lands on bf16 for any
@@ -224,8 +212,8 @@ class HYPano2LoadModel(io.ComfyNode):
         else:
             dtype_str = precision
         log.info(
-            "HYPano2LoadModel: base=%s lora=%s/%s precision=%s -> %s blocks_per_group=%d",
-            base_model, lora_repo, lora_subfolder, precision, dtype_str, blocks_per_group,
+            "HYPano2LoadModel: base=%s lora=%s/%s precision=%s -> %s",
+            base_model, lora_repo, lora_subfolder, precision, dtype_str,
         )
 
         lora_dir = _download_lora(lora_repo, lora_subfolder)
@@ -236,6 +224,5 @@ class HYPano2LoadModel(io.ComfyNode):
             "lora_dir": str(lora_dir),
             "lora_weight_name": LORA_WEIGHT_NAME,
             "dtype": dtype_str,           # IPC-safe string; resolved in generate
-            "blocks_per_group": int(blocks_per_group),
         }
         return io.NodeOutput(handle)

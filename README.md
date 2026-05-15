@@ -47,23 +47,19 @@ These would clash with ComfyUI's host venv (and with sibling packs like
 
 ## VRAM
 
-VRAM management is **automatic** — we wrap the transformer in
-`comfy.model_patcher.ModelPatcher` and use diffusers' `apply_group_offloading` with
-a second CUDA stream prefetching the next group of transformer blocks while the
-current group's forward runs. Text encoder + VAE stay GPU-resident. On a HIGH_VRAM
-machine (`mm.unet_offload_device()` returns the GPU) `apply_group_offloading`
-becomes a no-op and the whole pipeline stays loaded; no user toggle needed.
+VRAM management is **fully automatic** — no user knobs. The loader wraps the
+transformer in `comfy.model_patcher.ModelPatcher`; the transformer's block-residency
+budget is computed at run time from `comfy.model_management.get_free_memory(device)`
+(half of free minus a 4 GB activation reserve). On a 24 GB consumer card the
+transformer streams via diffusers' `apply_group_offloading` with a second CUDA
+stream prefetching the next group; on an H100/A100-80G the budget exceeds the
+block count and group offload collapses to a single all-resident group — same
+code path.
 
-The one tunable on the loader is `blocks_per_group` (default 4) — how many of the
-60 transformer blocks live on GPU at once. 4 → ~2.7 GB peak resident for the block
-stack on a 24 GB card. Bump it for faster runs if you have VRAM headroom, drop it
-if you OOM.
-
-VAE slicing + tiling are always enabled so the final decode step doesn't spike VRAM
-at high output resolutions.
-
-The `precision` field (default `auto`) follows the standard ComfyUI pattern:
-`mm.should_use_bf16` → bf16 on Ampere+, else `mm.should_use_fp16` → fp16, else fp32.
+VAE slicing + tiling are always enabled so the decode step doesn't spike VRAM at
+high output resolutions. `precision` (default `auto`) follows the standard ComfyUI
+pattern: `mm.should_use_bf16` → bf16 on Ampere+, else `mm.should_use_fp16` → fp16,
+else fp32.
 
 ## Attention kernel
 
