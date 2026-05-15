@@ -9,6 +9,7 @@ deliberately not wrapped — see the README for why.
 
 import gc
 import logging
+import time
 from typing import Any
 
 import numpy as np
@@ -17,6 +18,18 @@ from PIL import Image
 from comfy_api.latest import io
 
 log = logging.getLogger("hypano2")
+
+
+def _vram_summary(prefix: str = "") -> str:
+    """Compact CUDA memory status — used in node logs to make OOMs traceable."""
+    if not torch.cuda.is_available():
+        return f"{prefix}cuda: n/a"
+    free, total = torch.cuda.mem_get_info()
+    used = total - free
+    return (
+        f"{prefix}cuda free={free / 1e9:.1f}GB used={used / 1e9:.1f}GB "
+        f"alloc={torch.cuda.memory_allocated() / 1e9:.1f}GB"
+    )
 
 
 # Upstream prompt templates (verbatim from
@@ -269,11 +282,42 @@ class HYPano2Generate(io.ComfyNode):
             "HYPano2Generate: %dx%d steps=%d seed=%d true_cfg=%.1f blend=%d",
             width, height, num_inference_steps, seed, true_cfg_scale, blend_width,
         )
+        log.info("HYPano2Generate: %s", _vram_summary("pre-inference "))
 
         # CPU generator matches the upstream defaults and gives reproducible
         # results regardless of which device the transformer ends up on.
         generator = torch.Generator(device="cpu").manual_seed(int(seed))
 
+        # Step progress: comfy.utils.ProgressBar pushes a 0..N bar into the
+        # ComfyUI queue UI and the per-step log line shows wall-clock pace,
+        # which is the only signal you get with sequential offload (where
+        # each step is silent for ~30-60 s while layers swap CPU<->GPU).
+        try:
+            import comfy.utils
+            pbar = comfy.utils.ProgressBar(int(num_inference_steps))
+        except ImportError:
+            pbar = None
+
+        t_loop_start = time.perf_counter()
+        last_step_t = [t_loop_start]
+
+        def _on_step_end(pipeline, step_idx, timestep, callback_kwargs):
+            now = time.perf_counter()
+            dt = now - last_step_t[0]
+            last_step_t[0] = now
+            log.info(
+                "HYPano2Generate: step %d/%d  t=%.4f  dt=%.2fs  elapsed=%.1fs",
+                step_idx + 1, int(num_inference_steps),
+                float(timestep) if hasattr(timestep, "__float__") else timestep,
+                dt, now - t_loop_start,
+            )
+            if pbar is not None:
+                pbar.update_absolute(step_idx + 1, int(num_inference_steps))
+            # PanoDiffusionPipeline expects a dict-like return; we don't
+            # rewrite latents/prompt_embeds, so an empty dict is fine.
+            return {}
+
+        log.info("HYPano2Generate: encoding prompt + preparing latents ...")
         try:
             output = pipe(
                 image=pil_image,
@@ -286,15 +330,30 @@ class HYPano2Generate(io.ComfyNode):
                 num_images_per_prompt=1,
                 height=int(height),
                 width=int(width),
+                callback_on_step_end=_on_step_end,
+                callback_on_step_end_tensor_inputs=["latents"],
             ).images[0]
         except torch.cuda.OutOfMemoryError:
             # A failed run leaves the pipeline half-on-GPU; drop it so the next
             # call rebuilds cleanly instead of compounding the OOM.
-            log.exception("HYPano2Generate: OOM during inference, tearing down cached pipeline.")
+            log.exception(
+                "HYPano2Generate: OOM during inference (%s), tearing down cached pipeline.",
+                _vram_summary(),
+            )
             cls._teardown()
             raise
 
+        log.info(
+            "HYPano2Generate: denoising done in %.1fs (%.2fs/step avg).",
+            time.perf_counter() - t_loop_start,
+            (time.perf_counter() - t_loop_start) / max(int(num_inference_steps), 1),
+        )
+
         blended = circular_blend_edges(output, blend_width)
+        log.info(
+            "HYPano2Generate: edge-blend done -> %s  %s",
+            blended.size, _vram_summary("post-inference "),
+        )
         return io.NodeOutput(_pil_to_comfy_image(blended))
 
     # ------------------------------------------------------------------
@@ -318,9 +377,10 @@ class HYPano2Generate(io.ComfyNode):
         cls._teardown()
 
         log.info(
-            "HYPano2Generate: building PanoDiffusionPipeline (base=%s, offload=%s) ...",
+            "HYPano2Generate: building PanoDiffusionPipeline (base=%s, offload=%s)",
             handle["base_path"], offload,
         )
+        log.info("HYPano2Generate: %s", _vram_summary("pre-build "))
 
         # Lazy import — diffusers takes a non-trivial chunk to import; we don't
         # want to pay it at worker spawn time.
@@ -328,9 +388,14 @@ class HYPano2Generate(io.ComfyNode):
 
         dtype = torch.bfloat16 if handle["torch_dtype"] == "bf16" else torch.float16
 
+        t0 = time.perf_counter()
         pipe = PanoDiffusionPipeline.from_pretrained(
             handle["base_path"],
             torch_dtype=dtype,
+        )
+        log.info(
+            "HYPano2Generate: base model loaded in %.1fs.  %s",
+            time.perf_counter() - t0, _vram_summary(),
         )
 
         # LoRA must be loaded BEFORE applying offload hooks — `accelerate`
@@ -341,12 +406,15 @@ class HYPano2Generate(io.ComfyNode):
             "HYPano2Generate: loading LoRA from %s/%s ...",
             handle["lora_dir"], handle["lora_weight_name"],
         )
+        t0 = time.perf_counter()
         pipe.load_lora_weights(
             handle["lora_dir"],
             weight_name=handle["lora_weight_name"],
             torch_dtype=dtype,
         )
+        log.info("HYPano2Generate: LoRA loaded in %.1fs.", time.perf_counter() - t0)
 
+        t0 = time.perf_counter()
         if offload == "sequential":
             # Submodule-level swap. Slowest but the only mode that fits a
             # ~40 GB transformer on a 24 GB consumer card.
@@ -357,6 +425,10 @@ class HYPano2Generate(io.ComfyNode):
             pipe.enable_model_cpu_offload()
         else:
             pipe = pipe.to("cuda")
+        log.info(
+            "HYPano2Generate: offload=%s wired in %.1fs.  %s",
+            offload, time.perf_counter() - t0, _vram_summary(),
+        )
 
         # VAE tiling/slicing caps peak VRAM during decode (the final
         # transformer-out -> image step). Cheap to enable, big safety net.
@@ -364,6 +436,7 @@ class HYPano2Generate(io.ComfyNode):
             try:
                 pipe.vae.enable_slicing()
                 pipe.vae.enable_tiling()
+                log.info("HYPano2Generate: VAE slicing + tiling enabled.")
             except AttributeError:
                 pass
 
