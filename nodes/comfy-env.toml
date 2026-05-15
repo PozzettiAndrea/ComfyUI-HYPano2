@@ -26,7 +26,10 @@ transformers = { version = "==4.57.1", extras = ["accelerate", "tiktoken"] }
 tokenizers = "==0.22.0"
 safetensors = "==0.7.0"
 einops = "==0.8.1"
-numpy = "==2.2.0"
+# Upstream pins ==2.2.0, but the conda solve grabs 2.4.x. Numpy 2.x is
+# ABI-stable, so >=2.2,<3 keeps us on a 2.x line without fighting the
+# conda solver.
+numpy = ">=2.2,<3"
 huggingface_hub = { version = "*", extras = ["cli"] }
 loguru = ">=0.7.3"
 pillow = "*"
