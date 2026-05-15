@@ -62,6 +62,23 @@ safetensors mmap → `ModelPatcher.partially_load` → weight-function streaming
 
 `workflows/image_to_panorama.json` wires the full graph using stock loaders.
 
+## Performance
+
+`comfy-env-root.toml` declares `flash_attn` and `sageattention` as CUDA-wheel
+dependencies; `install.py` resolves them from
+[`cuda-wheels`](https://github.com/PozzettiAndrea/cuda-wheels) and pip-installs
+into the host ComfyUI env. To actually route attention through them, launch
+ComfyUI with one of:
+
+```
+python main.py --use-sage-attention   # fastest on Ampere consumer cards
+python main.py --use-flash-attention  # vanilla FlashAttention 2
+```
+
+Without either flag, ComfyUI falls back to torch SDPA (which on Ampere
+auto-routes to FA2 via cuDNN — small perf delta, but `--use-sage-attention`
+is a real win on consumer Ampere).
+
 ## Sampler settings
 
 The bundled workflow ships with upstream HY-Pano-2's values:

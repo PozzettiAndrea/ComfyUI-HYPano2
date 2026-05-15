@@ -6,6 +6,7 @@ in the right ComfyUI subdirectories.
 """
 
 import logging
+import os
 from contextlib import contextmanager
 from pathlib import Path
 
@@ -13,6 +14,15 @@ import folder_paths
 from comfy_api.latest import io
 
 log = logging.getLogger("hypano2")
+
+
+# huggingface_hub >= 0.30 transparently routes large LFS files through
+# Xet (https://huggingface.co/docs/hub/xet) — a content-addressed chunked
+# protocol whose client streams bytes through its own pipeline, bypassing
+# `huggingface_hub.utils.tqdm`. So neither the console tqdm nor our
+# ProgressBar bridge see any updates. Forcing the legacy HTTP path brings
+# both back. We only set this if the user hasn't opted in explicitly.
+os.environ.setdefault("HF_HUB_DISABLE_XET", "1")
 
 
 _FILES = {
