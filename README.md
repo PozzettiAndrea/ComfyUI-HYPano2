@@ -47,16 +47,34 @@ These would clash with ComfyUI's host venv (and with sibling packs like
 
 ## VRAM
 
-The loader exposes a 3-way `offload` toggle:
+The loader exposes a 3-way `vram_mode` toggle plus a `blocks_per_group` knob:
 
-| Mode | What it does | Min VRAM |
+| `vram_mode` | Approach | Min free VRAM |
 |---|---|---|
-| `sequential` (default) | Submodule-level swap via `enable_sequential_cpu_offload()`. Slowest but the only mode that fits the ~40 GB Qwen-Image-Edit transformer on a consumer card. | ~12 GB |
-| `model` | Top-level submodule swap via `enable_model_cpu_offload()`. Faster than sequential but the transformer alone is too big for a 24 GB card, so this mode OOMs there. | ~48 GB |
-| `off` | Keep the entire pipeline on GPU. | ~48 GB (loaded all-at-once) |
+| `comfy` (default) | ComfyUI `ModelPatcher` co-operative bookkeeping + diffusers `apply_group_offloading` on the transformer with a second CUDA stream prefetching the next group while the current group's forward runs. Other queued workflows can evict the transformer between calls. | ~12 GB |
+| `model` | `enable_model_cpu_offload()` — whole-submodule swap. The Qwen-Image-Edit transformer alone is ~40 GB bf16, so this OOMs on anything smaller than ~48 GB. | ~48 GB |
+| `off` | Pipeline fully resident on GPU. Fastest. | ~48 GB |
 
-The pipeline also enables VAE slicing + tiling so the final decode step doesn't spike VRAM on
-high-resolution outputs.
+`blocks_per_group` (default 4) sets how many of the transformer's 60 blocks live on
+GPU at once when `vram_mode=comfy`. 4 → ~2.7 GB peak resident for the transformer's
+block stack; bump it for faster runs if you have VRAM headroom, drop it if you OOM.
+
+VAE slicing + tiling are always enabled so the final decode step doesn't spike VRAM
+at high output resolutions.
+
+## Attention kernel
+
+The transformer's attention backend follows **ComfyUI's startup-time detection** —
+launch ComfyUI with one of `--use-sage-attention`, `--use-flash-attention`, or no flag
+(torch SDPA fallback), and our node automatically calls
+`pipe.transformer.set_attention_backend(...)` with the matching diffusers backend
+(`sage`, `flash`, `xformers`, or `native`). Single source of truth: no separate
+combo box on our node, no settings drift between core ComfyUI samplers and HYPano2.
+
+Both `flash_attn` (v2.8.3) and `sageattention` (v2.2.0) are auto-installed via
+[`cuda-wheels`](https://github.com/PozzettiAndrea/cuda-wheels) — prebuilt for cu128 /
+py3.13 / torch 2.8, with a native SM 8.6 cubin for Ampere consumer cards (no JIT
+fallback on a 3090).
 
 ## Citation
 

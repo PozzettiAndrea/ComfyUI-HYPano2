@@ -177,19 +177,28 @@ class HYPano2LoadModel(io.ComfyNode):
                     ),
                 ),
                 io.Combo.Input(
-                    "offload",
-                    options=["sequential", "model", "off"],
-                    default="sequential",
+                    "vram_mode",
+                    options=["comfy", "model", "off"],
+                    default="comfy",
                     tooltip=(
-                        "CPU offload strategy.\n"
-                        "  sequential: move individual layers between CPU and "
-                        "GPU. Slowest, but the only mode that fits on 24 GB "
-                        "consumer cards (the Qwen-Image-Edit transformer alone "
-                        "is ~40 GB bf16 — model offload OOMs).\n"
-                        "  model: swap whole top-level submodules. Needs >= 48 "
-                        "GB VRAM.\n"
-                        "  off: keep the entire pipeline on GPU. Only viable on "
-                        "H100/H200/A100-80G."
+                        "VRAM management strategy.\n"
+                        "  comfy: ComfyUI ModelPatcher + diffusers block-level "
+                        "group offloading on the transformer (CUDA-stream "
+                        "prefetched). Co-operative with other queued workflows. "
+                        "Fits 24 GB. Default.\n"
+                        "  model: diffusers' enable_model_cpu_offload (whole-"
+                        "submodule swap). Needs >=48 GB VRAM.\n"
+                        "  off: keep the pipeline on GPU. H100/H200/A100-80G only."
+                    ),
+                ),
+                io.Int.Input(
+                    "blocks_per_group",
+                    default=4, min=1, max=16, step=1,
+                    tooltip=(
+                        "When vram_mode=comfy, number of transformer blocks "
+                        "resident on GPU at once. 4 -> ~2.7 GB peak resident "
+                        "on the 60-block Qwen-Image-Edit transformer. Increase "
+                        "if you have VRAM headroom (faster), decrease if you OOM."
                     ),
                 ),
             ],
@@ -210,11 +219,12 @@ class HYPano2LoadModel(io.ComfyNode):
         lora_repo: str = DEFAULT_LORA_REPO,
         lora_subfolder: str = DEFAULT_LORA_SUBFOLDER,
         torch_dtype: str = "bf16",
-        offload: str = "sequential",
+        vram_mode: str = "comfy",
+        blocks_per_group: int = 4,
     ):
         log.info(
-            "HYPano2LoadModel: base=%s lora=%s/%s dtype=%s offload=%s",
-            base_model, lora_repo, lora_subfolder, torch_dtype, offload,
+            "HYPano2LoadModel: base=%s lora=%s/%s dtype=%s vram_mode=%s blocks_per_group=%d",
+            base_model, lora_repo, lora_subfolder, torch_dtype, vram_mode, blocks_per_group,
         )
 
         lora_dir = _download_lora(lora_repo, lora_subfolder)
@@ -225,6 +235,7 @@ class HYPano2LoadModel(io.ComfyNode):
             "lora_dir": str(lora_dir),
             "lora_weight_name": LORA_WEIGHT_NAME,
             "torch_dtype": torch_dtype,
-            "offload": offload,
+            "vram_mode": vram_mode,
+            "blocks_per_group": int(blocks_per_group),
         }
         return io.NodeOutput(handle)

@@ -78,7 +78,8 @@
         "tencent/HY-World-2.0",
         "HY-Pano-2.0",
         "bf16",
-        "sequential"
+        "comfy",
+        4
       ]
     },
     {

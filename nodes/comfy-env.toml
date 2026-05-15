@@ -12,10 +12,15 @@
 av = "*"
 
 [cuda]
-# No CUDA-compiled extensions required for the Qwen-Image-Edit backend.
-# SDPA is fine; flash_attn is only needed by the (out-of-scope)
-# HunyuanImage-3 backend.
-packages = []
+# flash_attn and sageattention are both consumed via diffusers'
+# transformer.set_attention_backend("flash" | "sage"). The actual choice is
+# driven by ComfyUI's startup detection (--use-sage-attention /
+# --use-flash-attention CLI flags), so installing both lets the user pick
+# at launch time without us hard-coding a backend.
+# cuda-wheels has prebuilt wheels for both on cu128 / py3.13 / torch 2.8;
+# sageattention v2.2.0 ships a native SM 8.6 cubin so consumer Ampere
+# (3090 / 3080 / 3070 / 3060) gets a native binary, not JIT fallback.
+packages = ["flash_attn", "sageattention"]
 
 [pypi-dependencies]
 # Hard pins from upstream `repo/hyworld2/panogen/requirements.txt`.

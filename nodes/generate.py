@@ -111,6 +111,7 @@ class HYPano2Generate(io.ComfyNode):
 
     _pipeline = None
     _pipeline_key: tuple | None = None
+    _patcher = None  # comfy.model_patcher.ModelPatcher wrapping pipe.transformer
 
     @classmethod
     def define_schema(cls):
@@ -264,6 +265,16 @@ class HYPano2Generate(io.ComfyNode):
 
         pipe = cls._get_pipeline(model)
 
+        # Tell ComfyUI we're using VRAM so other queued workflows can negotiate
+        # eviction against us. With vram_mode=comfy the patcher's load_device
+        # == offload_device so this is bookkeeping-only — no extra .to() call.
+        if cls._patcher is not None:
+            try:
+                import comfy.model_management as mm
+                mm.load_models_gpu([cls._patcher])
+            except ImportError:
+                pass
+
         pil_image = _comfy_image_to_pil(image)
         if crop_border > 0:
             w, h = pil_image.size
@@ -361,12 +372,14 @@ class HYPano2Generate(io.ComfyNode):
     # ------------------------------------------------------------------
     @classmethod
     def _get_pipeline(cls, handle: dict):
-        offload = handle.get("offload", "sequential")
+        vram_mode = handle.get("vram_mode", "comfy")
+        blocks_per_group = int(handle.get("blocks_per_group", 4))
         key = (
             handle["base_path"],
             handle["lora_dir"],
             handle["torch_dtype"],
-            offload,
+            vram_mode,
+            blocks_per_group,
         )
         if cls._pipeline is not None and cls._pipeline_key == key:
             return cls._pipeline
@@ -377,8 +390,8 @@ class HYPano2Generate(io.ComfyNode):
         cls._teardown()
 
         log.info(
-            "HYPano2Generate: building PanoDiffusionPipeline (base=%s, offload=%s)",
-            handle["base_path"], offload,
+            "HYPano2Generate: building PanoDiffusionPipeline (base=%s, vram_mode=%s, blocks_per_group=%d)",
+            handle["base_path"], vram_mode, blocks_per_group,
         )
         log.info("HYPano2Generate: %s", _vram_summary("pre-build "))
 
@@ -398,10 +411,11 @@ class HYPano2Generate(io.ComfyNode):
             time.perf_counter() - t0, _vram_summary(),
         )
 
-        # LoRA must be loaded BEFORE applying offload hooks — `accelerate`
-        # rewrites every submodule's forward to pull params from CPU, so a
-        # post-hook `load_lora_weights` would inject LoRA weights into the
-        # wrong device and either OOM or no-op.
+        # LoRA BEFORE any offload/hook wiring. `accelerate.cpu_offload` (used
+        # by enable_model_cpu_offload) and diffusers' group_offloading both
+        # install pre-forward hooks that move params between devices; a
+        # post-hook `load_lora_weights` would inject LoRA into the wrong
+        # device snapshot and either OOM or silently no-op.
         log.info(
             "HYPano2Generate: loading LoRA from %s/%s ...",
             handle["lora_dir"], handle["lora_weight_name"],
@@ -414,24 +428,8 @@ class HYPano2Generate(io.ComfyNode):
         )
         log.info("HYPano2Generate: LoRA loaded in %.1fs.", time.perf_counter() - t0)
 
-        t0 = time.perf_counter()
-        if offload == "sequential":
-            # Submodule-level swap. Slowest but the only mode that fits a
-            # ~40 GB transformer on a 24 GB consumer card.
-            pipe.enable_sequential_cpu_offload()
-        elif offload == "model":
-            # Whole-module swap. Faster but needs >=48 GB free VRAM at the
-            # peak (the transformer alone is ~40 GB).
-            pipe.enable_model_cpu_offload()
-        else:
-            pipe = pipe.to("cuda")
-        log.info(
-            "HYPano2Generate: offload=%s wired in %.1fs.  %s",
-            offload, time.perf_counter() - t0, _vram_summary(),
-        )
-
-        # VAE tiling/slicing caps peak VRAM during decode (the final
-        # transformer-out -> image step). Cheap to enable, big safety net.
+        # VAE tiling/slicing caps peak VRAM during decode. Cheap, do it
+        # before offload wiring so the hooks see the slicing config.
         if hasattr(pipe, "vae"):
             try:
                 pipe.vae.enable_slicing()
@@ -440,15 +438,163 @@ class HYPano2Generate(io.ComfyNode):
             except AttributeError:
                 pass
 
+        # Attention backend: read whatever ComfyUI picked at startup
+        # (sage > xformers > flash > pytorch SDPA) and forward to diffusers.
+        # Single source of truth — the user's --use-sage-attention /
+        # --use-flash-attention launch flags drive both ComfyUI core and us.
+        cls._wire_attention_backend(pipe)
+
+        t0 = time.perf_counter()
+        if vram_mode == "comfy":
+            cls._wire_comfy_vram(pipe, blocks_per_group)
+        elif vram_mode == "model":
+            # Whole-module swap. Faster but needs >=48 GB free VRAM at peak
+            # (the transformer alone is ~40 GB) — will OOM on consumer cards.
+            pipe.enable_model_cpu_offload()
+        else:  # "off"
+            pipe = pipe.to("cuda")
+        log.info(
+            "HYPano2Generate: vram_mode=%s wired in %.1fs.  %s",
+            vram_mode, time.perf_counter() - t0, _vram_summary(),
+        )
+
         log.info("HYPano2Generate: pipeline + LoRA ready.")
 
         cls._pipeline = pipe
         cls._pipeline_key = key
         return pipe
 
+    # ------------------------------------------------------------------
+    # Backend wiring helpers
+    # ------------------------------------------------------------------
+    @staticmethod
+    def _comfy_attention_backend() -> str | None:
+        """Read ComfyUI's startup-time attention pick and translate to a
+        diffusers attention-backend name. Returns None if comfy isn't
+        importable (let diffusers keep its default).
+        """
+        try:
+            import comfy.model_management as mm
+        except ImportError:
+            return None
+        if mm.sage_attention_enabled():
+            return "sage"
+        if mm.xformers_enabled():
+            return "xformers"
+        if mm.flash_attention_enabled():
+            return "flash"
+        if mm.pytorch_attention_enabled():
+            return "native"  # diffusers' name for torch SDPA
+        return None
+
+    @classmethod
+    def _wire_attention_backend(cls, pipe):
+        backend = cls._comfy_attention_backend()
+        if backend is None:
+            log.info("HYPano2Generate: attention backend = diffusers default (no ComfyUI signal).")
+            return
+        try:
+            pipe.transformer.set_attention_backend(backend)
+            log.info("HYPano2Generate: attention backend = %s (from ComfyUI).", backend)
+        except Exception as e:
+            # Some backend names aren't supported by every pipeline; degrade
+            # to default rather than fail the build.
+            log.warning(
+                "HYPano2Generate: set_attention_backend(%r) failed (%s); using default.",
+                backend, e,
+            )
+
+    @classmethod
+    def _wire_comfy_vram(cls, pipe, blocks_per_group: int):
+        """Set up the ComfyUI-native VRAM story:
+
+        - text_encoder + VAE on GPU (small enough to fit alongside a
+          partially-resident transformer; saves one PCIe round-trip per call
+          for the text encoder, which runs once per generation).
+        - transformer streams its blocks via diffusers' group_offloading
+          with a 2nd CUDA stream prefetching the next group while the
+          current group's forward runs.
+        - ModelPatcher wraps the transformer so ComfyUI's load_models_gpu /
+          eviction bookkeeping treats us as a co-operative VRAM user.
+        """
+        import comfy.model_management as mm
+        import comfy.model_patcher
+        from diffusers.hooks import apply_group_offloading
+
+        load_dev = mm.get_torch_device()
+        offload_dev = mm.unet_offload_device()  # cpu unless HIGH_VRAM
+
+        # Small components: full GPU residency.
+        log.info("HYPano2Generate: text_encoder + VAE -> %s", load_dev)
+        pipe.text_encoder.to(load_dev)
+        pipe.vae.to(load_dev)
+
+        log.info(
+            "HYPano2Generate: applying group_offloading on transformer "
+            "(blocks_per_group=%d, use_stream=True, onload=%s, offload=%s) ...",
+            blocks_per_group, load_dev, offload_dev,
+        )
+        apply_group_offloading(
+            pipe.transformer,
+            onload_device=load_dev,
+            offload_device=offload_dev,
+            offload_type="block_level",
+            num_blocks_per_group=blocks_per_group,
+            use_stream=True,                # overlap H->D with compute
+            record_stream=True,             # safe with autograd disabled
+            low_cpu_mem_usage=False,        # we have host RAM
+        )
+
+        # ModelPatcher: bookkeeping only — group_offloading already owns the
+        # transformer's params, so we set load_device == offload_device so
+        # ComfyUI's load_models_gpu doesn't try to .to() the module behind
+        # our back. The `size` estimate tells ComfyUI how much VRAM we're
+        # actually using so its eviction budget makes sense.
+        cls._patcher = comfy.model_patcher.ModelPatcher(
+            pipe.transformer,
+            load_device=load_dev,
+            offload_device=load_dev,
+            size=cls._estimate_resident_bytes(pipe.transformer, blocks_per_group),
+        )
+        log.info("HYPano2Generate: ModelPatcher registered (size=%.1fGB).",
+                 cls._patcher.size / 1e9)
+
+    @staticmethod
+    def _estimate_resident_bytes(transformer, blocks_per_group: int) -> int:
+        """Approximate VRAM footprint with group offload active.
+
+        Counts every non-block param fully + blocks_per_group * 2 blocks of
+        block params (factor 2 = the prefetched next group plus current).
+        Used as the `size` hint to ModelPatcher so ComfyUI's eviction logic
+        doesn't think we're using the full 40 GB.
+        """
+        def _params_bytes(mod) -> int:
+            total = 0
+            for p in mod.parameters(recurse=True):
+                total += p.numel() * p.element_size()
+            return total
+
+        blocks = getattr(transformer, "transformer_blocks", None)
+        if blocks is None or len(blocks) == 0:
+            return _params_bytes(transformer)
+
+        per_block = _params_bytes(blocks[0])
+        # Everything that isn't a transformer_block param.
+        total_params = _params_bytes(transformer)
+        non_block_params = total_params - per_block * len(blocks)
+        resident_blocks = min(blocks_per_group * 2, len(blocks))
+        return int(non_block_params + per_block * resident_blocks)
+
     @classmethod
     def _teardown(cls):
         """Drop the cached pipeline and reclaim VRAM."""
+        if cls._patcher is not None:
+            try:
+                cls._patcher.unpatch_model(device_to=cls._patcher.offload_device)
+                cls._patcher.cleanup()
+            except Exception:
+                pass
+            cls._patcher = None
         if cls._pipeline is not None:
             try:
                 cls._pipeline.to("cpu")
