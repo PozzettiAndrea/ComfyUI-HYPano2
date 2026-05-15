@@ -1,0 +1,13 @@
+[project]
+name = "comfyui-hypano2"
+description = "ComfyUI wrapper for HY-Pano 2.0 (Tencent): image -> 360° equirectangular panorama via Qwen-Image-Edit + HY-Pano LoRA."
+version = "0.0.1"
+license = {file = "LICENSE"}
+
+[project.urls]
+Repository = "https://github.com/PozzettiAndrea/ComfyUI-HYPano2"
+
+[tool.comfy]
+PublisherId = "pznodes"
+DisplayName = "HYPano2"
+Icon = "https://raw.githubusercontent.com/PozzettiAndrea/ComfyUI-HYPano2/main/assets/icon.png"

@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.DS_Store
+*.egg-info/
+build/
+dist/
+
+# Jupyter / IDE crud
+.ipynb_checkpoints/
