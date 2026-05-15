@@ -2,10 +2,10 @@
   "id": "hypano2-image-to-panorama-v2",
   "revision": 0,
   "last_node_id": 13,
-  "last_link_id": 20,
+  "last_link_id": 15,
   "nodes": [
     {"id": 1, "type": "LoadImage", "pos": [40, 40], "size": [274, 314], "flags": {}, "order": 0, "mode": 0,
-      "inputs": [], "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [1]}, {"name": "MASK", "type": "MASK", "links": null}],
+      "inputs": [], "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [1, 15]}, {"name": "MASK", "type": "MASK", "links": null}],
       "properties": {"Node name for S&R": "LoadImage"}, "widgets_values": ["office/office.jpg", "image"]},
 
     {"id": 2, "type": "UNETLoader", "pos": [40, 400], "size": [320, 90], "flags": {}, "order": 1, "mode": 0,
@@ -46,7 +46,7 @@
       "inputs": [
         {"name": "clip", "type": "CLIP", "link": 4},
         {"name": "vae", "type": "VAE", "link": 6},
-        {"name": "image1", "type": "IMAGE", "link": null},
+        {"name": "image1", "type": "IMAGE", "link": 15},
         {"name": "image2", "type": "IMAGE", "link": null},
         {"name": "image3", "type": "IMAGE", "link": null}
       ],
@@ -70,7 +70,7 @@
       ],
       "outputs": [{"name": "LATENT", "type": "LATENT", "links": [12]}],
       "properties": {"Node name for S&R": "KSampler"},
-      "widgets_values": [42, "fixed", 20, 4.0, "euler", "simple", 1.0]},
+      "widgets_values": [42, "fixed", 40, 7.5, "euler", "simple", 1.0]},
 
     {"id": 10, "type": "VAEDecode", "pos": [820, 340], "size": [240, 50], "flags": {}, "order": 9, "mode": 0,
       "inputs": [
@@ -110,7 +110,8 @@
     [11, 8, 0, 9, 3, "LATENT"],
     [12, 9, 0, 10, 0, "LATENT"],
     [13, 10, 0, 11, 0, "IMAGE"],
-    [14, 11, 0, 12, 0, "IMAGE"]
+    [14, 11, 0, 12, 0, "IMAGE"],
+    [15, 1, 0, 7, 2, "IMAGE"]
   ],
   "groups": [],
   "config": {},

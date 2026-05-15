@@ -55,6 +55,23 @@ safetensors mmap → `ModelPatcher.partially_load` → weight-function streaming
 
 `workflows/image_to_panorama.json` wires the full graph using stock loaders.
 
+## Sampler settings
+
+The bundled workflow ships with upstream HY-Pano-2's values:
+
+| KSampler widget | Value | Source |
+|---|---|---|
+| `steps` | 40 | upstream `pipeline_qwen_pano.py` HY-Pano default |
+| `cfg` | 7.5 | maps to upstream `true_cfg_scale` |
+| `sampler` | `euler` | upstream uses `FlowMatchEulerDiscreteScheduler` |
+| `scheduler` | `simple` | flow-match shift 1.15 set by `comfy.supported_models.QwenImage` |
+| `denoise` | 1.0 | full denoise — start from pure noise + reference latents |
+| LoRA strength | 1.0 | weights trained against this scale |
+
+Both `TextEncodeQwenImageEditPlus` nodes (positive and negative) receive the
+input image via `image1` — upstream encodes the negative prompt against the
+same conditioning image so CFG can subtract a matched negative direction.
+
 ## Pairing with ComfyUI-HYWM2
 
 ```
