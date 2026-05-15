@@ -178,11 +178,13 @@ class HYPano2LoadModel(io.ComfyNode):
                 ),
                 io.Boolean.Input(
                     "enable_cpu_offload",
-                    default=False,
+                    default=True,
                     tooltip=(
                         "Use diffusers' enable_model_cpu_offload() to swap "
                         "transformer / VAE / text encoder between CPU and GPU. "
-                        "Slower but fits on smaller cards (~24 GB)."
+                        "Required for consumer cards — Qwen-Image-Edit-2509 in "
+                        "bf16 is ~40 GB resident, so anything <48 GB VRAM has "
+                        "to offload. Turn off only on H100/H200/A100-80G."
                     ),
                 ),
             ],
@@ -203,7 +205,7 @@ class HYPano2LoadModel(io.ComfyNode):
         lora_repo: str = DEFAULT_LORA_REPO,
         lora_subfolder: str = DEFAULT_LORA_SUBFOLDER,
         torch_dtype: str = "bf16",
-        enable_cpu_offload: bool = False,
+        enable_cpu_offload: bool = True,
     ):
         log.info(
             "HYPano2LoadModel: base=%s lora=%s/%s dtype=%s offload=%s",

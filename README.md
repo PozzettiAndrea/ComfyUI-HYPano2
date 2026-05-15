@@ -47,9 +47,12 @@ These would clash with ComfyUI's host venv (and with sibling packs like
 
 ## VRAM
 
-Qwen-Image-Edit-2509 in bf16 is ~40 GB resident. The loader exposes an `enable_cpu_offload`
-toggle that wires through to diffusers' `enable_model_cpu_offload()` — slower, but fits on
-~24 GB cards.
+Qwen-Image-Edit-2509 in bf16 is ~40 GB resident, so anything smaller than a 48 GB card
+needs CPU offload — `enable_cpu_offload=True` is the loader default. It wires through to
+diffusers' `enable_model_cpu_offload()`, which swaps the transformer / VAE / text encoder
+between CPU and GPU on demand. Slower, but works on a 24 GB consumer card.
+
+On an H100/H200/A100-80G you can flip the toggle off for a few× speedup.
 
 ## Citation
 
