@@ -1,2 +1,2 @@
 # Process isolation for ComfyUI nodes
-comfy-env==0.3.88
+comfy-env==0.3.89
