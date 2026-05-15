@@ -176,15 +176,20 @@ class HYPano2LoadModel(io.ComfyNode):
                         "unless your GPU lacks bf16 support."
                     ),
                 ),
-                io.Boolean.Input(
-                    "enable_cpu_offload",
-                    default=True,
+                io.Combo.Input(
+                    "offload",
+                    options=["sequential", "model", "off"],
+                    default="sequential",
                     tooltip=(
-                        "Use diffusers' enable_model_cpu_offload() to swap "
-                        "transformer / VAE / text encoder between CPU and GPU. "
-                        "Required for consumer cards — Qwen-Image-Edit-2509 in "
-                        "bf16 is ~40 GB resident, so anything <48 GB VRAM has "
-                        "to offload. Turn off only on H100/H200/A100-80G."
+                        "CPU offload strategy.\n"
+                        "  sequential: move individual layers between CPU and "
+                        "GPU. Slowest, but the only mode that fits on 24 GB "
+                        "consumer cards (the Qwen-Image-Edit transformer alone "
+                        "is ~40 GB bf16 — model offload OOMs).\n"
+                        "  model: swap whole top-level submodules. Needs >= 48 "
+                        "GB VRAM.\n"
+                        "  off: keep the entire pipeline on GPU. Only viable on "
+                        "H100/H200/A100-80G."
                     ),
                 ),
             ],
@@ -205,11 +210,11 @@ class HYPano2LoadModel(io.ComfyNode):
         lora_repo: str = DEFAULT_LORA_REPO,
         lora_subfolder: str = DEFAULT_LORA_SUBFOLDER,
         torch_dtype: str = "bf16",
-        enable_cpu_offload: bool = True,
+        offload: str = "sequential",
     ):
         log.info(
             "HYPano2LoadModel: base=%s lora=%s/%s dtype=%s offload=%s",
-            base_model, lora_repo, lora_subfolder, torch_dtype, enable_cpu_offload,
+            base_model, lora_repo, lora_subfolder, torch_dtype, offload,
         )
 
         lora_dir = _download_lora(lora_repo, lora_subfolder)
@@ -220,6 +225,6 @@ class HYPano2LoadModel(io.ComfyNode):
             "lora_dir": str(lora_dir),
             "lora_weight_name": LORA_WEIGHT_NAME,
             "torch_dtype": torch_dtype,
-            "enable_cpu_offload": bool(enable_cpu_offload),
+            "offload": offload,
         }
         return io.NodeOutput(handle)

@@ -274,18 +274,25 @@ class HYPano2Generate(io.ComfyNode):
         # results regardless of which device the transformer ends up on.
         generator = torch.Generator(device="cpu").manual_seed(int(seed))
 
-        output = pipe(
-            image=pil_image,
-            prompt=positive,
-            negative_prompt=negative or None,
-            generator=generator,
-            true_cfg_scale=float(true_cfg_scale),
-            num_inference_steps=int(num_inference_steps),
-            guidance_scale=float(guidance_scale),
-            num_images_per_prompt=1,
-            height=int(height),
-            width=int(width),
-        ).images[0]
+        try:
+            output = pipe(
+                image=pil_image,
+                prompt=positive,
+                negative_prompt=negative or None,
+                generator=generator,
+                true_cfg_scale=float(true_cfg_scale),
+                num_inference_steps=int(num_inference_steps),
+                guidance_scale=float(guidance_scale),
+                num_images_per_prompt=1,
+                height=int(height),
+                width=int(width),
+            ).images[0]
+        except torch.cuda.OutOfMemoryError:
+            # A failed run leaves the pipeline half-on-GPU; drop it so the next
+            # call rebuilds cleanly instead of compounding the OOM.
+            log.exception("HYPano2Generate: OOM during inference, tearing down cached pipeline.")
+            cls._teardown()
+            raise
 
         blended = circular_blend_edges(output, blend_width)
         return io.NodeOutput(_pil_to_comfy_image(blended))
@@ -295,28 +302,25 @@ class HYPano2Generate(io.ComfyNode):
     # ------------------------------------------------------------------
     @classmethod
     def _get_pipeline(cls, handle: dict):
+        offload = handle.get("offload", "sequential")
         key = (
             handle["base_path"],
             handle["lora_dir"],
             handle["torch_dtype"],
-            bool(handle.get("enable_cpu_offload", False)),
+            offload,
         )
         if cls._pipeline is not None and cls._pipeline_key == key:
             return cls._pipeline
 
-        # Tear down any previous instance before loading a new one.
-        if cls._pipeline is not None:
-            try:
-                cls._pipeline.to("cpu")
-            except Exception:
-                pass
-            cls._pipeline = None
-            cls._pipeline_key = None
-            gc.collect()
-            if torch.cuda.is_available():
-                torch.cuda.empty_cache()
+        # Tear down any previous instance before loading a new one. A prior
+        # OOM can leave the cached pipeline half-on-GPU / half-on-CPU, so
+        # this is also the recovery path after a failed run.
+        cls._teardown()
 
-        log.info("HYPano2Generate: building PanoDiffusionPipeline (base=%s) ...", handle["base_path"])
+        log.info(
+            "HYPano2Generate: building PanoDiffusionPipeline (base=%s, offload=%s) ...",
+            handle["base_path"], offload,
+        )
 
         # Lazy import — diffusers takes a non-trivial chunk to import; we don't
         # want to pay it at worker spawn time.
@@ -329,11 +333,10 @@ class HYPano2Generate(io.ComfyNode):
             torch_dtype=dtype,
         )
 
-        if handle.get("enable_cpu_offload", False):
-            pipe.enable_model_cpu_offload()
-        else:
-            pipe = pipe.to("cuda")
-
+        # LoRA must be loaded BEFORE applying offload hooks — `accelerate`
+        # rewrites every submodule's forward to pull params from CPU, so a
+        # post-hook `load_lora_weights` would inject LoRA weights into the
+        # wrong device and either OOM or no-op.
         log.info(
             "HYPano2Generate: loading LoRA from %s/%s ...",
             handle["lora_dir"], handle["lora_weight_name"],
@@ -343,11 +346,46 @@ class HYPano2Generate(io.ComfyNode):
             weight_name=handle["lora_weight_name"],
             torch_dtype=dtype,
         )
+
+        if offload == "sequential":
+            # Submodule-level swap. Slowest but the only mode that fits a
+            # ~40 GB transformer on a 24 GB consumer card.
+            pipe.enable_sequential_cpu_offload()
+        elif offload == "model":
+            # Whole-module swap. Faster but needs >=48 GB free VRAM at the
+            # peak (the transformer alone is ~40 GB).
+            pipe.enable_model_cpu_offload()
+        else:
+            pipe = pipe.to("cuda")
+
+        # VAE tiling/slicing caps peak VRAM during decode (the final
+        # transformer-out -> image step). Cheap to enable, big safety net.
+        if hasattr(pipe, "vae"):
+            try:
+                pipe.vae.enable_slicing()
+                pipe.vae.enable_tiling()
+            except AttributeError:
+                pass
+
         log.info("HYPano2Generate: pipeline + LoRA ready.")
 
         cls._pipeline = pipe
         cls._pipeline_key = key
         return pipe
+
+    @classmethod
+    def _teardown(cls):
+        """Drop the cached pipeline and reclaim VRAM."""
+        if cls._pipeline is not None:
+            try:
+                cls._pipeline.to("cpu")
+            except Exception:
+                pass
+            cls._pipeline = None
+            cls._pipeline_key = None
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
 
 
 # ---------------------------------------------------------------------------

@@ -47,12 +47,16 @@ These would clash with ComfyUI's host venv (and with sibling packs like
 
 ## VRAM
 
-Qwen-Image-Edit-2509 in bf16 is ~40 GB resident, so anything smaller than a 48 GB card
-needs CPU offload — `enable_cpu_offload=True` is the loader default. It wires through to
-diffusers' `enable_model_cpu_offload()`, which swaps the transformer / VAE / text encoder
-between CPU and GPU on demand. Slower, but works on a 24 GB consumer card.
+The loader exposes a 3-way `offload` toggle:
 
-On an H100/H200/A100-80G you can flip the toggle off for a few× speedup.
+| Mode | What it does | Min VRAM |
+|---|---|---|
+| `sequential` (default) | Submodule-level swap via `enable_sequential_cpu_offload()`. Slowest but the only mode that fits the ~40 GB Qwen-Image-Edit transformer on a consumer card. | ~12 GB |
+| `model` | Top-level submodule swap via `enable_model_cpu_offload()`. Faster than sequential but the transformer alone is too big for a 24 GB card, so this mode OOMs there. | ~48 GB |
+| `off` | Keep the entire pipeline on GPU. | ~48 GB (loaded all-at-once) |
+
+The pipeline also enables VAE slicing + tiling so the final decode step doesn't spike VRAM on
+high-resolution outputs.
 
 ## Citation
 
