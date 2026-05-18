@@ -192,6 +192,11 @@ class HYPano2Sample(io.ComfyNode):
         use_template=True,
         crop_border=0.03,
     ):
+        # Defer comfy.model_management import until first execute() -- keeps
+        # registration cheap and avoids pulling heavy comfy internals on
+        # startup paths where they might fail (broken CUDA, etc.).
+        from .log_hooks import install_hooks
+        install_hooks()
         cls._log_runtime_diag()
         _tensor_stats("input_image", image)
 

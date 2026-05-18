@@ -214,6 +214,8 @@ class HYPano2DownloadModels(io.ComfyNode):
 
     @classmethod
     def execute(cls, precision: str = "fp8"):
+        from .log_hooks import install_hooks
+        install_hooks()
         # fp8 and fp8_raw both pair with the fp8_scaled text encoder -- the TE
         # only has fp8_scaled and bf16 variants on Comfy-Org's mirror.
         te_precision = "bf16" if precision == "bf16" else "fp8"

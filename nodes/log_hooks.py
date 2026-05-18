@@ -76,6 +76,3 @@ def install_hooks():
     mm.unload_all_models = _hook_unload
     mm.cleanup_models = _hook_cleanup
     log.info("[mm] hooks installed (hypano2).")
-
-
-install_hooks()
