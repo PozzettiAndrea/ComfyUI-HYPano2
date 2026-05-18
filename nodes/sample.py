@@ -21,6 +21,15 @@ from PIL import Image
 import folder_paths
 from comfy_api.latest import io
 
+# Force flash attention BEFORE we trigger any comfy.sd / comfy.sample import
+# chain in this worker. force_flash() is idempotent so it's safe to call from
+# both prestartup (host) and here (worker).
+try:
+    from .force_attention import force_flash
+    force_flash()
+except Exception as _e:
+    print(f"[HYPano2Sample] force_flash skipped: {_e}", file=sys.stderr, flush=True)
+
 from .generate import circular_blend_edges, _comfy_image_to_pil, _pil_to_comfy_image
 
 log = logging.getLogger("hypano2")
@@ -32,6 +41,26 @@ def _p(msg: str) -> None:
     IPC to the host terminal as a '[worker:ComfyUI-HYPano2] ...' line.
     """
     print(f"[HYPano2Sample] {msg}", file=sys.stderr, flush=True)
+
+
+def _tensor_stats(name: str, t) -> None:
+    """Per-stage min/max/mean + NaN/Inf count. Used to localize NaN origins.
+
+    Cheap: one detach + a couple of reductions on a float32 view.
+    """
+    try:
+        f = t.detach().float()
+        n_nan = int(torch.isnan(f).sum())
+        n_inf = int(torch.isinf(f).sum())
+        finite = f[torch.isfinite(f)]
+        if finite.numel():
+            _p(f"{name}: shape={tuple(t.shape)} dtype={t.dtype} "
+               f"min={finite.min().item():.4g} max={finite.max().item():.4g} "
+               f"mean={finite.mean().item():.4g} nan={n_nan} inf={n_inf}")
+        else:
+            _p(f"{name}: shape={tuple(t.shape)} ALL non-finite (nan={n_nan} inf={n_inf})")
+    except Exception as e:
+        _p(f"{name}: stats failed ({e})")
 
 
 # Upstream prompt templates (verbatim from pipeline_with_qwen_image.py).
@@ -149,6 +178,7 @@ class HYPano2Sample(io.ComfyNode):
         use_template=True,
     ):
         cls._log_runtime_diag()
+        _tensor_stats("input_image", image)
         model, clip, vae = cls._get_cached_models(
             unet_filename, clip_filename, vae_filename, lora_filename, lora_strength,
         )
@@ -170,11 +200,19 @@ class HYPano2Sample(io.ComfyNode):
             clip, pos, vae=vae, image1=image,
         )
         positive = pos_cond_out.result[0] if hasattr(pos_cond_out, "result") else pos_cond_out
+        try:
+            _tensor_stats("pos_cond[0][0]", positive[0][0])
+        except Exception as _e:
+            _p(f"pos_cond stats: skipped ({_e})")
         _p("encoding negative prompt...")
         neg_cond_out = TextEncodeQwenImageEditPlus.execute(
             clip, neg, vae=vae, image1=image,
         )
         negative = neg_cond_out.result[0] if hasattr(neg_cond_out, "result") else neg_cond_out
+        try:
+            _tensor_stats("neg_cond[0][0]", negative[0][0])
+        except Exception as _e:
+            _p(f"neg_cond stats: skipped ({_e})")
 
         # Empty latent. Matches EmptySD3LatentImage's shape — comfy.sample
         # accepts the dict format from common_ksampler.
@@ -212,10 +250,12 @@ class HYPano2Sample(io.ComfyNode):
             force_full_denoise=False, noise_mask=None,
             callback=callback, disable_pbar=disable_pbar, seed=seed,
         )
+        _tensor_stats("samples", samples_tensor)
 
         # VAE decode.
         _p("VAE decode...")
         decoded = vae.decode(samples_tensor)
+        _tensor_stats("decoded_raw", decoded)
         # Qwen-Image uses a 3D VAE (Wan21 latent format), so .decode returns
         # (B, T, H, W, C) with T=1 for image. Squeeze T -> (B, H, W, C).
         if decoded.dim() == 5 and decoded.shape[1] == 1:
@@ -223,7 +263,7 @@ class HYPano2Sample(io.ComfyNode):
         elif decoded.dim() == 4 and decoded.shape[-1] not in (1, 3, 4):
             # 2D VAE: (B, C, H, W) -> (B, H, W, C)
             decoded = decoded.movedim(1, -1)
-        _p(f"decoded shape -> {tuple(decoded.shape)}")
+        _tensor_stats("decoded_post_squeeze", decoded)
 
         # Edge blend.
         _p(f"edge-blend width={blend_width}")
@@ -249,23 +289,42 @@ class HYPano2Sample(io.ComfyNode):
         """
         import comfy.model_management as mm
         import torch
-        if mm.sage_attention_enabled():
-            attn = "sage"
+        # Check the force_flash override first — sage_attention_enabled may
+        # still return True before our flag-flip propagates.
+        try:
+            import comfy.ldm.modules.attention as _attn_mod
+            forced_flash = getattr(_attn_mod, "_HYPANO2_FORCED_FLASH", False)
+        except Exception:
+            forced_flash = False
+        if forced_flash:
+            transformer_attn = "flash (forced)"
+        elif mm.sage_attention_enabled():
+            transformer_attn = "sage"
         elif mm.flash_attention_enabled():
-            attn = "flash"
+            transformer_attn = "flash"
         elif mm.xformers_enabled():
-            attn = "xformers"
+            transformer_attn = "xformers"
         elif mm.pytorch_attention_enabled():
-            attn = "pytorch SDPA (FA2 via cuDNN on Ampere)"
+            transformer_attn = "pytorch SDPA"
         else:
-            attn = "split / sub_quad"
+            transformer_attn = "split / sub_quad"
+        # Encoders pass small_input=True -> attention_pytorch (SDPA) or attention_basic.
+        encoders_attn = "pytorch SDPA" if mm.pytorch_attention_enabled() else "attention_basic"
+        # VAE has its own dispatcher (xformers_vae / pytorch_vae / normal).
+        if mm.xformers_enabled_vae():
+            vae_attn = "xformers"
+        elif mm.pytorch_attention_enabled_vae():
+            vae_attn = "pytorch SDPA"
+        else:
+            vae_attn = "split/normal"
         if torch.cuda.is_available():
             free, total = torch.cuda.mem_get_info()
             device = torch.cuda.get_device_name(0)
         else:
             free = total = 0
             device = "CPU"
-        _p(f"runtime: device={device} | attention={attn} | vram free={free/1e9:.1f}/{total/1e9:.1f}GB")
+        _p(f"runtime: device={device} | vram free={free/1e9:.1f}/{total/1e9:.1f}GB")
+        _p(f"attention: transformer={transformer_attn} | encoders={encoders_attn} | vae={vae_attn}")
 
     # --------------------------------------------------------------
     # Model loading & caching

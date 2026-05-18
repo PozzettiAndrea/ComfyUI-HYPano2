@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 from comfy_env import setup_env, copy_files
 
@@ -47,3 +48,12 @@ def _autoselect_attention():
 _picked = _autoselect_attention()
 if _picked:
     print(f"[ComfyUI-HYPano2] auto-selected attention backend: {_picked}")
+
+
+# Debug pass: pin to flash to rule sage in or out of the black-image NaN.
+try:
+    sys.path.insert(0, str(SCRIPT_DIR))
+    from nodes.force_attention import force_flash
+    force_flash()
+except Exception as _e:
+    print(f"[ComfyUI-HYPano2] force_flash() skipped: {_e}")
