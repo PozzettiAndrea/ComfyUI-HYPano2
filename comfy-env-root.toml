@@ -1,8 +1,1 @@
-# Pack-level manifest. No per-node isolation envs — this pack runs in the
-# host ComfyUI Python env like any normal custom node. The only reason this
-# file exists is to declare CUDA wheel dependencies that the `comfy-env`
-# installer resolves out of github.com/PozzettiAndrea/cuda-wheels and
-# pip-installs into the host env at install time.
-
-[cuda]
-packages = ["flash_attn", "sageattention"]
+[node_reqs]
