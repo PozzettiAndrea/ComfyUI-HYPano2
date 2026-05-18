@@ -1,4 +1,18 @@
+import sys
 from pathlib import Path
+
+# Windows portable wraps sys.stderr in a cp1252-encoded LogInterceptor
+# (ComfyUI/app/logger.py snapshots stream.encoding at wrap time). Anything
+# the comfy-env worker forwards back to the host -- including the upstream
+# Chinese negative prompt that flows through our sampling diagnostics --
+# would then crash with UnicodeEncodeError. Reconfigure to utf-8 BEFORE
+# the wrap so the snapshot picks utf-8 and survives any unicode payload.
+for _stream in (sys.stdout, sys.stderr):
+    try:
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 from comfy_env import setup_env, copy_files
 
 setup_env()

@@ -216,8 +216,10 @@ class HYPano2Sample(io.ComfyNode):
             pos = prompt.strip()
             neg = negative_prompt.strip()
         _p(f"use_template={use_template}")
-        _p(f"positive (composed, {len(pos)} chars): {pos}")
-        _p(f"negative (composed, {len(neg)} chars): {neg}")
+        # repr() renders non-ASCII as \u escapes; keeps captured stderr pure
+        # ASCII so the host can print it on any platform encoding (cp1252).
+        _p(f"positive (composed, {len(pos)} chars): {pos!r}")
+        _p(f"negative (composed, {len(neg)} chars): {neg!r}")
 
         # Encode prompts via ComfyUI's native TextEncodeQwenImageEditPlus.
         # Both positive AND negative get the conditioning image (matches
