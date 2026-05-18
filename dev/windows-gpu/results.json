@@ -1,35 +1,35 @@
 {
-  "timestamp": "2026-05-18T21:07:36.047683+00:00",
+  "timestamp": "2026-05-18T22:03:57.491354+00:00",
   "platform": "windows",
   "hardware": {
     "os": "Windows-11-10.0.26100-SP0",
-    "cpu": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD"
+    "cpu": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD"
   },
-  "commit_hash": "c91857f0f52377dc79ae0c77d5b2dc48e22db581",
-  "run_url": "https://github.com/PozzettiAndrea/comfy-gpu-ci/actions/runs/26059921316",
-  "success": false,
+  "commit_hash": "508319cd2323e77e2ad08766d24a5a7008cb5979",
+  "run_url": "https://github.com/PozzettiAndrea/comfy-gpu-ci/actions/runs/26061861470",
+  "success": true,
   "summary": {
     "total": 1,
-    "passed": 0,
-    "failed": 1
+    "passed": 1,
+    "failed": 0
   },
   "workflows": [
     {
       "name": "image_to_panorama",
-      "status": "fail",
-      "duration_seconds": 321.36,
-      "error": "Workflow execution failed: {'prompt_id': 'e0774c8a-509c-4288-814e-2127cfcd06f5', 'node_id': '3', 'node_type': 'HYPano2Sample', 'executed': ['2', '1'], 'exception_message': \"ComfyUI-HYPano2: Socket closed but worker process still running.\\n  exit code: None\\n  worker log (C:\\\\Users\\\\ContainerUser\\\\AppData\\\\Local\\\\Temp\\\\comfy_worker_debug.log, last 20 lines):\\n    23:07:30 [worker] Request: call_method nodes.sample call_id=2\\n    23:07:30 [worker] Reconstructing inputs from shm...\\n    23:07:30 [_from_shm] top-level keys: ['prompt', 'negative_prompt', 'unet_filename', 'clip_filename', 'vae_filename', 'lora_filename', 'lora_strength', 'seed', 'width', 'height', 'num_inference_steps', 'true_cfg_scale', 'blend_width', 'use_template', 'crop_border', 'image']\\n    23:07:30 [print] [comfy-env] _from_shm got dict with keys: ['__type__', 'strategy', 'manager_path', 'storage_key', 'storage_size']\\n    23:07:30 [_from_shm] image: TensorRef tensor_size=[1, 598, 900, 3]\\n    23:07:30 [print] [comfy-env] DESERIALIZE TensorRef: tensor_size=[1, 598, 900, 3]\\n    23:07:30 [_from_shm] image: TensorRef deserialized shape=torch.Size([1, 598, 900, 3])\\n    23:07:30 [print] [comfy-env] DESERIALIZED tensor shape: torch.Size([1, 598, 900, 3])\\n    23:07:30 [worker] Inputs ready: ['prompt', 'negative_prompt', 'unet_filename', 'clip_filename', 'vae_filename', 'lora_filename', 'lora_strength', 'seed', 'width', 'height', 'num_inference_steps', 'true_cfg_scale', 'blend_width', 'use_template', 'crop_border', 'image']\\n    23:07:30 [worker] Input 'image' shape: torch.Size([1, 598, 900, 3])\\n    23:07:30 [worker] Importing module nodes.sample...\\n    23:07:30 [worker] Module imported\\n    23:07:30 [worker] Getting class HYPano2Sample...\\n    23:07:30 [worker] Creating instance...\\n    23:07:30 [worker] Calling EXECUTE_NORMALIZED...\\n    23:07:30 [print] [HYPano2Sample] runtime: device=NVIDIA GeForce RTX 4060 Ti | vram free=16.0/17.2GB\\n    23:07:30 [print] [HYPano2Sample] attention: transformer=flash (forced) | encoders=pytorch SDPA | vae=pytorch SDPA\\n    23:07:30 [print] [HYPano2Sample] input_image: shape=(1, 598, 900, 3) dtype=torch.float32 min=0 max=1 mean=0.3633 nan=0 inf=0\\n    23:07:30 [print] [HYPano2Sample] crop_border=0.03 -> cropped to (1, 564, 846, 3)\\n    23:07:34 [print] [HYPano2Sample] loading UNet qwen_image_edit_2509_fp8mixed.safetensors\\n\", 'exception_type': 'RuntimeError', 'traceback': ['  File \"C:\\\\workspaces\\\\HYPano2-2255\\\\ComfyUI\\\\execution.py\", line 535, in execute\\n    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\\n                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2255\\\\ComfyUI\\\\execution.py\", line 335, in get_output_data\\n    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2255\\\\ComfyUI\\\\execution.py\", line 309, in _async_map_node_over_list\\n    await process_inputs(input_dict, i)\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2255\\\\ComfyUI\\\\execution.py\", line 297, in process_inputs\\n    result = f(**inputs)\\n             ^^^^^^^^^^^\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2255\\\\.venv\\\\Lib\\\\site-packages\\\\comfy_env\\\\isolation\\\\metadata.py\", line 556, in proxy\\n    result = worker.call_method(\\n             ^^^^^^^^^^^^^^^^^^^\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2255\\\\.venv\\\\Lib\\\\site-packages\\\\comfy_env\\\\isolation\\\\workers\\\\subprocess.py\", line 669, in call_method\\n    response = self._send_request(request, timeout)\\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2255\\\\.venv\\\\Lib\\\\site-packages\\\\comfy_env\\\\isolation\\\\workers\\\\subprocess.py\", line 589, in _send_request\\n    raise RuntimeError(\\n'], 'current_inputs': {'prompt': ['A bright sunny day, peaceful apartment.'], 'negative_prompt': [''], 'unet_filename': ['qwen_image_edit_2509_fp8mixed.safetensors'], 'clip_filename': ['qwen_2.5_vl_7b_fp8_scaled.safetensors'], 'vae_filename': ['qwen_image_vae.safetensors'], 'lora_filename': ['pytorch_lora_weights.safetensors'], 'lora_strength': [1], 'seed': [42], 'width': [1952], 'height': [960], 'num_inference_steps': [40], 'true_cfg_scale': [7.5], 'blend_width': [32], 'use_template': [True], 'crop_border': [0.03], 'image': ['tensor([[[[0.6588, 0.5059, 0.2824],\\n          [0.6549, 0.5020, 0.2784],\\n          [0.6627, 0.5020, 0.2784],\\n          ...,\\n          [0.2706, 0.1961, 0.1373],\\n          [0.2863, 0.2118, 0.1529],\\n          [0.3020, 0.2275, 0.1686]],\\n\\n         [[0.6588, 0.5059, 0.2824],\\n          [0.6588, 0.5059, 0.2824],\\n          [0.6667, 0.5059, 0.2824],\\n          ...,\\n          [0.2784, 0.2039, 0.1451],\\n          [0.2784, 0.2039, 0.1451],\\n          [0.2824, 0.2078, 0.1490]],\\n\\n         [[0.6588, 0.4980, 0.2706],\\n          [0.6627, 0.5020, 0.2745],\\n          [0.6706, 0.5098, 0.2824],\\n          ...,\\n          [0.2980, 0.2235, 0.1451],\\n          [0.3020, 0.2275, 0.1490],\\n          [0.3059, 0.2314, 0.1529]],\\n\\n         ...,\\n\\n         [[0.0941, 0.0353, 0.0078],\\n          [0.0941, 0.0353, 0.0078],\\n          [0.0902, 0.0314, 0.0039],\\n          ...,\\n          [0.2667, 0.1490, 0.0510],\\n          [0.2745, 0.1569, 0.0588],\\n          [0.2784, 0.1608, 0.0627]],\\n\\n         [[0.0941, 0.0353, 0.0000],\\n          [0.0941, 0.0353, 0.0000],\\n          [0.0941, 0.0353, 0.0000],\\n          ...,\\n          [0.2667, 0.1490, 0.0510],\\n          [0.2745, 0.1569, 0.0588],\\n          [0.2824, 0.1647, 0.0667]],\\n\\n         [[0.0941, 0.0353, 0.0000],\\n          [0.0980, 0.0392, 0.0039],\\n          [0.1020, 0.0431, 0.0078],\\n          ...,\\n          [0.2627, 0.1451, 0.0471],\\n          [0.2745, 0.1569, 0.0588],\\n          [0.2863, 0.1686, 0.0706]]]])']}, 'current_outputs': ['2', '1', '3', '4'], 'timestamp': 1779138455161}\n\nDetails:\nWorkflow: C:\\ComfyUI-HYPano2\\workflows\\image_to_panorama.json\nNode error: HYPano2Sample",
+      "status": "pass",
+      "duration_seconds": 1096.45,
+      "error": null,
       "hardware": {
         "os": "Windows-11-10.0.26100-SP0",
-        "cpu": "AMD64 Family 25 Model 33 Stepping 2, AuthenticAMD"
+        "cpu": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD"
       },
       "resources": {
         "ram": {
-          "peak": 1.66,
-          "avg": 1.5
+          "peak": 19.33,
+          "avg": 8.77
         },
-        "total_ram_gb": 31.9,
-        "samples": 318
+        "total_ram_gb": 23.9,
+        "samples": 1081
       }
     }
   ]
