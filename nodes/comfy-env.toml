@@ -1,0 +1,8 @@
+[dependencies]
+av = "*"
+
+[cuda]
+packages = ["cumesh"]
+
+[pypi-dependencies]
+huggingface_hub = "*"
