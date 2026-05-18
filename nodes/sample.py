@@ -139,6 +139,7 @@ class HYPano2Sample(io.ComfyNode):
         blend_width=32,
         use_template=True,
     ):
+        cls._log_runtime_diag()
         model, clip, vae = cls._get_cached_models(
             unet_filename, clip_filename, vae_filename, lora_filename, lora_strength,
         )
@@ -209,10 +210,14 @@ class HYPano2Sample(io.ComfyNode):
         # VAE decode.
         log.info("HYPano2Sample: VAE decode...")
         decoded = vae.decode(samples_tensor)
-        # Comfy VAEs return (B, H, W, C) float[0,1] for image outputs already.
-        if decoded.dim() == 4 and decoded.shape[-1] not in (1, 3, 4):
-            # (B, C, H, W) -> (B, H, W, C)
+        # Qwen-Image uses a 3D VAE (Wan21 latent format), so .decode returns
+        # (B, T, H, W, C) with T=1 for image. Squeeze T -> (B, H, W, C).
+        if decoded.dim() == 5 and decoded.shape[1] == 1:
+            decoded = decoded[:, 0]
+        elif decoded.dim() == 4 and decoded.shape[-1] not in (1, 3, 4):
+            # 2D VAE: (B, C, H, W) -> (B, H, W, C)
             decoded = decoded.movedim(1, -1)
+        log.info("HYPano2Sample: decoded shape -> %s", tuple(decoded.shape))
 
         # Edge blend.
         log.info("HYPano2Sample: edge-blend width=%d", blend_width)
@@ -224,6 +229,40 @@ class HYPano2Sample(io.ComfyNode):
         out = torch.cat(outs, dim=0)
         log.info("HYPano2Sample: done -> %s", tuple(out.shape))
         return io.NodeOutput(out)
+
+    # --------------------------------------------------------------
+    # Diagnostics
+    # --------------------------------------------------------------
+    @classmethod
+    def _log_runtime_diag(cls):
+        """One-line per-run dump of attention backend + device + VRAM.
+
+        Worker stderr is forwarded to the host as [worker:ComfyUI-HYPano2]
+        prefixed log lines, so this becomes visible confirmation that sage
+        (or whatever) actually fired.
+        """
+        import comfy.model_management as mm
+        import torch
+        if mm.sage_attention_enabled():
+            attn = "sage"
+        elif mm.flash_attention_enabled():
+            attn = "flash"
+        elif mm.xformers_enabled():
+            attn = "xformers"
+        elif mm.pytorch_attention_enabled():
+            attn = "pytorch SDPA (FA2 via cuDNN on Ampere)"
+        else:
+            attn = "split / sub_quad"
+        if torch.cuda.is_available():
+            free, total = torch.cuda.mem_get_info()
+            device = torch.cuda.get_device_name(0)
+        else:
+            free = total = 0
+            device = "CPU"
+        log.info(
+            "HYPano2Sample runtime: device=%s | attention=%s | vram free=%.1fGB / %.1fGB",
+            device, attn, free / 1e9, total / 1e9,
+        )
 
     # --------------------------------------------------------------
     # Model loading & caching
