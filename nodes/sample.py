@@ -12,6 +12,7 @@ node, which can't be serialized.
 """
 
 import logging
+import sys
 
 import numpy as np
 import torch
@@ -23,6 +24,14 @@ from comfy_api.latest import io
 from .generate import circular_blend_edges, _comfy_image_to_pil, _pil_to_comfy_image
 
 log = logging.getLogger("hypano2")
+
+
+def _p(msg: str) -> None:
+    """Direct stderr print — bypasses Python's default WARNING-level filter
+    on the root logger so the line propagates through comfy-env's worker
+    IPC to the host terminal as a '[worker:ComfyUI-HYPano2] ...' line.
+    """
+    print(f"[HYPano2Sample] {msg}", file=sys.stderr, flush=True)
 
 
 # Upstream prompt templates (verbatim from pipeline_with_qwen_image.py).
@@ -156,12 +165,12 @@ class HYPano2Sample(io.ComfyNode):
         # Both positive AND negative get the conditioning image (matches
         # pipeline_qwen_pano.py:166-180).
         from comfy_extras.nodes_qwen import TextEncodeQwenImageEditPlus
-        log.info("HYPano2Sample: encoding positive prompt...")
+        _p("encoding positive prompt...")
         pos_cond_out = TextEncodeQwenImageEditPlus.execute(
             clip, pos, vae=vae, image1=image,
         )
         positive = pos_cond_out.result[0] if hasattr(pos_cond_out, "result") else pos_cond_out
-        log.info("HYPano2Sample: encoding negative prompt...")
+        _p("encoding negative prompt...")
         neg_cond_out = TextEncodeQwenImageEditPlus.execute(
             clip, neg, vae=vae, image1=image,
         )
@@ -184,10 +193,7 @@ class HYPano2Sample(io.ComfyNode):
         # our pack's nodes/ package (sys.path puts the pack ahead of ComfyUI),
         # so the host `nodes.py` is shadowed. Call comfy.sample.sample directly
         # and inline the bits common_ksampler does.
-        log.info(
-            "HYPano2Sample: sampling %dx%d steps=%d cfg=%.1f seed=%d ...",
-            width, height, num_inference_steps, true_cfg_scale, seed,
-        )
+        _p(f"sampling {width}x{height} steps={num_inference_steps} cfg={true_cfg_scale} seed={seed} ...")
         import comfy.sample
         import latent_preview
 
@@ -208,7 +214,7 @@ class HYPano2Sample(io.ComfyNode):
         )
 
         # VAE decode.
-        log.info("HYPano2Sample: VAE decode...")
+        _p("VAE decode...")
         decoded = vae.decode(samples_tensor)
         # Qwen-Image uses a 3D VAE (Wan21 latent format), so .decode returns
         # (B, T, H, W, C) with T=1 for image. Squeeze T -> (B, H, W, C).
@@ -217,17 +223,17 @@ class HYPano2Sample(io.ComfyNode):
         elif decoded.dim() == 4 and decoded.shape[-1] not in (1, 3, 4):
             # 2D VAE: (B, C, H, W) -> (B, H, W, C)
             decoded = decoded.movedim(1, -1)
-        log.info("HYPano2Sample: decoded shape -> %s", tuple(decoded.shape))
+        _p(f"decoded shape -> {tuple(decoded.shape)}")
 
         # Edge blend.
-        log.info("HYPano2Sample: edge-blend width=%d", blend_width)
+        _p(f"edge-blend width={blend_width}")
         outs = []
         for i in range(decoded.shape[0]):
             pil = _comfy_image_to_pil(decoded[i : i + 1])
             blended = circular_blend_edges(pil, int(blend_width))
             outs.append(_pil_to_comfy_image(blended))
         out = torch.cat(outs, dim=0)
-        log.info("HYPano2Sample: done -> %s", tuple(out.shape))
+        _p(f"done -> {tuple(out.shape)}")
         return io.NodeOutput(out)
 
     # --------------------------------------------------------------
@@ -259,10 +265,7 @@ class HYPano2Sample(io.ComfyNode):
         else:
             free = total = 0
             device = "CPU"
-        log.info(
-            "HYPano2Sample runtime: device=%s | attention=%s | vram free=%.1fGB / %.1fGB",
-            device, attn, free / 1e9, total / 1e9,
-        )
+        _p(f"runtime: device={device} | attention={attn} | vram free={free/1e9:.1f}/{total/1e9:.1f}GB")
 
     # --------------------------------------------------------------
     # Model loading & caching
@@ -291,22 +294,22 @@ class HYPano2Sample(io.ComfyNode):
         vae_path = _resolve("vae", vae_filename, "VAE")
         lora_path = _resolve("loras", lora_filename, "LoRA") if lora_filename else None
 
-        log.info("HYPano2Sample: loading UNet %s", unet_filename)
+        _p(f"loading UNet {unet_filename}")
         model = comfy.sd.load_diffusion_model(unet_path)
 
-        log.info("HYPano2Sample: loading CLIP %s", clip_filename)
+        _p(f"loading CLIP {clip_filename}")
         clip = comfy.sd.load_clip(
             [clip_path],
             embedding_directory=folder_paths.get_folder_paths("embeddings"),
             clip_type=comfy.sd.CLIPType.QWEN_IMAGE,
         )
 
-        log.info("HYPano2Sample: loading VAE %s", vae_filename)
+        _p(f"loading VAE {vae_filename}")
         vae_sd = comfy.utils.load_torch_file(vae_path)
         vae = comfy.sd.VAE(sd=vae_sd)
 
         if lora_path and lora_strength != 0.0:
-            log.info("HYPano2Sample: loading LoRA %s strength=%.2f", lora_filename, lora_strength)
+            _p(f"loading LoRA {lora_filename} strength={lora_strength:.2f}")
             lora_sd = comfy.utils.load_torch_file(lora_path)
             model, _ = comfy.sd.load_lora_for_models(model, None, lora_sd, lora_strength, 0)
 
