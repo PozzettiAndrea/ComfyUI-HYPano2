@@ -1,8 +1,6 @@
-[dependencies]
-av = "*"
-
 [cuda]
-packages = ["cumesh"]
+packages = ["flash_attn", "sageattention"]
 
 [pypi-dependencies]
 huggingface_hub = "*"
+psutil = "*"
