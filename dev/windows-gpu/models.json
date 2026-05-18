@@ -1,0 +1,66 @@
+{
+  "models_dir": "C:\\workspaces\\HYPano2-2145\\ComfyUI\\models",
+  "summary": {
+    "total_files": 4,
+    "total_size_bytes": 31021600739,
+    "total_size_human": "28.9 GB"
+  },
+  "folders": {
+    "loras": {
+      "total_size_bytes": 849544392,
+      "total_size_human": "810.2 MB",
+      "source": {
+        "type": "unknown"
+      },
+      "files": [
+        {
+          "path": "pytorch_lora_weights.safetensors",
+          "size_bytes": 849544392,
+          "size_human": "810.2 MB"
+        }
+      ]
+    },
+    "text_encoders": {
+      "total_size_bytes": 9384670680,
+      "total_size_human": "8.7 GB",
+      "source": {
+        "type": "unknown"
+      },
+      "files": [
+        {
+          "path": "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+          "size_bytes": 9384670680,
+          "size_human": "8.7 GB"
+        }
+      ]
+    },
+    "unet": {
+      "total_size_bytes": 20533579421,
+      "total_size_human": "19.1 GB",
+      "source": {
+        "type": "unknown"
+      },
+      "files": [
+        {
+          "path": "qwen_image_edit_2509_fp8mixed.safetensors",
+          "size_bytes": 20533579421,
+          "size_human": "19.1 GB"
+        }
+      ]
+    },
+    "vae": {
+      "total_size_bytes": 253806246,
+      "total_size_human": "242.0 MB",
+      "source": {
+        "type": "unknown"
+      },
+      "files": [
+        {
+          "path": "qwen_image_vae.safetensors",
+          "size_bytes": 253806246,
+          "size_human": "242.0 MB"
+        }
+      ]
+    }
+  }
+}

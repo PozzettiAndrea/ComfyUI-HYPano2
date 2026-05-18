@@ -1,0 +1,734 @@
+[00:00] Crash dump logging enabled: C:\logs\HYPano2-2145\dev\windows-gpu\crash_dump.log
+[00:00] 
+[00:00] [1/5] SYNTAX
+[00:00] ----------------------------------------
+[00:00] 
+[DEBUG] server=None, api=None
+[00:00] Found pyproject.toml (modern format)
+[00:00] Found requirements.txt (legacy format)
+[00:00] Unicode check: OK (all characters cp1252-safe)
+[00:00] Forbidden patterns check: OK
+[00:00] [SYNTAX] PASSED
+[00:00] 
+[00:00] [2/5] INSTALL
+[00:00] ----------------------------------------
+[00:00] 
+[DEBUG] server=None, api=None
+[00:00] 
+Setting up ComfyUI...
+[00:00] Creating virtual environment at C:\workspaces\HYPano2-2145\.venv...
+[00:00] Running: uv venv C:\workspaces\HYPano2-2145\.venv --python 3.13
+[00:00] torch_version='2.10.0' -> pinning torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
+[00:00] Cloning ComfyUI (latest) to C:\workspaces\HYPano2-2145\ComfyUI...
+[00:00] Running: git clone --depth 1 https://github.com/comfyanonymous/ComfyUI.git C:\workspaces\HYPano2-2145\ComfyUI
+[00:03] Pinning torch family from https://download.pytorch.org/whl/cu128: torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
+[00:03] Running: uv pip install --python C:\workspaces\HYPano2-2145\.venv\Scripts\python.exe --index-url https://download.pytorch.org/whl/cu128 --extra-index-url https://pypi.org/simple --index-strategy unsafe-best-match torch==2.10.0 torchvision==0.25.0 torchaudio==2.10.0
+[00:52] Installing ComfyUI requirements into C:\workspaces\HYPano2-2145\.venv...
+[00:52]     comfyui-frontend-package==1.43.18
+[00:52]     comfyui-workflow-templates==0.9.77
+[00:52]     comfyui-embedded-docs==0.5.0
+[00:52]     torch
+[00:52]     torchsde
+[00:52]     torchvision
+[00:52]     torchaudio
+[00:52]     numpy>=1.25.0
+[00:52]     einops
+[00:52]     transformers>=4.50.3
+[00:52]     tokenizers>=0.13.3
+[00:52]     sentencepiece
+[00:52]     safetensors>=0.4.2
+[00:52]     aiohttp>=3.11.8
+[00:52]     yarl>=1.18.0
+[00:52]     pyyaml
+[00:52]     Pillow
+[00:52]     scipy
+[00:52]     tqdm
+[00:52]     psutil
+[00:52]     alembic
+[00:52]     SQLAlchemy>=2.0.0
+[00:52]     filelock
+[00:52]     av>=14.2.0
+[00:52]     comfy-kitchen>=0.2.8
+[00:52]     comfy-aimdo==0.3.0
+[00:52]     requests
+[00:52]     simpleeval>=1.0.0
+[00:52]     blake3
+[00:52]     
+[00:52]     #non essential dependencies:
+[00:52]     kornia>=0.7.1
+[00:52]     spandrel
+[00:52]     pydantic~=2.0
+[00:52]     pydantic-settings~=2.0
+[00:52]     PyOpenGL
+[00:52]     glfw
+[00:52] Running: uv pip install --python C:\workspaces\HYPano2-2145\.venv\Scripts\python.exe --index-url https://download.pytorch.org/whl/cu128 --extra-index-url https://pypi.org/simple --index-strategy unsafe-best-match -r C:\workspaces\HYPano2-2145\ComfyUI\requirements.txt
+[01:38] 
+Installing custom node...
+[01:38] Copying ComfyUI-HYPano2 to C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2...
+[01:38] Installing node requirements...
+[01:38]     huggingface_hub
+[01:38]     comfy-env==0.3.89
+[01:38] Running: uv pip install --python C:\workspaces\HYPano2-2145\.venv\Scripts\python.exe --index-url https://download.pytorch.org/whl/cu128 --extra-index-url https://pypi.org/simple --index-strategy unsafe-best-match -r C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\requirements.txt
+[01:41] 
+Running install.py...
+[01:41] Running: C:\workspaces\HYPano2-2145\.venv\Scripts\python.exe C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\install.py
+[01:48]   [comfy-env] _discover: scanning C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes
+[01:48]   [comfy-env] _discover: ComfyUI-HYPano2 -> hypano2-nodes (custom_nodes\ComfyUI-HYPano2\nodes\comfy-env.toml)
+[01:48]   [comfy-env] Workspace: C:\Users\ContainerUser\AppData\Local\Programs\comfy-env
+[01:48]   [comfy-env] ComfyUI: C:\workspaces\HYPano2-2145\ComfyUI
+[01:48]   [comfy-env] Found 1 node config(s):
+[01:48]     - hypano2-nodes <- custom_nodes\ComfyUI-HYPano2\nodes\comfy-env.toml (python=host)
+[01:49]   [comfy-env] Bootstrap interpreter has python 3.13 + torch 2.10.0 (cu128). Looking for cuda-only wheels matching cu128/torch2.10/cp313.
+[02:57]   [comfy-env] GPU: Detection: torch
+[02:57]   Recommended: CUDA 12.6
+[02:57]   
+[02:57]     GPU 0: NVIDIA GeForce RTX 3060 (sm_86) [Ampere] 12287MB
+[02:57]   [comfy-env] Comfyui feature -> torch 2.10.0 from https://download.pytorch.org/whl/cu128 (CUDA 12.8 via bootstrap torch)
+[02:57]   [comfy-env] cuda-wheels: 2 package(s) need a matched (cuda, torch, python) combo: ['flash_attn', 'sageattention']
+[02:57]   [comfy-env] cuda-wheels tier 1 (bootstrap): probing cu12.8/torch2.10/cp313
+[02:57]   [cuda-wheels] Looking up flash_attn: cu128 torch2.10 cp313 win_amd64
+[02:57]   [cuda-wheels]   Found: flash_attn-2.8.3+cu128torch2.10-cp313-cp313-win_amd64.whl
+[02:57]   [cuda-wheels] Looking up sageattention: cu128 torch2.10 cp313 win_amd64
+[02:57]   [cuda-wheels]   Found: sageattention-2.2.0+cu128torch2.10-cp313-cp313-win_amd64.whl
+[02:57]   [comfy-env] cuda-wheels combo: cu12.8/torch2.10 (bootstrap matches; per-node envs will pin to this)
+[02:57]   [cuda-wheels] Looking up flash_attn: cu128 torch2.10 cp313 win_amd64
+[02:58]   [cuda-wheels]   Found: flash_attn-2.8.3+cu128torch2.10-cp313-cp313-win_amd64.whl
+[02:58]   [cuda-wheels] Looking up sageattention: cu128 torch2.10 cp313 win_amd64
+[02:58]   [cuda-wheels]   Found: sageattention-2.2.0+cu128torch2.10-cp313-cp313-win_amd64.whl
+[02:58]   [comfy-env] hypano2-nodes: cuda-wheels deferred for post-pixi install (flash_attn, sageattention)
+[02:58]   Generated C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\pixi.toml
+[02:58]   [comfy-env] Patched C:\Users\ContainerUser\AppData\Roaming\uv\python\cpython-3.10-windows-x86_64-none\Lib\platform.py for conda-forge compat
+[02:58]   [comfy-env] Patched C:\Users\ContainerUser\AppData\Roaming\uv\python\cpython-3.10.20-windows-x86_64-none\Lib\platform.py for conda-forge compat
+[02:58]   [comfy-env] Patched C:\Users\ContainerUser\AppData\Roaming\uv\python\cpython-3.11-windows-x86_64-none\Lib\platform.py for conda-forge compat
+[02:58]   [comfy-env] Patched C:\Users\ContainerUser\AppData\Roaming\uv\python\cpython-3.11.15-windows-x86_64-none\Lib\platform.py for conda-forge compat
+[02:58]   [comfy-env] Patched C:\Users\ContainerUser\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\platform.py for conda-forge compat
+[02:58]   [comfy-env] Patched C:\Users\ContainerUser\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\Lib\platform.py for conda-forge compat
+[02:58]   [comfy-env] Patched C:\Users\ContainerUser\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\platform.py for conda-forge compat
+[02:58]   [comfy-env] Patched C:\Users\ContainerUser\AppData\Roaming\uv\python\cpython-3.13.13-windows-x86_64-none\Lib\platform.py for conda-forge compat
+[02:58]   [comfy-env] Installing 1 environment(s):
+[02:58]     - hypano2-nodes (python=host, 9 pypi deps, 2 cuda wheels)
+[02:58]   [comfy-env] Running `pixi install -e hypano2-nodes`...
+[03:14]      WARN Skipped running the post-link scripts because `run-post-link-scripts` = `false`
+[03:14]     	- Scripts/.librsvg-pre-unlink.bat
+[03:14]     To enable them, run:
+[03:14]     	pixi config set --local run-post-link-scripts insecure
+[03:14]     More info:
+[03:14]     	https://pixi.sh/latest/reference/pixi_configuration/#run-post-link-scripts
+[04:29]     The hypano2-nodes environment has been installed.
+[04:29]   [comfy-env] hypano2-nodes: installing cuda-wheels with --no-deps (flash_attn, sageattention)
+[04:31]     Using Python 3.13.13 environment at: .pixi\envs\hypano2-nodes
+[04:34]     Resolved 2 packages in 3.44s
+[04:34]     Downloading sageattention (41.7MiB)
+[04:34]     Downloading flash-attn (239.2MiB)
+[04:43]      Downloaded sageattention
+[05:03]      Downloaded flash-attn
+[05:03]     Prepared 2 packages in 28.56s
+[05:03]     Installed 2 packages in 36ms
+[05:03]      + flash-attn==2.8.3+cu128torch2.10 (from https://github.com/PozzettiAndrea/cuda-wheels/releases/download/flash_attn-latest/flash_attn-2.8.3%2Bcu128torch2.10-cp313-cp313-win_amd64.whl)
+[05:03]      + sageattention==2.2.0+cu128torch2.10 (from https://github.com/PozzettiAndrea/cuda-wheels/releases/download/sageattention-latest/sageattention-2.2.0%2Bcu128torch2.10-cp313-cp313-win_amd64.whl)
+[05:03]   [comfy-env] Recorded install hash f9e4f7085393 -> C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\install.hash
+[05:03]   [comfy-env] Install log: C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\install.log
+[05:03]   
+[05:03]   Installation complete!
+[05:03] Installing validation endpoint...
+[05:03]   Cloning PozzettiAndrea/ComfyUI-validate-endpoint...
+[05:03] Running: git clone --depth 1 https://x-access-token:***@github.com/PozzettiAndrea/ComfyUI-validate-endpoint.git C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-validate-endpoint
+[05:04] CUDA packages absent (will mock): flash_attn, sageattention
+[05:04] [INSTALL] PASSED
+[05:04] 
+[05:04] [3/5] REGISTRATION
+[05:04] ----------------------------------------
+[05:04] 
+[DEBUG] server=None, api=None
+[05:04] 
+Starting ComfyUI server...
+[05:04] Starting ComfyUI server on port 41883...
+[05:04] CUDA mock packages: flash_attn, sageattention
+[05:04] Starting ComfyUI server on port 41883...
+[05:05] Waiting for server to be ready (timeout: 600s)...
+[05:07]   [ComfyUI] setup plugin alembic.autogenerate.schemas
+[05:07]   [ComfyUI] setup plugin alembic.autogenerate.tables
+[05:07]   [ComfyUI] setup plugin alembic.autogenerate.types
+[05:07]   [ComfyUI] setup plugin alembic.autogenerate.constraints
+[05:07]   [ComfyUI] setup plugin alembic.autogenerate.defaults
+[05:07]   [ComfyUI] setup plugin alembic.autogenerate.comments
+[05:08]   [ComfyUI] [comfy-env] ComfyUI-HYPano2: 1 isolation env(s):
+[05:08]   [ComfyUI] [comfy-env]   nodes -> C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes
+[05:08]   [ComfyUI] [comfy-env] Workspace: C:\Users\ContainerUser\AppData\Local\Programs\comfy-env
+[05:08]   [ComfyUI] [comfy-env]     env: C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes  [OK]
+[05:08]   [ComfyUI] [comfy-env] prestartup complete
+[05:08]   [ComfyUI] 
+[05:08]   [ComfyUI] Prestartup times for custom nodes:
+[05:08]   [ComfyUI]    0.3 seconds: C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2
+[05:08]   [ComfyUI] 
+[05:16]   [ComfyUI] WARNING: You need pytorch with cu130 or higher to use optimized CUDA operations.
+[05:16]   [ComfyUI] Found comfy_kitchen backend cuda: {'available': True, 'disabled': True, 'unavailable_reason': None, 'capabilities': ['apply_rope', 'apply_rope1', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8']}
+[05:16]   [ComfyUI] Found comfy_kitchen backend eager: {'available': True, 'disabled': False, 'unavailable_reason': None, 'capabilities': ['apply_rope', 'apply_rope1', 'dequantize_mxfp8', 'dequantize_nvfp4', 'dequantize_per_tensor_fp8', 'quantize_mxfp8', 'quantize_nvfp4', 'quantize_per_tensor_fp8', 'scaled_mm_mxfp8', 'scaled_mm_nvfp4']}
+[05:16]   [ComfyUI] Found comfy_kitchen backend triton: {'available': False, 'disabled': True, 'unavailable_reason': "ImportError: No module named 'triton'", 'capabilities': []}
+[05:17]   [ComfyUI] Checkpoint files will always be loaded safely.
+[05:17]   [ComfyUI] Total VRAM 12287 MB, total RAM 32648 MB
+[05:17]   [ComfyUI] pytorch version: 2.10.0+cu128
+[05:17]   [ComfyUI] Set vram state to: NORMAL_VRAM
+[05:17]   [ComfyUI] Device: cuda:0 NVIDIA GeForce RTX 3060 : cudaMallocAsync
+[05:17]   [ComfyUI] Using async weight offloading with 2 streams
+[05:17]   [ComfyUI] Enabled pinned memory 13059.0
+[05:17]   [ComfyUI] working around nvidia conv3d memory bug.
+[05:20]   [ComfyUI] Using pytorch attention
+[05:31]   [ComfyUI] aimdo: src-win/cuda-detour.c:38:INFO:aimdo_setup_hooks: installing 6 hooks
+[05:31]   [ComfyUI] aimdo: src-win/cuda-detour.c:28:DEBUG:install_hook_entries: hooks successfully installed
+[05:31]   [ComfyUI] aimdo: src-win/shmem-detect.c:80:INFO:comfy-aimdo WDDM adapter match: NVIDIA GeForce RTX 3060 runtime_luid=00000000:0075f363 dxgi_luid=00000000:0075f363
+[05:31]   [ComfyUI] aimdo: src/control.c:152:INFO:comfy-aimdo inited for GPU: NVIDIA GeForce RTX 3060 (VRAM: 12287 MB)
+[05:31]   [ComfyUI] DynamicVRAM support detected and enabled
+[05:31]   [ComfyUI] Python version: 3.13.13 (main, May 10 2026, 19:31:06) [MSC v.1944 64 bit (AMD64)]
+[05:31]   [ComfyUI] ComfyUI version: 0.21.1
+[05:31]   [ComfyUI] comfy-aimdo version: 0.3.0
+[05:31]   [ComfyUI] comfy-kitchen version: 0.2.8
+[05:31]   [ComfyUI] ****** User settings have been changed to be stored on the server instead of browser storage. ******
+[05:31]   [ComfyUI] ****** For multi-user setups add the --multi-user CLI argument to enable multiple user profiles. ******
+[05:31]   [ComfyUI] comfyui-frontend-package version: 1.43.18
+[05:31]   [ComfyUI] comfyui-workflow-templates version: 0.9.77
+[05:31]   [ComfyUI] comfyui-embedded-docs version: 0.5.0
+[05:31]   [ComfyUI] comfy-kitchen version: 0.2.8
+[05:31]   [ComfyUI] comfy-aimdo version: 0.3.0
+[05:31]   [ComfyUI] [Prompt Server] web root: C:\workspaces\HYPano2-2145\.venv\Lib\site-packages\comfyui_frontend_package\static
+[05:31]   [ComfyUI] Asset seeder disabled
+[05:35]   [ComfyUI] [comfy-env] Version: 0.3.89
+[05:36]   [ComfyUI] [comfy-env] register_nodes: ComfyUI-HYPano2
+[05:36]   [ComfyUI] [comfy-env] ComfyUI source dir: C:\workspaces\HYPano2-2145\ComfyUI
+[05:36]   [ComfyUI] [comfy-env] Found 1 isolation env(s)
+[05:36]   [ComfyUI] [comfy-env] Scanning nodes metadata (isolation root)...
+[05:36]   [ComfyUI] [comfy-env] hypano2-nodes: Library/bin has 237 DLLs
+[05:36]   [ComfyUI] [comfy-env] Metadata scan: C:\Users\ContainerUser\.pixi\bin\pixi.exe run --as-is --manifest-path C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\pixi.toml -e hypano2-nodes python C:\Users\ContainerUser\AppData\Local\Temp\comfy_meta_8yggirjq.py C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2 nodes C:\Users\ContainerUser\AppData\Local\Temp\comfy_meta_out_ftcw8509.pkl
+[05:36]   [ComfyUI] [comfy-env] Scan env PATH for nodes:
+[05:36]   [ComfyUI] [comfy-env]   [0] C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes
+[05:36]   [ComfyUI] [comfy-env]   [1] C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Library\bin
+[05:36]   [ComfyUI] [comfy-env]   [2] C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Scripts
+[05:36]   [ComfyUI] [comfy-env]   [3] C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\bpy
+[05:36]   [ComfyUI] [comfy-env]   [4] C:\Windows\System32
+[05:36]   [ComfyUI] [comfy-env]   [5] C:\Windows
+[05:36]   [ComfyUI] [comfy-env]   [6] C:\Windows\System32\Wbem
+[07:15]   [ComfyUI] [comfy-env] Metadata scan stderr for nodes:
+[07:15]   [ComfyUI] [comfy-env]   [meta-scan] importing nodes from C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2
+[07:15]   [ComfyUI] [comfy-env]   WARNING:root:WARNING: You need pytorch with cu130 or higher to use optimized CUDA operations.
+[07:15]   [ComfyUI] [comfy-env]   [HYPano2 force_attention] forced attention=flash (was sage)
+[07:15]   [ComfyUI] [comfy-env]   [meta-scan] import OK
+[07:15]   [ComfyUI] [comfy-env] Scanned nodes: 3 nodes (98.7s)
+[07:15]   [ComfyUI] [comfy-env] Scanned nodes root: 3 nodes (98.7s)
+[07:15]   [ComfyUI] [comfy-env] Imported nodes root: 3 nodes (isolation)
+[07:15]   [ComfyUI] [comfy-env] Registered 3 total nodes
+[07:15]   [ComfyUI] 
+[07:15]   [ComfyUI] Import times for custom nodes:
+[07:15]   [ComfyUI]    0.0 seconds: C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\websocket_image_save.py
+[07:15]   [ComfyUI]    0.0 seconds: C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-validate-endpoint
+[07:15]   [ComfyUI]   99.4 seconds: C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2
+[07:15]   [ComfyUI] 
+[07:15]   [ComfyUI] Context impl SQLiteImpl.
+[07:15]   [ComfyUI] Will assume non-transactional DDL.
+[07:15]   [ComfyUI] Context impl SQLiteImpl.
+[07:15]   [ComfyUI] Will assume non-transactional DDL.
+[07:15]   [ComfyUI] Running upgrade  -> 0001_assets, Initial assets schema
+[07:15]   [ComfyUI] Revision ID: 0001_assets
+[07:15]   [ComfyUI] Revises: None
+[07:15]   [ComfyUI] Create Date: 2025-12-10 00:00:00
+[07:15]   [ComfyUI] Running upgrade 0001_assets -> 0002_merge_to_asset_references, Merge AssetInfo and AssetCacheState into unified asset_references table.
+[07:15]   [ComfyUI] Running upgrade 0002_merge_to_asset_references -> 0003_add_metadata_job_id, Add system_metadata and job_id columns to asset_references.
+[07:15]   [ComfyUI] Change preview_id FK from assets.id to asset_references.id.
+[07:15]   [ComfyUI] Database upgraded from None to 0003_add_metadata_job_id
+[07:15]   [ComfyUI] Starting server
+[07:15]   [ComfyUI] 
+[07:15]   [ComfyUI] To see the GUI go to: http://127.0.0.1:41883
+[07:16] Server responding, waiting for nodes to load...
+[07:36] Server is ready!
+[07:36] Checking for import errors in server logs...
+[07:36] No import errors detected
+[07:36] Found 724 registered nodes
+[07:36] [REGISTRATION] PASSED
+[07:36] 
+[07:36] [4/5] INSTANTIATION
+[07:36] ----------------------------------------
+[07:36] 
+[DEBUG] server=<comfy_test.comfyui.server.ComfyUIServer object at 0x0000020606761940>, api=<comfy_test.comfyui.api.ComfyUIAPI object at 0x0000020606762120>
+[07:36] Testing node constructors...
+[07:36] All 3 node(s) instantiated successfully!
+[07:36] [INSTANTIATION] PASSED
+[07:36] 
+[07:36] [5/5] EXECUTION
+[07:36] ----------------------------------------
+[07:36] 
+[DEBUG] server=<comfy_test.comfyui.server.ComfyUIServer object at 0x0000020606761940>, api=<comfy_test.comfyui.api.ComfyUIAPI object at 0x0000020606762120>
+[07:36] GPU runner - will execute 1 workflow(s)
+[07:36] Running 1 workflow(s) (all with videos)...
+[07:37] Installing screenshot dependencies (playwright, pillow)...
+[07:39]   Packages installed, downloading chromium browser...
+[08:00]   Screenshot dependencies installed successfully
+[08:01] Starting headless browser...
+[08:01]   Downloading Mesa llvmpipe for Windows...
+[08:01]   Mesa download error: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1032)>
+[08:01]   Mesa unavailable -- falling back to SwiftShader
+[08:06] Capturing execution frames: image_to_panorama.json
+[08:13]   Frame 1 saved (frame_000.jpg, t=0.0s)
+[08:13]   Validating workflow...
+[08:13]   [ComfyUI] === /validate endpoint called ===
+[08:13]   [ComfyUI] Received JSON with keys: ['prompt']
+[08:13]   Queuing workflow for execution...
+[08:13]   [ComfyUI] Prompt has 4 nodes
+[08:13]   [ComfyUI]   Node 1: LoadImage
+[08:13]   [ComfyUI]     Inputs: {"image": "office.jpg"}
+[08:13]   [ComfyUI]   Node 2: HYPano2DownloadModels
+[08:13]   [ComfyUI]     Inputs: {"precision": "fp8"}
+[08:13]   [ComfyUI]   Node 3: HYPano2Sample
+[08:13]   [ComfyUI] [comfy-env] SubprocessWorker: C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\python.exe
+[08:13]   [ComfyUI]     Inputs: {"prompt": "A bright sunny day, peaceful apartment.", "negative_prompt": "", "unet_filename": "qwen_image_edit_2509_fp8mixed.safetensors", "clip_filename": "qwen_2.5_vl_7b_fp8_scaled.safetensors", "va
+[08:13]   [ComfyUI] [comfy-env] env_vars: {'COMFYUI_BASE': 'C:\\workspaces\\HYPano2-2145\\ComfyUI'}
+[08:13]   [ComfyUI]   Node 4: SaveImage
+[08:13]   [ComfyUI] [ComfyUI-HYPano2] python: C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\python.exe
+[08:13]   [ComfyUI]     Inputs: {"filename_prefix": "hypano2", "images": ["3", 0]}
+[08:13]   [ComfyUI] [ComfyUI-HYPano2] sys_path sent to worker: ['C:\\workspaces\\HYPano2-2145\\ComfyUI', 'C:\\workspaces\\HYPano2-2145\\ComfyUI\\custom_nodes\\ComfyUI-HYPano2', 'C:\\Users\\ContainerUser\\AppData\\Local\\Programs\\comfy-env\\.pixi\\envs\\hypano2-nodes\\Lib\\site-packages', 'C:\\workspaces\\HYPano2-2145\\ComfyUI\\custom_nodes\\ComfyUI-HYPano2']
+[08:13]   [ComfyUI] Generated prompt_id: 454a0bf8-1606-4342-93ae-166dbe72e738
+[08:13]   [ComfyUI] [SubprocessWorker] is_pixi=True, python=C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\python.exe
+[08:13]   [ComfyUI] Calling execution.validate_prompt()...
+[08:13]   [ComfyUI] [SubprocessWorker] launching cmd=['C:\\Users\\ContainerUser\\.pixi\\bin\\pixi.exe', 'run', '--as-is', '--manifest-path', 'C:\\Users\\ContainerUser\\AppData\\Local\\Programs\\comfy-env\\pixi.toml', '-e', 'hypano2-nodes', 'python', 'C:\\Users\\ContainerUser\\AppData\\Local\\Temp\\comfyui_pvenv_kkrwwd9_\\persistent_worker.py', 'tcp://127.0.0.1:65063']...
+[08:13]   [ComfyUI] Validation result: valid=True
+[08:13]   [ComfyUI] === Validation PASSED ===
+[08:13]   [ComfyUI] got prompt
+[08:13]   [ComfyUI] [comfy-env] Running HYPano2DownloadModels: precision: 'fp8'
+[08:13]   [ComfyUI] [VRAM] Before HYPano2DownloadModels: 1040 / 12287 MB
+[08:13]   [ComfyUI] [SubprocessWorker] call_method: nodes.load_model.HYPano2DownloadModels.EXECUTE_NORMALIZED
+[08:13]   [ComfyUI] [SubprocessWorker] acquired lock, ensuring started...
+[08:13]   [ComfyUI] [comfy-env] hypano2-nodes: Library/bin has 237 DLLs
+[08:15]   Frame 2 saved (frame_001.jpg, t=2.4s)
+[08:15]   [capture-periodic] freeze=4ms shot=137ms unfreeze=5ms saved=True
+[08:18]   Frame 3 saved (frame_002.jpg, t=4.6s)
+[08:18]   [capture-periodic] freeze=5ms shot=131ms unfreeze=5ms saved=True
+[08:19]   [capture-loop] iter=50 t=6.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=8.7/31.9GB (27%) swap=0.0/5.0GB (0%) cpu=6% browser_rss=0.67GB
+[08:19]   [ComfyUI] [worker:ComfyUI-HYPano2] WARNING: WARNING: You need pytorch with cu130 or higher to use optimized CUDA operations.
+[08:20]   [ComfyUI] [SubprocessWorker] worker started/confirmed
+[08:20]   [ComfyUI] [SubprocessWorker] serializing kwargs to shm...
+[08:20]   [ComfyUI] [SubprocessWorker] created 0 shm blocks
+[08:20]   [ComfyUI] [SubprocessWorker] sending request via socket...
+[08:20]   [ComfyUI] [SubprocessWorker] call_id=1 sending call_method
+[08:20]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2 force_attention] forced attention=flash (was sage)
+[08:22]   [ComfyUI] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[08:22]   [ComfyUI] [worker:ComfyUI-HYPano2] WARNING: Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[08:23]   [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=1
+[08:26]   [capture-loop] iter=100 t=12.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.1/31.9GB (29%) swap=0.0/5.0GB (0%) cpu=12% browser_rss=0.67GB
+[08:32]   [capture-loop] iter=150 t=19.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=18% browser_rss=0.67GB
+[08:39]   [capture-loop] iter=200 t=25.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=18% browser_rss=0.62GB
+[08:45]   [capture-loop] iter=250 t=32.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=10.2/31.9GB (32%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.62GB
+[08:51]   [capture-loop] iter=300 t=38.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=10.2/31.9GB (32%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.62GB
+[08:57]   [capture-loop] iter=350 t=44.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=10.1/31.9GB (32%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.62GB
+[09:04]   [capture-loop] iter=400 t=50.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=10.2/31.9GB (32%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.62GB
+[09:10]   [capture-loop] iter=450 t=57.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=10.2/31.9GB (32%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.61GB
+[09:13]   [ComfyUI] [worker:ComfyUI-HYPano2]
+[09:13]   [ComfyUI] === WATCHDOG TICK 1 ===
+[09:13]   [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00003550 (most recent call first):
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 363 in wait
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 660 in wait
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\tqdm\_monitor.py", line 60 in run
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[09:13]   [ComfyUI] 
+[09:13]   [ComfyUI] Thread 0x0000027c (most recent call first):
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 106 in _vram_poller
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[09:13]   [ComfyUI] 
+[09:13]   [ComfyUI] Current thread 0x00001f84 (most recent call first):
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 52 in _watchdog
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[09:13]   [ComfyUI] 
+[09:13]   [ComfyUI] Thread 0x000046f8 (most recent call first):
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\ssl.py", line 1140 in read
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\ssl.py", line 1285 in recv
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_backends\sync.py", line 128 in read
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 217 in _receive_event
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 203 in _receive_response_body
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 334 in __iter__
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\connection_pool.py", line 403 in __iter__
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_transports\default.py", line 127 in __iter__
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_client.py", line 153 in __iter__
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_models.py", line 951 in iter_raw
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_models.py", line 897 in iter_bytes
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 421 in http_get
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88 in _inner_fn
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 1858 in _download_to_tmp_and_move
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 1216 in _hf_hub_download_to_cache_dir
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 997 in hf_hub_download
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88 in _inner_fn
+[09:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 101 in _download
+[09:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 239 in execute
+[09:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\comfy_api\latest\_io.py", line 1833 in EXECUTE_NORMALIZED
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1762 in main
+[09:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1807 in <module>
+[09:13]   [ComfyUI] 
+[09:13]   [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+[09:13]   [ComfyUI] 
+[09:16]   [capture-loop] iter=500 t=63.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=10.1/31.9GB (32%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[09:23]   [capture-loop] iter=550 t=69.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=10.0/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[09:29]   [capture-loop] iter=600 t=76.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[09:35]   [capture-loop] iter=650 t=82.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.7/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[09:41]   [capture-loop] iter=700 t=88.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[09:48]   [capture-loop] iter=750 t=95.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[09:54]   [capture-loop] iter=800 t=101.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[10:00]   [capture-loop] iter=850 t=107.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[10:07]   [capture-loop] iter=900 t=113.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[10:13]   [capture-loop] iter=950 t=120.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[10:13]   [ComfyUI] [worker:ComfyUI-HYPano2]
+[10:13]   [ComfyUI] === WATCHDOG TICK 2 ===
+[10:13]   [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00003550 (most recent call first):
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 363 in wait
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 660 in wait
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\tqdm\_monitor.py", line 60 in run
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[10:13]   [ComfyUI] 
+[10:13]   [ComfyUI] Thread 0x0000027c (most recent call first):
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 106 in _vram_poller
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[10:13]   [ComfyUI] 
+[10:13]   [ComfyUI] Current thread 0x00001f84 (most recent call first):
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 52 in _watchdog
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[10:13]   [ComfyUI] 
+[10:13]   [ComfyUI] Thread 0x000046f8 (most recent call first):
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\ssl.py", line 1140 in read
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\ssl.py", line 1285 in recv
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_backends\sync.py", line 128 in read
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 217 in _receive_event
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 203 in _receive_response_body
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 334 in __iter__
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\connection_pool.py", line 403 in __iter__
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_transports\default.py", line 127 in __iter__
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_client.py", line 153 in __iter__
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_models.py", line 951 in iter_raw
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_models.py", line 897 in iter_bytes
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 421 in http_get
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88 in _inner_fn
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 1858 in _download_to_tmp_and_move
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 1216 in _hf_hub_download_to_cache_dir
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 997 in hf_hub_download
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88 in _inner_fn
+[10:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 101 in _download
+[10:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 239 in execute
+[10:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\comfy_api\latest\_io.py", line 1833 in EXECUTE_NORMALIZED
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1762 in main
+[10:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1807 in <module>
+[10:13]   [ComfyUI] 
+[10:13]   [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+[10:13]   [ComfyUI] 
+[10:19]   [capture-loop] iter=1000 t=126.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[10:26]   [capture-loop] iter=1050 t=132.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[10:32]   [capture-loop] iter=1100 t=139.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[10:38]   [capture-loop] iter=1150 t=145.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[10:44]   [capture-loop] iter=1200 t=151.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=7 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[10:51]   [capture-loop] iter=1250 t=158.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[10:57]   [capture-loop] iter=1300 t=164.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[11:04]   [capture-loop] iter=1350 t=170.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[11:10]   [capture-loop] iter=1400 t=177.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=10.0/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[11:13]   [ComfyUI] [worker:ComfyUI-HYPano2]
+[11:13]   [ComfyUI] === WATCHDOG TICK 3 ===
+[11:13]   [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00003550 (most recent call first):
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 363 in wait
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 660 in wait
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\tqdm\_monitor.py", line 60 in run
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[11:13]   [ComfyUI] 
+[11:13]   [ComfyUI] Thread 0x0000027c (most recent call first):
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 106 in _vram_poller
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[11:13]   [ComfyUI] 
+[11:13]   [ComfyUI] Current thread 0x00001f84 (most recent call first):
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 52 in _watchdog
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[11:13]   [ComfyUI] 
+[11:13]   [ComfyUI] Thread 0x000046f8 (most recent call first):
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 424 in http_get
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88 in _inner_fn
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 1858 in _download_to_tmp_and_move
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 1216 in _hf_hub_download_to_cache_dir
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 997 in hf_hub_download
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88 in _inner_fn
+[11:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 101 in _download
+[11:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 239 in execute
+[11:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\comfy_api\latest\_io.py", line 1833 in EXECUTE_NORMALIZED
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1762 in main
+[11:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1807 in <module>
+[11:13]   [ComfyUI] 
+[11:13]   [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+[11:13]   [ComfyUI] 
+[11:16]   [capture-loop] iter=1450 t=183.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[11:23]   [capture-loop] iter=1500 t=189.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[11:29]   [capture-loop] iter=1550 t=196.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[11:35]   [capture-loop] iter=1600 t=202.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[11:42]   [capture-loop] iter=1650 t=208.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.8/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[11:48]   [capture-loop] iter=1700 t=215.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.7/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[11:54]   [capture-loop] iter=1750 t=221.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[12:01]   [capture-loop] iter=1800 t=227.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.7/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[12:07]   [ComfyUI] C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\ContainerUser\.cache\huggingface\hub\models--Comfy-Org--Qwen-Image-Edit_ComfyUI. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+[12:07]   [ComfyUI] To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+[12:07]   [ComfyUI]   warnings.warn(message)
+[12:07]   [capture-loop] iter=1850 t=234.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=10.0/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[12:13]   [capture-loop] iter=1900 t=240.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=10% browser_rss=0.60GB
+[12:13]   [ComfyUI] [worker:ComfyUI-HYPano2]
+[12:13]   [ComfyUI] === WATCHDOG TICK 4 ===
+[12:13]   [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00003550 (most recent call first):
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 363 in wait
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 660 in wait
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\tqdm\_monitor.py", line 60 in run
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[12:13]   [ComfyUI] 
+[12:13]   [ComfyUI] Thread 0x0000027c (most recent call first):
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 106 in _vram_poller
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[12:13]   [ComfyUI] 
+[12:13]   [ComfyUI] Current thread 0x00001f84 (most recent call first):
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 52 in _watchdog
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[12:13]   [ComfyUI] 
+[12:13]   [ComfyUI] Thread 0x000046f8 (most recent call first):
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\shutil.py", line 453 in copy2
+[12:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 109 in _download
+[12:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 239 in execute
+[12:13]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\comfy_api\latest\_io.py", line 1833 in EXECUTE_NORMALIZED
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1762 in main
+[12:13]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1807 in <module>
+[12:13]   [ComfyUI] 
+[12:13]   [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+[12:13]   [ComfyUI] 
+[12:19]   [capture-loop] iter=1950 t=246.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.9/31.9GB (31%) swap=0.0/5.0GB (0%) cpu=9% browser_rss=0.60GB
+[12:21]   [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=1
+[12:21]   Frame 4 saved (frame_003.jpg, t=248.6s)
+[12:22]   [capture-periodic] freeze=4ms shot=141ms unfreeze=5ms saved=True
+[12:25]   [capture-loop] iter=2000 t=252.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.5/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=15% browser_rss=0.60GB
+[12:31]   [capture-loop] iter=2050 t=258.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.3/31.9GB (29%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[12:37]   [capture-loop] iter=2100 t=264.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.5/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[12:43]   [capture-loop] iter=2150 t=270.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.5/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[12:50]   [capture-loop] iter=2200 t=276.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[12:56]   [capture-loop] iter=2250 t=283.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[13:02]   [capture-loop] iter=2300 t=289.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[13:08]   [capture-loop] iter=2350 t=295.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[13:14]   [ComfyUI] [worker:ComfyUI-HYPano2]
+[13:14]   [ComfyUI] === WATCHDOG TICK 5 ===
+[13:14]   [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00003550 (most recent call first):
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 363 in wait
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 660 in wait
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\tqdm\_monitor.py", line 60 in run
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[13:14]   [ComfyUI] 
+[13:14]   [ComfyUI] Thread 0x0000027c (most recent call first):
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 106 in _vram_poller
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[13:14]   [ComfyUI] 
+[13:14]   [ComfyUI] Current thread 0x00001f84 (most recent call first):
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 52 in _watchdog
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[13:14]   [ComfyUI] 
+[13:14]   [ComfyUI] Thread 0x000046f8 (most recent call first):
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\ssl.py", line 1140 in read
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\ssl.py", line 1285 in recv
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_backends\sync.py", line 128 in read
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 217 in _receive_event
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 203 in _receive_response_body
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 334 in __iter__
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\connection_pool.py", line 403 in __iter__
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_transports\default.py", line 127 in __iter__
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_client.py", line 153 in __iter__
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_models.py", line 951 in iter_raw
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_models.py", line 897 in iter_bytes
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 421 in http_get
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88 in _inner_fn
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 1858 in _download_to_tmp_and_move
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 1216 in _hf_hub_download_to_cache_dir
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 997 in hf_hub_download
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88 in _inner_fn
+[13:14]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 101 in _download
+[13:14]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 239 in execute
+[13:14]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\comfy_api\latest\_io.py", line 1833 in EXECUTE_NORMALIZED
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1762 in main
+[13:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1807 in <module>
+[13:14]   [ComfyUI] 
+[13:14]   [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+[13:14]   [ComfyUI] 
+[13:14]   [capture-loop] iter=2400 t=301.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[13:20]   [capture-loop] iter=2450 t=307.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[13:26]   [capture-loop] iter=2500 t=313.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[13:33]   [capture-loop] iter=2550 t=319.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=16% browser_rss=0.60GB
+[13:39]   [capture-loop] iter=2600 t=326.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=17% browser_rss=0.60GB
+[13:45]   [capture-loop] iter=2650 t=332.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.7/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=14% browser_rss=0.60GB
+[13:51]   [capture-loop] iter=2700 t=338.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.7/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=15% browser_rss=0.60GB
+[13:58]   [capture-loop] iter=2750 t=344.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=14% browser_rss=0.60GB
+[14:04]   [ComfyUI] C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\ContainerUser\.cache\huggingface\hub\models--Comfy-Org--Qwen-Image_ComfyUI. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+[14:04]   [ComfyUI] To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+[14:04]   [ComfyUI]   warnings.warn(message)
+[14:04]   [capture-loop] iter=2800 t=351.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.7/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=14% browser_rss=0.60GB
+[14:10]   [capture-loop] iter=2850 t=356.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.6/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=7% browser_rss=0.60GB
+[14:10]   [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=1
+[14:12]   Frame 5 saved (frame_004.jpg, t=359.4s)
+[14:12]   [capture-periodic] freeze=4ms shot=195ms unfreeze=7ms saved=True
+[14:13]   [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=1
+[14:14]   [ComfyUI] [worker:ComfyUI-HYPano2]
+[14:14]   [ComfyUI] === WATCHDOG TICK 6 ===
+[14:14]   [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00003550 (most recent call first):
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 363 in wait
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 660 in wait
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\tqdm\_monitor.py", line 60 in run
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[14:14]   [ComfyUI] 
+[14:14]   [ComfyUI] Thread 0x0000027c (most recent call first):
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 106 in _vram_poller
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[14:14]   [ComfyUI] 
+[14:14]   [ComfyUI] Current thread 0x00001f84 (most recent call first):
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 52 in _watchdog
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 995 in run
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1044 in _bootstrap_inner
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\threading.py", line 1015 in _bootstrap
+[14:14]   [ComfyUI] 
+[14:14]   [ComfyUI] Thread 0x000046f8 (most recent call first):
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\ssl.py", line 1232 in send
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_backends\sync.py", line 138 in write
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 166 in _send_event
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 150 in _send_request_headers
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\http11.py", line 86 in handle_request
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\connection.py", line 103 in handle_request
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpcore\_sync\connection_pool.py", line 236 in handle_request
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_transports\default.py", line 250 in handle_request
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_client.py", line 1014 in _send_single_request
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_client.py", line 979 in _send_handling_redirects
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_client.py", line 942 in _send_handling_auth
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_client.py", line 914 in send
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\httpx\_client.py", line 868 in stream
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\contextlib.py", line 141 in __enter__
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_http.py", line 462 in _http_backoff_base
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_http.py", line 644 in http_stream_backoff
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\contextlib.py", line 141 in __enter__
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 371 in http_get
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88 in _inner_fn
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 1858 in _download_to_tmp_and_move
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 1216 in _hf_hub_download_to_cache_dir
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py", line 997 in hf_hub_download
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88 in _inner_fn
+[14:14]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 101 in _download
+[14:14]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\custom_nodes\ComfyUI-HYPano2\nodes\load_model.py", line 239 in execute
+[14:14]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\comfy_api\latest\_io.py", line 1833 in EXECUTE_NORMALIZED
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1762 in main
+[14:14]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Local\Temp\comfyui_pvenv_kkrwwd9_\persistent_worker.py", line 1807 in <module>
+[14:14]   [ComfyUI] 
+[14:14]   [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+[14:14]   [ComfyUI] 
+[14:15]   Frame 6 saved (frame_005.jpg, t=361.8s)
+[14:15]   [capture-periodic] freeze=4ms shot=132ms unfreeze=5ms saved=True
+[14:16]   [capture-loop] iter=2900 t=363.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.5/31.9GB (30%) swap=0.0/5.0GB (0%) cpu=10% browser_rss=0.60GB
+[14:17]   Frame 7 saved (frame_006.jpg, t=364.0s)
+[14:17]   [capture-periodic] freeze=4ms shot=143ms unfreeze=5ms saved=True
+[14:22]   [capture-loop] iter=2950 t=369.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=9.3/31.9GB (29%) swap=0.0/5.0GB (0%) cpu=8% browser_rss=0.60GB
+[14:28]   [capture-loop] iter=3000 t=375.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=5 ram=9.2/31.9GB (29%) swap=0.0/5.0GB (0%) cpu=9% browser_rss=0.60GB
+[14:29]   [ComfyUI] C:\Users\ContainerUser\AppData\Local\Programs\comfy-env\.pixi\envs\hypano2-nodes\Lib\site-packages\huggingface_hub\file_download.py:138: UserWarning: `huggingface_hub` cache-system uses symlinks by default to efficiently store duplicated files but your machine does not support them in C:\Users\ContainerUser\.cache\huggingface\hub\models--tencent--HY-World-2.0. Caching files will still work but in a degraded version that might require more space on your disk. This warning can be disabled by setting the `HF_HUB_DISABLE_SYMLINKS_WARNING` environment variable. For more details, see https://huggingface.co/docs/huggingface_hub/how-to-cache#limitations.
+[14:29]   [ComfyUI] To support symlinks on Windows, you either need to activate Developer Mode or to run Python as an administrator. In order to activate developer mode, see this article: https://docs.microsoft.com/en-us/windows/apps/get-started/enable-your-device-for-development
+[14:29]   [ComfyUI]   warnings.warn(message)
+[14:30]   [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=1
+[14:30]   [ComfyUI] [SubprocessWorker] got response: ok
+[14:30]   [ComfyUI] [comfy-env] HYPano2DownloadModels done (376.81s): result: NodeOutput
+[14:30]   [ComfyUI] [VRAM] After HYPano2DownloadModels: 1040 / 12287 MB
+[14:30]   [ComfyUI] [comfy-env] Running HYPano2Sample: prompt: 'A bright sunny day, peaceful apartment.', negative_prompt: '', unet_filename: 'qwen_image_edit_2509_fp8mixed.safetensors', clip_filename: 'qwen_2.5_vl_7b_fp8_scaled.safetensors', vae_filename: 'qwen_image_vae.safetensors', lora_filename: 'pytorch_lora_weights.safetensors', lora_strength: 1.0, seed: 42, width: 1952, height: 960, num_inference_steps: 40, true_cfg_scale: 7.5, blend_width: 32, use_template: True, crop_border: 0.03, image: torch.float32 [1,598,900,3] cpu
+[14:30]   [ComfyUI] [VRAM] Before HYPano2Sample: 1040 / 12287 MB
+[14:30]   [ComfyUI] [SubprocessWorker] call_method: nodes.sample.HYPano2Sample.EXECUTE_NORMALIZED
+[14:30]   [ComfyUI] [SubprocessWorker] acquired lock, ensuring started...
+[14:30]   [ComfyUI] [ComfyUI-HYPano2] Health check: ping (timeout=5.0s)...
+[14:30]   [ComfyUI] [ComfyUI-HYPano2] Health check: ok
+[14:30]   [ComfyUI] [SubprocessWorker] worker started/confirmed
+[14:30]   [ComfyUI] [comfy-env] PRE-SERIALIZE 'image' shape: torch.Size([1, 598, 900, 3])
+[14:30]   [ComfyUI] [SubprocessWorker] serializing kwargs to shm...
+[14:30]   [ComfyUI] [SubprocessWorker] created 0 shm blocks
+[14:30]   [ComfyUI] [SubprocessWorker] sending request via socket...
+[14:30]   [ComfyUI] [SubprocessWorker] call_id=2 sending call_method
+[14:30]   [ComfyUI] [worker:ComfyUI-HYPano2] [comfy-env] _from_shm got dict with keys: ['__type__', 'strategy', 'manager_path', 'storage_key', 'storage_size']
+[14:30]   [ComfyUI] [worker:ComfyUI-HYPano2] [comfy-env] DESERIALIZE TensorRef: tensor_size=[1, 598, 900, 3]
+[14:30]   [ComfyUI] [worker:ComfyUI-HYPano2] [comfy-env] DESERIALIZED tensor shape: torch.Size([1, 598, 900, 3])
+[14:30]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] runtime: device=NVIDIA GeForce RTX 3060 | vram free=11.8/12.9GB
+[14:30]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] attention: transformer=flash (forced) | encoders=pytorch SDPA | vae=pytorch SDPA
+[14:30]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] input_image: shape=(1, 598, 900, 3) dtype=torch.float32 min=0 max=1 mean=0.3633 nan=0 inf=0
+[14:30]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] crop_border=0.03 -> cropped to (1, 564, 846, 3)
+[14:30]   Frame 8 saved (frame_007.jpg, t=377.3s)
+[14:30]   [capture-periodic] freeze=8ms shot=156ms unfreeze=11ms saved=True
+[14:33]   Frame 9 saved (frame_008.jpg, t=379.6s)
+[14:33]   [capture-periodic] freeze=4ms shot=125ms unfreeze=5ms saved=True
+[14:34]   [capture-loop] iter=3050 t=381.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=9.4/31.9GB (29%) swap=0.0/5.0GB (0%) cpu=10% browser_rss=0.61GB
+[14:36]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] loading UNet qwen_image_edit_2509_fp8mixed.safetensors
+[14:37]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] loading CLIP qwen_2.5_vl_7b_fp8_scaled.safetensors
+[14:39]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] loading VAE qwen_image_vae.safetensors
+[14:40]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] loading LoRA pytorch_lora_weights.safetensors strength=1.00
+[14:40]   [capture-loop] iter=3100 t=387.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=11.8/31.9GB (37%) swap=0.0/19.5GB (0%) cpu=16% browser_rss=0.60GB
+[14:40]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] use_template=True
+[14:40]   [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] positive (composed, 260 chars): Create a **ERP** panoramic expansion of the provided image. Preserve the original style, lighting, and fine details seamlessly throughout the extended areas, extend according to: A bright sunny day, peaceful apartment. 8k UHD, masterpiece, razor-sharp details.
+[14:40]   [ComfyUI] !!! Exception during processing !!! 'charmap' codec can't encode characters in position 72-118: character maps to <undefined>
+[14:40]   [ComfyUI] Traceback (most recent call last):
+[14:40]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\execution.py", line 535, in execute
+[14:41]   [ComfyUI]     output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+[14:41]   [ComfyUI]                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[14:41]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\execution.py", line 335, in get_output_data
+[14:41]   [ComfyUI]     return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)
+[14:41]   [ComfyUI]                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[14:41]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\execution.py", line 309, in _async_map_node_over_list
+[14:41]   [ComfyUI]     await process_inputs(input_dict, i)
+[14:41]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\execution.py", line 297, in process_inputs
+[14:41]   [ComfyUI]     result = f(**inputs)
+[14:41]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\.venv\Lib\site-packages\comfy_env\isolation\metadata.py", line 556, in proxy
+[14:41]   [ComfyUI]     result = worker.call_method(
+[14:41]   [ComfyUI]         module_name=mod,
+[14:41]   [ComfyUI]     ...<4 lines>...
+[14:41]   [ComfyUI]         timeout=600.0,
+[14:41]   [ComfyUI]     )
+[14:41]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\.venv\Lib\site-packages\comfy_env\isolation\workers\subprocess.py", line 669, in call_method
+[14:41]   [ComfyUI]     response = self._send_request(request, timeout)
+[14:41]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\.venv\Lib\site-packages\comfy_env\isolation\workers\subprocess.py", line 565, in _send_request
+[14:41]   [ComfyUI]     print(f"[worker:{self.name}] {msg}", file=sys.stderr, flush=True)
+[14:41]   [ComfyUI]     ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[14:41]   [ComfyUI]   File "C:\workspaces\HYPano2-2145\ComfyUI\app\logger.py", line 32, in write
+[14:41]   Execution complete (t=387.9s)
+[14:41]   [ComfyUI]     super().write(data)
+[14:41]   Execution error: {'prompt_id': '163f5f92-ac10-4480-b9e1-af3c7ca2ee17', 'node_id': '3', 'node_type': 'HYPano2Sample', 'executed': ['1', '2'], 'exception_message': "'charmap' codec can't encode characters in position 72-118: character maps to <undefined>\n", 'exception_type': 'UnicodeEncodeError', 'traceback': ['  File "C:\\workspaces\\HYPano2-2145\\ComfyUI\\execution.py", line 535, in execute\n    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\n                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\workspaces\\HYPano2-2145\\ComfyUI\\execution.py", line 335, in get_output_data\n    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\workspaces\\HYPano2-2145\\ComfyUI\\execution.py", line 309, in _async_map_node_over_list\n    await process_inputs(input_dict, i)\n', '  File "C:\\workspaces\\HYPano2-2145\\ComfyUI\\execution.py", line 297, in process_inputs\n    result = f(**inputs)\n', '  File "C:\\workspaces\\HYPano2-2145\\.venv\\Lib\\site-packages\\comfy_env\\isolation\\metadata.py", line 556, in proxy\n    result = worker.call_method(\n        module_name=mod,\n    ...<4 lines>...\n        timeout=600.0,\n    )\n', '  File "C:\\workspaces\\HYPano2-2145\\.venv\\Lib\\site-packages\\comfy_env\\isolation\\workers\\subprocess.py", line 669, in call_method\n    response = self._send_request(request, timeout)\n', '  File "C:\\workspaces\\HYPano2-2145\\.venv\\Lib\\site-packages\\comfy_env\\isolation\\workers\\subprocess.py", line 565, in _send_request\n    print(f"[worker:{self.name}] {msg}", file=sys.stderr, flush=True)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\workspaces\\HYPano2-2145\\ComfyUI\\app\\logger.py", line 32, in write\n    super().write(data)\n    ~~~~~~~~~~~~~^^^^^^\n', '  File "C:\\Users\\ContainerUser\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'], 'current_inputs': {'prompt': ['A bright sunny day, peaceful apartment.'], 'negative_prompt': [''], 'unet_filename': ['qwen_image_edit_2509_fp8mixed.safetensors'], 'clip_filename': ['qwen_2.5_vl_7b_fp8_scaled.safetensors'], 'vae_filename': ['qwen_image_vae.safetensors'], 'lora_filename': ['pytorch_lora_weights.safetensors'], 'lora_strength': [1], 'seed': [42], 'width': [1952], 'height': [960], 'num_inference_steps': [40], 'true_cfg_scale': [7.5], 'blend_width': [32], 'use_template': [True], 'crop_border': [0.03], 'image': ['tensor([[[[0.6588, 0.5059, 0.2824],\n          [0.6549, 0.5020, 0.2784],\n          [0.6627, 0.5020, 0.2784],\n          ...,\n          [0.2706, 0.1961, 0.1373],\n          [0.2863, 0.2118, 0.1529],\n          [0.3020, 0.2275, 0.1686]],\n\n         [[0.6588, 0.5059, 0.2824],\n          [0.6588, 0.5059, 0.2824],\n          [0.6667, 0.5059, 0.2824],\n          ...,\n          [0.2784, 0.2039, 0.1451],\n          [0.2784, 0.2039, 0.1451],\n          [0.2824, 0.2078, 0.1490]],\n\n         [[0.6588, 0.4980, 0.2706],\n          [0.6627, 0.5020, 0.2745],\n          [0.6706, 0.5098, 0.2824],\n          ...,\n          [0.2980, 0.2235, 0.1451],\n          [0.3020, 0.2275, 0.1490],\n          [0.3059, 0.2314, 0.1529]],\n\n         ...,\n\n         [[0.0941, 0.0353, 0.0078],\n          [0.0941, 0.0353, 0.0078],\n          [0.0902, 0.0314, 0.0039],\n          ...,\n          [0.2667, 0.1490, 0.0510],\n          [0.2745, 0.1569, 0.0588],\n          [0.2784, 0.1608, 0.0627]],\n\n         [[0.0941, 0.0353, 0.0000],\n          [0.0941, 0.0353, 0.0000],\n          [0.0941, 0.0353, 0.0000],\n          ...,\n          [0.2667, 0.1490, 0.0510],\n          [0.2745, 0.1569, 0.0588],\n          [0.2824, 0.1647, 0.0667]],\n\n         [[0.0941, 0.0353, 0.0000],\n          [0.0980, 0.0392, 0.0039],\n          [0.1020, 0.0431, 0.0078],\n          ...,\n          [0.2627, 0.1451, 0.0471],\n          [0.2745, 0.1569, 0.0588],\n          [0.2863, 0.1686, 0.0706]]]])']}, 'current_outputs': ['1', '2', '3', '4'], 'timestamp': 1779134435227}
+[14:41]   [ComfyUI]     ~~~~~~~~~~~~~^^^^^^
+[14:41]   [ComfyUI]   File "C:\Users\ContainerUser\AppData\Roaming\uv\python\cpython-3.13-windows-x86_64-none\Lib\encodings\cp1252.py", line 19, in encode
+[14:41]   [ComfyUI]     return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+[14:41]   [ComfyUI]            ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[14:41]   [ComfyUI] UnicodeEncodeError: 'charmap' codec can't encode characters in position 72-118: character maps to <undefined>
+[14:41]   [ComfyUI] 
+[14:41]   [ComfyUI] Prompt executed in 387.58 seconds
+[14:41] Results saved to C:\logs\HYPano2-2145\dev\windows-gpu\results.json
+[14:41] Model report: 4 files, 28.9 GB -> C:\logs\HYPano2-2145\dev\windows-gpu\models.json
+[14:41] Saved: C:\logs\HYPano2-2145\dev\windows-gpu\index.html
+[14:41] 
+windows: FAILED
+[14:41] Error: Workflow execution failed (1 error(s))
+[14:41] Details: image_to_panorama.json: Workflow execution failed: {'prompt_id': '163f5f92-ac10-4480-b9e1-af3c7ca2ee17', 'node_id': '3', 'node_type': 'HYPano2Sample', 'executed': ['1', '2'], 'exception_message': "'charmap' codec can't encode characters in position 72-118: character maps to <undefined>\n", 'exception_type': 'UnicodeEncodeError', 'traceback': ['  File "C:\\workspaces\\HYPano2-2145\\ComfyUI\\execution.py", line 535, in execute\n    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\n                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\workspaces\\HYPano2-2145\\ComfyUI\\execution.py", line 335, in get_output_data\n    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\workspaces\\HYPano2-2145\\ComfyUI\\execution.py", line 309, in _async_map_node_over_list\n    await process_inputs(input_dict, i)\n', '  File "C:\\workspaces\\HYPano2-2145\\ComfyUI\\execution.py", line 297, in process_inputs\n    result = f(**inputs)\n', '  File "C:\\workspaces\\HYPano2-2145\\.venv\\Lib\\site-packages\\comfy_env\\isolation\\metadata.py", line 556, in proxy\n    result = worker.call_method(\n        module_name=mod,\n    ...<4 lines>...\n        timeout=600.0,\n    )\n', '  File "C:\\workspaces\\HYPano2-2145\\.venv\\Lib\\site-packages\\comfy_env\\isolation\\workers\\subprocess.py", line 669, in call_method\n    response = self._send_request(request, timeout)\n', '  File "C:\\workspaces\\HYPano2-2145\\.venv\\Lib\\site-packages\\comfy_env\\isolation\\workers\\subprocess.py", line 565, in _send_request\n    print(f"[worker:{self.name}] {msg}", file=sys.stderr, flush=True)\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\workspaces\\HYPano2-2145\\ComfyUI\\app\\logger.py", line 32, in write\n    super().write(data)\n    ~~~~~~~~~~~~~^^^^^^\n', '  File "C:\\Users\\ContainerUser\\AppData\\Roaming\\uv\\python\\cpython-3.13-windows-x86_64-none\\Lib\\encodings\\cp1252.py", line 19, in encode\n    return codecs.charmap_encode(input,self.errors,encoding_table)[0]\n           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n'], 'current_inputs': {'prompt': ['A bright sunny day, peaceful apartment.'], 'negative_prompt': [''], 'unet_filename': ['qwen_image_edit_2509_fp8mixed.safetensors'], 'clip_filename': ['qwen_2.5_vl_7b_fp8_scaled.safetensors'], 'vae_filename': ['qwen_image_vae.safetensors'], 'lora_filename': ['pytorch_lora_weights.safetensors'], 'lora_strength': [1], 'seed': [42], 'width': [1952], 'height': [960], 'num_inference_steps': [40], 'true_cfg_scale': [7.5], 'blend_width': [32], 'use_template': [True], 'crop_border': [0.03], 'image': ['tensor([[[[0.6588, 0.5059, 0.2824],\n          [0.6549, 0.5020, 0.2784],\n          [0.6627, 0.5020, 0.2784],\n          ...,\n          [0.2706, 0.1961, 0.1373],\n          [0.2863, 0.2118, 0.1529],\n          [0.3020, 0.2275, 0.1686]],\n\n         [[0.6588, 0.5059, 0.2824],\n          [0.6588, 0.5059, 0.2824],\n          [0.6667, 0.5059, 0.2824],\n          ...,\n          [0.2784, 0.2039, 0.1451],\n          [0.2784, 0.2039, 0.1451],\n          [0.2824, 0.2078, 0.1490]],\n\n         [[0.6588, 0.4980, 0.2706],\n          [0.6627, 0.5020, 0.2745],\n          [0.6706, 0.5098, 0.2824],\n          ...,\n          [0.2980, 0.2235, 0.1451],\n          [0.3020, 0.2275, 0.1490],\n          [0.3059, 0.2314, 0.1529]],\n\n         ...,\n\n         [[0.0941, 0.0353, 0.0078],\n          [0.0941, 0.0353, 0.0078],\n          [0.0902, 0.0314, 0.0039],\n          ...,\n          [0.2667, 0.1490, 0.0510],\n          [0.2745, 0.1569, 0.0588],\n          [0.2784, 0.1608, 0.0627]],\n\n         [[0.0941, 0.0353, 0.0000],\n          [0.0941, 0.0353, 0.0000],\n          [0.0941, 0.0353, 0.0000],\n          ...,\n          [0.2667, 0.1490, 0.0510],\n          [0.2745, 0.1569, 0.0588],\n          [0.2824, 0.1647, 0.0667]],\n\n         [[0.0941, 0.0353, 0.0000],\n          [0.0980, 0.0392, 0.0039],\n          [0.1020, 0.0431, 0.0078],\n          ...,\n          [0.2627, 0.1451, 0.0471],\n          [0.2745, 0.1569, 0.0588],\n          [0.2863, 0.1686, 0.0706]]]])']}, 'current_outputs': ['1', '2', '3', '4'], 'timestamp': 1779134435227}
+
+Details:
+Workflow: C:\ComfyUI-HYPano2\workflows\image_to_panorama.json
+Node error: HYPano2Sample
+[14:41] Stopping ComfyUI server...
