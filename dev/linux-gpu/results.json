@@ -1,0 +1,42 @@
+{
+  "timestamp": "2026-05-18T20:21:17.430128+00:00",
+  "platform": "linux",
+  "hardware": {
+    "os": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+    "cpu": "Intel(R) Xeon(R) CPU E5-2697 v4 @ 2.30GHz",
+    "gpu": "NVIDIA GeForce RTX 3090"
+  },
+  "commit_hash": "39eb09440feabbabaffa81bb7978653af14eab2d",
+  "run_url": "https://github.com/PozzettiAndrea/comfy-gpu-ci/actions/runs/26056449120",
+  "success": true,
+  "summary": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0
+  },
+  "workflows": [
+    {
+      "name": "image_to_panorama",
+      "status": "pass",
+      "duration_seconds": 762.05,
+      "error": null,
+      "hardware": {
+        "os": "Linux-6.8.0-107-generic-x86_64-with-glibc2.35",
+        "cpu": "Intel(R) Xeon(R) CPU E5-2697 v4 @ 2.30GHz",
+        "gpu": "NVIDIA GeForce RTX 3090"
+      },
+      "resources": {
+        "ram": {
+          "peak": 26.99,
+          "avg": 15.29
+        },
+        "total_ram_gb": 31.2,
+        "samples": 740,
+        "vram": {
+          "peak": 21.46,
+          "avg": 12.07
+        }
+      }
+    }
+  ]
+}

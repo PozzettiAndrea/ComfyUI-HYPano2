@@ -1,0 +1,1487 @@
+Capturing execution frames: image_to_panorama.json
+  Frame 1 saved (frame_000.jpg, t=0.0s)
+  Validating workflow...
+  Queuing workflow for execution...
+  [ComfyUI] === /validate endpoint called ===
+  [ComfyUI] Received JSON with keys: ['prompt']
+  [ComfyUI] Prompt has 4 nodes
+  [ComfyUI]   Node 1: LoadImage
+  [ComfyUI]     Inputs: {"image": "office.jpg"}
+  [ComfyUI]   Node 2: HYPano2DownloadModels
+  [ComfyUI]     Inputs: {"precision": "fp8"}
+  [ComfyUI] [comfy-env] SubprocessWorker: /tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/bin/python
+  [ComfyUI]   Node 3: HYPano2Sample
+  [ComfyUI] [comfy-env] env_vars: {'COMFYUI_BASE': '/workspaces/HYPano2-2004/ComfyUI'}
+  [ComfyUI]     Inputs: {"prompt": "A bright sunny day, peaceful apartment.", "negative_prompt": "", "unet_filename": "qwen_image_edit_2509_fp8mixed.safetensors", "clip_filename": "qwen_2.5_vl_7b_fp8_scaled.safetensors", "va
+  [ComfyUI] [ComfyUI-HYPano2] python: /tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/bin/python
+  [ComfyUI]   Node 4: SaveImage
+  [ComfyUI] [ComfyUI-HYPano2] sys_path sent to worker: ['/workspaces/HYPano2-2004/ComfyUI', '/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2', '/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages', '/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2']
+  [ComfyUI]     Inputs: {"filename_prefix": "hypano2", "images": ["3", 0]}
+  [ComfyUI] [SubprocessWorker] is_pixi=True, python=/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/bin/python
+  [ComfyUI] Generated prompt_id: 2fcf3c49-2b20-4a58-8003-0c854eb3c8ba
+  [ComfyUI] [SubprocessWorker] launching cmd=['/tmp/comfytest-home/.pixi/bin/pixi', 'run', '--as-is', '--manifest-path', '/tmp/comfytest-home/.ce/pixi.toml', '-e', 'hypano2-nodes', 'python', '/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py', 'abstract://comfy_worker_ade7afa5b946']...
+  [ComfyUI] Calling execution.validate_prompt()...
+  [ComfyUI] [SubprocessWorker] socket_addr=abstract://comfy_worker_ade7afa5b946 (abstract, no filesystem path)
+  [ComfyUI] Validation result: valid=True
+  [ComfyUI] === Validation PASSED ===
+  [ComfyUI] got prompt
+  [ComfyUI] [comfy-env] Running HYPano2DownloadModels: precision: 'fp8'
+  [ComfyUI] [VRAM] Before HYPano2DownloadModels: 302 / 24124 MB
+  [ComfyUI] [SubprocessWorker] call_method: nodes.load_model.HYPano2DownloadModels.EXECUTE_NORMALIZED
+  [ComfyUI] [SubprocessWorker] acquired lock, ensuring started...
+  Frame 2 saved (frame_001.jpg, t=2.5s)
+  [capture-periodic] freeze=2ms shot=187ms unfreeze=8ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] WARNING: WARNING: You need pytorch with cu130 or higher to use optimized CUDA operations.
+  [ComfyUI] [SubprocessWorker] worker started/confirmed
+  [ComfyUI] [SubprocessWorker] serializing kwargs to shm...
+  [ComfyUI] [SubprocessWorker] created 0 shm blocks
+  [ComfyUI] [SubprocessWorker] sending request via socket...
+  [ComfyUI] [SubprocessWorker] call_id=1 sending call_method
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2 force_attention] forced attention=flash (was sage)
+  Frame 3 saved (frame_002.jpg, t=4.9s)
+  [capture-periodic] freeze=3ms shot=198ms unfreeze=4ms saved=True
+  [ComfyUI] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  [ComfyUI] [worker:ComfyUI-HYPano2] WARNING: Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+  [capture-loop] iter=50 t=6.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=5.0/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=6% browser_rss=0.81GB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=1
+  [capture-loop] iter=100 t=12.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=5.1/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.81GB
+  [capture-loop] iter=150 t=18.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=5.1/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=9% browser_rss=0.81GB
+  [capture-loop] iter=200 t=24.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.81GB
+  [capture-loop] iter=250 t=30.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.77GB
+  [capture-loop] iter=300 t=35.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=6% browser_rss=0.76GB
+  [capture-loop] iter=350 t=42.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=400 t=47.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.77GB
+  [capture-loop] iter=450 t=53.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=500 t=59.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=6% browser_rss=0.76GB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 1 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 424 in http_get
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 88 in _inner_fn
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1858 in _download_to_tmp_and_move
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1216 in _hf_hub_download_to_cache_dir
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 997 in hf_hub_download
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 88 in _inner_fn
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/load_model.py", line 101 in _download
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/load_model.py", line 239 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [capture-loop] iter=550 t=65.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=600 t=71.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=5.0/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=6% browser_rss=0.76GB
+  [capture-loop] iter=650 t=77.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=5.0/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=700 t=83.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=5.0/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=6% browser_rss=0.76GB
+  [capture-loop] iter=750 t=89.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=5.0/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=800 t=95.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=850 t=101.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=6% browser_rss=0.76GB
+  [capture-loop] iter=900 t=107.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=950 t=112.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=1000 t=118.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.8/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 2 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/ssl.py", line 1140 in read
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/ssl.py", line 1285 in recv
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_backends/sync.py", line 128 in read
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 217 in _receive_event
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 203 in _receive_response_body
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 334 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 403 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_transports/default.py", line 127 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_client.py", line 153 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_models.py", line 951 in iter_raw
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_models.py", line 897 in iter_bytes
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 421 in http_get
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 88 in _inner_fn
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1858 in _download_to_tmp_and_move
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1216 in _hf_hub_download_to_cache_dir
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 997 in hf_hub_download
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 88 in _inner_fn
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/load_model.py", line 101 in _download
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/load_model.py", line 239 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [capture-loop] iter=1050 t=124.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=1100 t=130.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.8/31.2GB (15%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=1150 t=136.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=5.0/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=1200 t=142.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=5.1/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=1250 t=148.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=1300 t=154.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=1350 t=160.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.8/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=1400 t=166.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=1450 t=172.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=1500 t=177.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 3 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 424 in http_get
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 88 in _inner_fn
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1858 in _download_to_tmp_and_move
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1216 in _hf_hub_download_to_cache_dir
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 997 in hf_hub_download
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 88 in _inner_fn
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/load_model.py", line 101 in _download
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/load_model.py", line 239 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [capture-loop] iter=1550 t=183.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=1600 t=189.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=1650 t=195.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=1700 t=201.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=1750 t=207.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=1
+  Frame 4 saved (frame_003.jpg, t=211.9s)
+  [capture-periodic] freeze=3ms shot=216ms unfreeze=7ms saved=True
+  [capture-loop] iter=1800 t=213.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=1850 t=219.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.8/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=1900 t=224.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.8/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=1950 t=230.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=2000 t=236.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 4 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/ssl.py", line 1140 in read
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/ssl.py", line 1285 in recv
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_backends/sync.py", line 128 in read
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 217 in _receive_event
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 203 in _receive_response_body
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 334 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 403 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_transports/default.py", line 127 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_client.py", line 153 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_models.py", line 951 in iter_raw
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_models.py", line 897 in iter_bytes
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 421 in http_get
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 88 in _inner_fn
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1858 in _download_to_tmp_and_move
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1216 in _hf_hub_download_to_cache_dir
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 997 in hf_hub_download
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 88 in _inner_fn
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/load_model.py", line 101 in _download
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/load_model.py", line 239 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [capture-loop] iter=2050 t=242.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=2100 t=248.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=2150 t=254.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=5.0/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=2200 t=260.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=2250 t=266.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=2300 t=271.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=2350 t=277.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=2400 t=283.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [capture-loop] iter=2450 t=289.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [capture-loop] iter=2500 t=295.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 5 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/ssl.py", line 1140 in read
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/ssl.py", line 1285 in recv
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_backends/sync.py", line 128 in read
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 217 in _receive_event
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 203 in _receive_response_body
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/http11.py", line 334 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpcore/_sync/connection_pool.py", line 403 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_transports/default.py", line 127 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_client.py", line 153 in __iter__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_models.py", line 951 in iter_raw
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/httpx/_models.py", line 897 in iter_bytes
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 421 in http_get
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 88 in _inner_fn
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1858 in _download_to_tmp_and_move
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 1216 in _hf_hub_download_to_cache_dir
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/file_download.py", line 997 in hf_hub_download
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/huggingface_hub/utils/_validators.py", line 88 in _inner_fn
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/load_model.py", line 101 in _download
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/load_model.py", line 239 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [capture-loop] iter=2550 t=301.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=1
+  Frame 5 saved (frame_004.jpg, t=303.8s)
+  [capture-periodic] freeze=3ms shot=220ms unfreeze=9ms saved=True
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=1
+  Frame 6 saved (frame_005.jpg, t=306.2s)
+  [capture-periodic] freeze=3ms shot=224ms unfreeze=7ms saved=True
+  [capture-loop] iter=2600 t=307.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=4.9/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.76GB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=1
+  [ComfyUI] [SubprocessWorker] got response: ok
+  [ComfyUI] [comfy-env] HYPano2DownloadModels done (312.82s): result: NodeOutput
+  [ComfyUI] [VRAM] After HYPano2DownloadModels: 564 / 24124 MB
+  [ComfyUI] [comfy-env] Running HYPano2Sample: prompt: 'A bright sunny day, peaceful apartment.', negative_prompt: '', unet_filename: 'qwen_image_edit_2509_fp8mixed.safetensors', clip_filename: 'qwen_2.5_vl_7b_fp8_scaled.safetensors', vae_filename: 'qwen_image_vae.safetensors', lora_filename: 'pytorch_lora_weights.safetensors', lora_strength: 1.0, seed: 42, width: 1952, height: 960, num_inference_steps: 40, true_cfg_scale: 7.5, blend_width: 32, use_template: True, crop_border: 0.03, image: torch.float32 [1,598,900,3] cpu
+  [ComfyUI] [VRAM] Before HYPano2Sample: 564 / 24124 MB
+  [ComfyUI] [SubprocessWorker] call_method: nodes.sample.HYPano2Sample.EXECUTE_NORMALIZED
+  [ComfyUI] [SubprocessWorker] acquired lock, ensuring started...
+  [ComfyUI] [ComfyUI-HYPano2] Health check: ping (timeout=5.0s)...
+  [ComfyUI] [ComfyUI-HYPano2] Health check: ok
+  [ComfyUI] [SubprocessWorker] worker started/confirmed
+  [ComfyUI] [comfy-env] PRE-SERIALIZE 'image' shape: torch.Size([1, 598, 900, 3])
+  [ComfyUI] [SubprocessWorker] serializing kwargs to shm...
+  [ComfyUI] [SubprocessWorker] created 0 shm blocks
+  [ComfyUI] [SubprocessWorker] sending request via socket...
+  [ComfyUI] [SubprocessWorker] call_id=2 sending call_method
+  [ComfyUI] [worker:ComfyUI-HYPano2] [comfy-env] _from_shm got dict with keys: ['__type__', 'strategy', 'parent_pid', 'fd', 'storage_size']
+  [ComfyUI] [worker:ComfyUI-HYPano2] [comfy-env] DESERIALIZE TensorRef: tensor_size=[1, 598, 900, 3]
+  [ComfyUI] [worker:ComfyUI-HYPano2] [comfy-env] DESERIALIZED tensor shape: torch.Size([1, 598, 900, 3])
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] runtime: device=NVIDIA GeForce RTX 3090 | vram free=24.7/25.3GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] attention: transformer=flash (forced) | encoders=pytorch SDPA | vae=pytorch SDPA
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] input_image: shape=(1, 598, 900, 3) dtype=torch.float32 min=0 max=1 mean=0.3633 nan=0 inf=0
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] crop_border=0.03 -> cropped to (1, 564, 846, 3)
+  [capture-loop] iter=2650 t=313.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=5.0/31.2GB (16%) swap=0.7/32.0GB (2%) cpu=4% browser_rss=0.77GB
+  Frame 7 saved (frame_006.jpg, t=315.2s)
+  [capture-periodic] freeze=3ms shot=211ms unfreeze=6ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] loading UNet qwen_image_edit_2509_fp8mixed.safetensors
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] loading CLIP qwen_2.5_vl_7b_fp8_scaled.safetensors
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1043MB (now 1043MB) reserved=1056MB peak=1043MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +2824MB (now 3868MB) reserved=3872MB peak=3868MB
+  [ComfyUI] [SubprocessWorker] callback 'request_vram_budget' from call_id=2
+  [ComfyUI] [comfy-env] VRAM request: 8.29GB, free before eviction: 16.36GB
+  [ComfyUI] [comfy-env] VRAM after eviction: 16.36GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] loading VAE qwen_image_vae.safetensors
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +4041MB (now 7910MB) reserved=7936MB peak=7910MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] loading LoRA pytorch_lora_weights.safetensors strength=1.00
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] use_template=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] positive (composed, 260 chars): Create a **ERP** panoramic expansion of the provided image. Preserve the original style, lighting, and fine details seamlessly throughout the extended areas, extend according to: A bright sunny day, peaceful apartment. 8k UHD, masterpiece, razor-sharp details.
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] negative (composed, 94 chars): 低分辨率，低画质，模糊。杂乱的背景，结构扭曲，模糊纹理，物体融合。构图混乱。过度光滑，画面具有AI感。人脸畸形。巨大物体，巨大建筑，近景特写，近景压迫，比例失调。车，车辆。画面上方的树叶。
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] encoding positive prompt...
+  [capture-loop] iter=2700 t=319.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=5.3/31.2GB (17%) swap=0.7/32.0GB (2%) cpu=6% browser_rss=0.76GB
+  [ComfyUI] [SubprocessWorker] callback 'request_vram_budget' from call_id=2
+  [ComfyUI] [comfy-env] VRAM request: 0.25GB, free before eviction: 16.36GB
+  [ComfyUI] [comfy-env] VRAM after eviction: 16.36GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1214MB (now 9124MB) reserved=9152MB peak=9124MB
+  [ComfyUI] [SubprocessWorker] callback 'request_vram_budget' from call_id=2
+  [ComfyUI] [comfy-env] VRAM request: 8.29GB, free before eviction: 15.03GB
+  [ComfyUI] [comfy-env] VRAM after eviction: 15.03GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -955MB (now 8170MB) reserved=9024MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] pos_cond[0][0]: shape=(1, 252, 3584) dtype=torch.float32 min=-207.1 max=116.1 mean=-0.1594 nan=0 inf=0
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] encoding negative prompt...
+  [ComfyUI] [SubprocessWorker] callback 'request_vram_budget' from call_id=2
+  [ComfyUI] [comfy-env] VRAM request: 0.25GB, free before eviction: 15.16GB
+  [ComfyUI] [comfy-env] VRAM after eviction: 15.16GB
+  [ComfyUI] [SubprocessWorker] callback 'request_vram_budget' from call_id=2
+  [ComfyUI] [comfy-env] VRAM request: 8.29GB, free before eviction: 14.59GB
+  [ComfyUI] [comfy-env] VRAM after eviction: 14.59GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] neg_cond[0][0]: shape=(1, 265, 3584) dtype=torch.float32 min=-178.3 max=109.1 mean=-0.1414 nan=0 inf=0
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] sampling 1952x960 steps=40 cfg=7.5 seed=42 ...
+  [ComfyUI] [SubprocessWorker] callback 'request_vram_budget' from call_id=2
+  [ComfyUI] [comfy-env] VRAM request: 20.53GB, free before eviction: 15.32GB
+  [ComfyUI] [comfy-env] VRAM after eviction: 15.32GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -251MB (now 7919MB) reserved=8224MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -1642MB (now 6277MB) reserved=8224MB peak=9124MB
+  [capture-loop] iter=2750 t=325.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=8.4/31.2GB (27%) swap=0.7/32.0GB (2%) cpu=6% browser_rss=0.77GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -1556MB (now 4721MB) reserved=8224MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -1637MB (now 3085MB) reserved=8224MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -1541MB (now 1545MB) reserved=8224MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -1519MB (now 26MB) reserved=8224MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +810MB (now 837MB) reserved=1440MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1188MB (now 2025MB) reserved=2784MB peak=9124MB
+  [capture-loop] iter=2800 t=331.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=13.6/31.2GB (44%) swap=0.7/32.0GB (2%) cpu=5% browser_rss=0.76GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1296MB (now 3321MB) reserved=4256MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1260MB (now 4581MB) reserved=5696MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1260MB (now 5841MB) reserved=7040MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1152MB (now 6993MB) reserved=8256MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1080MB (now 8073MB) reserved=9344MB peak=9124MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +990MB (now 9063MB) reserved=9952MB peak=9124MB
+  [capture-loop] iter=2850 t=337.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=13.7/31.2GB (44%) swap=0.7/32.0GB (2%) cpu=6% browser_rss=0.77GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1134MB (now 10197MB) reserved=10752MB peak=10197MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +990MB (now 11187MB) reserved=11776MB peak=11187MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +791MB (now 11979MB) reserved=12640MB peak=12024MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +820MB (now 12800MB) reserved=13440MB peak=12800MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1195MB (now 13995MB) reserved=14496MB peak=13995MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1945MB (now 15941MB) reserved=16448MB peak=15941MB
+  [capture-loop] iter=2900 t=343.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=11.7/31.2GB (37%) swap=2.7/32.0GB (8%) cpu=6% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1080MB (now 17021MB) reserved=17536MB peak=17021MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1134MB (now 18156MB) reserved=18656MB peak=18156MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1242MB (now 19399MB) reserved=19904MB peak=19399MB
+  [ComfyUI] 
+  [ComfyUI]   0%|          | 0/40 [00:00<?, ?it/s][worker:ComfyUI-HYPano2] [VRAM] +356MB (now 19756MB) reserved=21376MB peak=19964MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19976MB) reserved=21376MB peak=20165MB
+  [capture-loop] iter=2950 t=349.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.3/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=6% browser_rss=0.55GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19756MB) reserved=21376MB peak=20165MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +221MB (now 19977MB) reserved=21376MB peak=20165MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -291MB (now 19687MB) reserved=21376MB peak=20165MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +552MB (now 20239MB) reserved=21376MB peak=20239MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -380MB (now 19859MB) reserved=21376MB peak=20239MB
+  [capture-loop] iter=3000 t=355.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.3/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=4% browser_rss=0.56GB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]   2%|▎         | 1/40 [00:08<05:49,  8.97s/it][worker:ComfyUI-HYPano2] [VRAM] -240MB (now 19620MB) reserved=21376MB peak=20239MB
+  Frame 8 saved (frame_007.jpg, t=356.0s)
+  [capture-periodic] freeze=9ms shot=226ms unfreeze=5ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +226MB (now 19847MB) reserved=21376MB peak=20239MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +323MB (now 20170MB) reserved=21376MB peak=20239MB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 6 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007921a1078640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_management.py", line 1329 in cast_to
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_management.py", line 1334 in cast_to_device
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 202 in _apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 182 in apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 325 in _calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 213 in _calc_cond_batch_outer
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 205 in calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 380 in sampling_function
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 964 in predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 961 in outer_predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 954 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 400 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/k_diffusion/sampling.py", line 205 in sample_euler
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 124 in decorate_context
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 751 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 981 in inner_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 995 in outer_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1052 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1070 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1180 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/sample.py", line 66 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/sample.py", line 274 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -551MB (now 19620MB) reserved=21376MB peak=20239MB
+  [capture-loop] iter=3050 t=361.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.5/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=5% browser_rss=0.61GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +349MB (now 19970MB) reserved=21376MB peak=20244MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +310MB (now 20280MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -483MB (now 19797MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  Frame 9 saved (frame_008.jpg, t=365.3s)
+  [capture-periodic] freeze=3ms shot=224ms unfreeze=3ms saved=True
+  [capture-loop] iter=3100 t=367.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.5/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=4% browser_rss=0.61GB
+  [ComfyUI]   5%|▌         | 2/40 [00:18<05:56,  9.38s/it][worker:ComfyUI-HYPano2] [VRAM] +372MB (now 20170MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -339MB (now 19831MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -212MB (now 19620MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +349MB (now 19970MB) reserved=21376MB peak=20280MB
+  [capture-loop] iter=3150 t=372.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.4/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=5% browser_rss=0.61GB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]   8%|▊         | 3/40 [00:28<05:52,  9.52s/it][worker:ComfyUI-HYPano2] [VRAM] -350MB (now 19620MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20280MB
+  Frame 10 saved (frame_009.jpg, t=376.7s)
+  [capture-periodic] freeze=3ms shot=209ms unfreeze=3ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +221MB (now 19983MB) reserved=21376MB peak=20280MB
+  [capture-loop] iter=3200 t=378.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.4/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=4% browser_rss=0.61GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +208MB (now 19970MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -447MB (now 19797MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [capture-loop] iter=3250 t=384.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=6 ram=9.5/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=5% browser_rss=0.62GB
+  [ComfyUI]  10%|█         | 4/40 [00:38<05:45,  9.59s/it][worker:ComfyUI-HYPano2] [VRAM] +377MB (now 20174MB) reserved=21376MB peak=20280MB
+  Frame 11 saved (frame_010.jpg, t=385.9s)
+  [capture-periodic] freeze=3ms shot=221ms unfreeze=3ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -328MB (now 19847MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +323MB (now 20170MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -324MB (now 19847MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -227MB (now 19620MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +349MB (now 19970MB) reserved=21376MB peak=20280MB
+  [capture-loop] iter=3300 t=390.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.4/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=4% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -278MB (now 19692MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +277MB (now 19970MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  12%|█▎        | 5/40 [00:47<05:37,  9.64s/it][worker:ComfyUI-HYPano2] [VRAM] -350MB (now 19620MB) reserved=21376MB peak=20280MB
+  Frame 12 saved (frame_011.jpg, t=395.1s)
+  [capture-periodic] freeze=3ms shot=222ms unfreeze=15ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +280MB (now 19901MB) reserved=21376MB peak=20280MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +342MB (now 20243MB) reserved=21376MB peak=20280MB
+  [capture-loop] iter=3350 t=396.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.4/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=5% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -483MB (now 19761MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +221MB (now 19983MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -363MB (now 19620MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +280MB (now 19901MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +343MB (now 20244MB) reserved=21376MB peak=20330MB
+  [capture-loop] iter=3400 t=402.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.5/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=5% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -417MB (now 19827MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  15%|█▌        | 6/40 [00:57<05:28,  9.67s/it][worker:ComfyUI-HYPano2] [VRAM] -217MB (now 19611MB) reserved=21376MB peak=20330MB
+  Frame 13 saved (frame_012.jpg, t=404.1s)
+  [capture-periodic] freeze=3ms shot=235ms unfreeze=3ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +235MB (now 19847MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +323MB (now 20170MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -324MB (now 19847MB) reserved=21376MB peak=20330MB
+  [capture-loop] iter=3450 t=408.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.4/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=4% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -227MB (now 19620MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +624MB (now 20244MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -417MB (now 19827MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +415MB (now 20242MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -273MB (now 19970MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  18%|█▊        | 7/40 [01:07<05:20,  9.70s/it][worker:ComfyUI-HYPano2] [VRAM] -350MB (now 19620MB) reserved=21376MB peak=20330MB
+  [capture-loop] iter=3500 t=414.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.4/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=5% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20330MB
+  Frame 14 saved (frame_013.jpg, t=415.6s)
+  [capture-periodic] freeze=3ms shot=228ms unfreeze=5ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +221MB (now 19983MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +204MB (now 19965MB) reserved=21376MB peak=20330MB
+  [capture-loop] iter=3550 t=420.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.4/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=4% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 7 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007921a1078640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/functional.py", line 2954 in rms_norm
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ops.py", line 618 in forward_comfy_cast_weights
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ops.py", line 625 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 167 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 290 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 534 in _forward
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 427 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 226 in _apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 182 in apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 325 in _calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 213 in _calc_cond_batch_outer
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 205 in calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 380 in sampling_function
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 964 in predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 961 in outer_predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 954 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 400 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/k_diffusion/sampling.py", line 205 in sample_euler
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 124 in decorate_context
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 751 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 981 in inner_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 995 in outer_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1052 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1070 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1180 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/sample.py", line 66 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/sample.py", line 274 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +279MB (now 20244MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -336MB (now 19909MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  20%|██        | 8/40 [01:17<05:11,  9.72s/it][worker:ComfyUI-HYPano2] [VRAM] -308MB (now 19601MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +381MB (now 19983MB) reserved=21376MB peak=20330MB
+  Frame 15 saved (frame_014.jpg, t=425.0s)
+  [capture-periodic] freeze=2ms shot=208ms unfreeze=6ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20330MB
+  [capture-loop] iter=3600 t=426.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.4/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=5% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +208MB (now 19970MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20330MB
+  [capture-loop] iter=3650 t=432.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.4/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=5% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  22%|██▎       | 9/40 [01:26<05:02,  9.74s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20330MB
+  Frame 16 saved (frame_015.jpg, t=434.2s)
+  [capture-periodic] freeze=3ms shot=202ms unfreeze=4ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +362MB (now 19983MB) reserved=21376MB peak=20330MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=3700 t=438.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.4/31.2GB (30%) swap=5.3/32.0GB (17%) cpu=5% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +208MB (now 19970MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -342MB (now 19902MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +341MB (now 20244MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  Frame 17 saved (frame_016.jpg, t=443.5s)
+  [capture-periodic] freeze=3ms shot=212ms unfreeze=3ms saved=True
+  [ComfyUI]  25%|██▌       | 10/40 [01:36<04:52,  9.76s/it][worker:ComfyUI-HYPano2] [VRAM] -625MB (now 19620MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=3750 t=444.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.6/31.2GB (31%) swap=5.3/32.0GB (16%) cpu=6% browser_rss=0.62GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -362MB (now 19620MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +349MB (now 19970MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=3800 t=449.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.7/31.2GB (31%) swap=5.3/32.0GB (16%) cpu=6% browser_rss=0.53GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -335MB (now 19910MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  28%|██▊       | 11/40 [01:46<04:43,  9.77s/it][worker:ComfyUI-HYPano2] [VRAM] -291MB (now 19620MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20347MB
+  Frame 18 saved (frame_017.jpg, t=454.9s)
+  [capture-periodic] freeze=3ms shot=210ms unfreeze=4ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=3850 t=455.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=7 ram=9.7/31.2GB (31%) swap=5.3/32.0GB (16%) cpu=5% browser_rss=0.53GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +221MB (now 19983MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +222MB (now 19983MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +208MB (now 19970MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=3900 t=461.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.8/31.2GB (31%) swap=5.2/32.0GB (16%) cpu=6% browser_rss=0.53GB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  30%|███       | 12/40 [01:56<04:34,  9.79s/it][worker:ComfyUI-HYPano2] [VRAM] -350MB (now 19620MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20347MB
+  Frame 19 saved (frame_018.jpg, t=463.9s)
+  [capture-periodic] freeze=3ms shot=211ms unfreeze=4ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=3950 t=467.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.8/31.2GB (31%) swap=5.2/32.0GB (16%) cpu=6% browser_rss=0.53GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +205MB (now 19967MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +277MB (now 20244MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -275MB (now 19970MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  32%|███▎      | 13/40 [02:06<04:24,  9.80s/it][worker:ComfyUI-HYPano2] [VRAM] -350MB (now 19620MB) reserved=21376MB peak=20347MB
+  Frame 20 saved (frame_019.jpg, t=473.0s)
+  [capture-periodic] freeze=3ms shot=217ms unfreeze=4ms saved=True
+  [capture-loop] iter=4000 t=473.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.2/32.0GB (16%) cpu=7% browser_rss=0.53GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +226MB (now 19847MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +323MB (now 20170MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -410MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +476MB (now 20238MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=4050 t=479.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.8/31.2GB (32%) swap=5.2/32.0GB (16%) cpu=6% browser_rss=0.47GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -269MB (now 19970MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 8 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007921a1078640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/functional.py", line 2954 in rms_norm
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ops.py", line 618 in forward_comfy_cast_weights
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ops.py", line 625 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 167 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 290 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 534 in _forward
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 427 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 226 in _apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 182 in apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 325 in _calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 213 in _calc_cond_batch_outer
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 205 in calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 380 in sampling_function
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 964 in predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 961 in outer_predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 954 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 400 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/k_diffusion/sampling.py", line 205 in sample_euler
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 124 in decorate_context
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 751 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 981 in inner_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 995 in outer_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1052 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1070 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1180 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/sample.py", line 66 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/sample.py", line 274 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  35%|███▌      | 14/40 [02:15<04:15,  9.81s/it][worker:ComfyUI-HYPano2] [VRAM] -262MB (now 19983MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20347MB
+  Frame 21 saved (frame_020.jpg, t=484.4s)
+  [capture-periodic] freeze=3ms shot=207ms unfreeze=4ms saved=True
+  [capture-loop] iter=4100 t=485.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=9.9/31.2GB (32%) swap=5.2/32.0GB (16%) cpu=7% browser_rss=0.47GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +205MB (now 19966MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -206MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +483MB (now 20244MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -414MB (now 19830MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +413MB (now 20244MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=4150 t=491.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.8/31.2GB (32%) swap=5.2/32.0GB (16%) cpu=6% browser_rss=0.47GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  38%|███▊      | 15/40 [02:25<04:05,  9.82s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20347MB
+  Frame 22 saved (frame_021.jpg, t=493.4s)
+  [capture-periodic] freeze=3ms shot=216ms unfreeze=5ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +221MB (now 19983MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=4200 t=497.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.2/32.0GB (16%) cpu=7% browser_rss=0.49GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +208MB (now 19970MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +268MB (now 20238MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -269MB (now 19970MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  40%|████      | 16/40 [02:35<03:55,  9.83s/it][worker:ComfyUI-HYPano2] [VRAM] -350MB (now 19620MB) reserved=21376MB peak=20347MB
+  Frame 23 saved (frame_022.jpg, t=502.4s)
+  [capture-periodic] freeze=8ms shot=218ms unfreeze=6ms saved=True
+  [capture-loop] iter=4250 t=503.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.2/32.0GB (16%) cpu=7% browser_rss=0.42GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +263MB (now 20244MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -625MB (now 19620MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +210MB (now 19830MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=4300 t=509.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=2 ram=9.8/31.2GB (32%) swap=5.3/32.0GB (16%) cpu=7% browser_rss=0.42GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +407MB (now 20238MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -269MB (now 19970MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  42%|████▎     | 17/40 [02:45<03:46,  9.83s/it][worker:ComfyUI-HYPano2] [VRAM] -350MB (now 19620MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +362MB (now 19983MB) reserved=21376MB peak=20347MB
+  Frame 24 saved (frame_023.jpg, t=513.7s)
+  [capture-periodic] freeze=3ms shot=208ms unfreeze=20ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=4350 t=515.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.4/32.0GB (17%) cpu=10% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +208MB (now 19970MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=4400 t=521.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=12% browser_rss=0.41GB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  45%|████▌     | 18/40 [02:55<03:36,  9.84s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20347MB
+  Frame 25 saved (frame_024.jpg, t=522.8s)
+  [capture-periodic] freeze=3ms shot=218ms unfreeze=9ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20347MB
+  [capture-loop] iter=4450 t=526.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=10% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20036MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -239MB (now 19797MB) reserved=21376MB peak=20347MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +446MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  Frame 26 saved (frame_025.jpg, t=531.8s)
+  [capture-periodic] freeze=3ms shot=208ms unfreeze=4ms saved=True
+  [ComfyUI]  48%|████▊     | 19/40 [03:05<03:26,  9.84s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=4500 t=532.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=8% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19760MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +210MB (now 19970MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=4550 t=538.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=8% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 9 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007921a1078640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 301 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 534 in _forward
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 427 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 226 in _apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 182 in apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 325 in _calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 213 in _calc_cond_batch_outer
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 205 in calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 380 in sampling_function
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 964 in predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 961 in outer_predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 954 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 400 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/k_diffusion/sampling.py", line 205 in sample_euler
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 124 in decorate_context
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 751 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 981 in inner_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 995 in outer_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1052 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1070 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1180 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/sample.py", line 66 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/sample.py", line 274 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +268MB (now 20238MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  50%|█████     | 20/40 [03:14<03:16,  9.85s/it][worker:ComfyUI-HYPano2] [VRAM] -619MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20348MB
+  Frame 27 saved (frame_026.jpg, t=543.1s)
+  [capture-periodic] freeze=3ms shot=215ms unfreeze=3ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=4600 t=544.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=8% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -362MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +555MB (now 20175MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -275MB (now 19901MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=4650 t=550.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=8% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +343MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  52%|█████▎    | 21/40 [03:24<03:07,  9.85s/it][worker:ComfyUI-HYPano2] [VRAM] -625MB (now 19620MB) reserved=21376MB peak=20348MB
+  Frame 28 saved (frame_027.jpg, t=552.1s)
+  [capture-periodic] freeze=3ms shot=214ms unfreeze=4ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +280MB (now 19901MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +269MB (now 20170MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -410MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=4700 t=556.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -362MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +366MB (now 19986MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +257MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  55%|█████▌    | 22/40 [03:34<02:57,  9.86s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=4750 t=562.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=8% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20348MB
+  Frame 29 saved (frame_028.jpg, t=563.5s)
+  [capture-periodic] freeze=3ms shot=221ms unfreeze=12ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +221MB (now 19983MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +414MB (now 20175MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -275MB (now 19901MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=4800 t=568.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=7% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +343MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  57%|█████▊    | 23/40 [03:44<02:47,  9.87s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20348MB
+  Frame 30 saved (frame_029.jpg, t=572.6s)
+  [capture-periodic] freeze=3ms shot=216ms unfreeze=3ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=4850 t=574.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=10% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +221MB (now 19983MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +205MB (now 19967MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +203MB (now 20170MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=4900 t=580.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -201MB (now 19970MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  60%|██████    | 24/40 [03:54<02:38,  9.88s/it][worker:ComfyUI-HYPano2] [VRAM] -350MB (now 19620MB) reserved=21376MB peak=20348MB
+  Frame 31 saved (frame_030.jpg, t=581.6s)
+  [capture-periodic] freeze=3ms shot=218ms unfreeze=4ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=4950 t=586.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=7% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +222MB (now 19983MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +261MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  62%|██████▎   | 25/40 [04:04<02:28,  9.88s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5000 t=592.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=5% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +226MB (now 19847MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +323MB (now 20170MB) reserved=21376MB peak=20348MB
+  Frame 32 saved (frame_031.jpg, t=593.1s)
+  [capture-periodic] freeze=3ms shot=220ms unfreeze=7ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -410MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -362MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +244MB (now 19865MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5050 t=598.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=5% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +379MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 10 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007921a1078640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/comfy_kitchen/backends/eager/quantization.py", line 60 in dequantize_per_tensor_fp8
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/comfy_kitchen/backends/eager/quantization.py", line 405 in _op_dequantize_fp8
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/_library/custom_ops.py", line 382 in wrapped_fn
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/_dynamo/eval_frame.py", line 1181 in _fn
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/_compile.py", line 54 in inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/_library/custom_ops.py", line 347 in backend_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/_ops.py", line 1209 in __call__
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/comfy_kitchen/__init__.py", line 87 in dequantize_per_tensor_fp8
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/comfy_kitchen/tensor/fp8.py", line 69 in dequantize
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/comfy_kitchen/tensor/base.py", line 286 in dequantize
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/comfy_kitchen/tensor/base.py", line 368 in dequantize_args
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/comfy_kitchen/tensor/base.py", line 372 in <genexpr>
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/comfy_kitchen/tensor/base.py", line 372 in dequantize_args
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/comfy_kitchen/tensor/fp8.py", line 147 in _handle_fp8_linear
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/comfy_kitchen/tensor/base.py", line 348 in __torch_dispatch__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ops.py", line 1171 in _forward
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ops.py", line 1175 in forward_comfy_cast_weights
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ops.py", line 1231 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 22 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 50 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 308 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 534 in _forward
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/ldm/qwen_image/model.py", line 427 in forward
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1787 in _call_impl
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1776 in _wrapped_call_impl
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 226 in _apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 182 in apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 325 in _calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 213 in _calc_cond_batch_outer
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 205 in calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 380 in sampling_function
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 964 in predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 961 in outer_predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 954 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 400 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/k_diffusion/sampling.py", line 205 in sample_euler
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 124 in decorate_context
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 751 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 981 in inner_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 995 in outer_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1052 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1070 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1180 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/sample.py", line 66 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/sample.py", line 274 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  65%|██████▌   | 26/40 [04:14<02:18,  9.89s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20348MB
+  Frame 33 saved (frame_032.jpg, t=602.3s)
+  [capture-periodic] freeze=3ms shot=210ms unfreeze=4ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5100 t=604.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.6/31.2GB (31%) swap=5.5/32.0GB (17%) cpu=5% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -290MB (now 19692MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +552MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5150 t=610.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=14% browser_rss=0.41GB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  68%|██████▊   | 27/40 [04:24<02:08,  9.89s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20348MB
+  Frame 34 saved (frame_033.jpg, t=611.4s)
+  [capture-periodic] freeze=3ms shot=222ms unfreeze=5ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +221MB (now 19983MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5200 t=615.8s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=7% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +222MB (now 19983MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +261MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  70%|███████   | 28/40 [04:34<01:58,  9.90s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5250 t=621.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=7% browser_rss=0.41GB
+  Frame 35 saved (frame_034.jpg, t=622.7s)
+  [capture-periodic] freeze=3ms shot=225ms unfreeze=3ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +208MB (now 19970MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5300 t=627.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -413MB (now 19832MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  72%|███████▎  | 29/40 [04:44<01:48,  9.90s/it][worker:ComfyUI-HYPano2] [VRAM] -213MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +361MB (now 19981MB) reserved=21376MB peak=20348MB
+  Frame 36 saved (frame_035.jpg, t=631.7s)
+  [capture-periodic] freeze=3ms shot=213ms unfreeze=4ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5350 t=633.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +208MB (now 19970MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5400 t=639.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  Frame 37 saved (frame_036.jpg, t=641.0s)
+  [capture-periodic] freeze=3ms shot=199ms unfreeze=6ms saved=True
+  [ComfyUI]  75%|███████▌  | 30/40 [04:53<01:39,  9.91s/it][worker:ComfyUI-HYPano2] [VRAM] -209MB (now 19692MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +289MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5450 t=645.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -362MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +244MB (now 19865MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +379MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -209MB (now 19692MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  78%|███████▊  | 31/40 [05:03<01:29,  9.92s/it][worker:ComfyUI-HYPano2] [VRAM] +290MB (now 19983MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5500 t=651.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=7% browser_rss=0.41GB
+  Frame 38 saved (frame_037.jpg, t=652.2s)
+  [capture-periodic] freeze=3ms shot=212ms unfreeze=5ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +238MB (now 19999MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +244MB (now 20243MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -624MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +349MB (now 19970MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5550 t=657.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +359MB (now 20330MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -429MB (now 19901MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  80%|████████  | 32/40 [05:13<01:19,  9.92s/it][worker:ComfyUI-HYPano2] [VRAM] -281MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 11 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007921a1078640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_management.py", line 1329 in cast_to
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_management.py", line 1334 in cast_to_device
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 202 in _apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 182 in apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 325 in _calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 213 in _calc_cond_batch_outer
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 205 in calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 380 in sampling_function
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 964 in predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 961 in outer_predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 954 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 400 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/k_diffusion/sampling.py", line 205 in sample_euler
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 124 in decorate_context
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 751 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 981 in inner_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 995 in outer_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1052 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1070 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1180 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/sample.py", line 66 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/sample.py", line 274 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +207MB (now 19827MB) reserved=21376MB peak=20348MB
+  Frame 39 saved (frame_038.jpg, t=661.4s)
+  [capture-periodic] freeze=3ms shot=234ms unfreeze=12ms saved=True
+  [capture-loop] iter=5600 t=663.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +501MB (now 20329MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -568MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +483MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5650 t=669.3s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.8/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=5% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +337MB (now 20238MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -374MB (now 19865MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  Frame 40 saved (frame_039.jpg, t=670.6s)
+  [capture-periodic] freeze=3ms shot=220ms unfreeze=4ms saved=True
+  [ComfyUI]  82%|████████▎ | 33/40 [05:23<01:09,  9.93s/it][worker:ComfyUI-HYPano2] [VRAM] +305MB (now 20170MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -410MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5700 t=675.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -362MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +349MB (now 19970MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -414MB (now 19830MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  85%|████████▌ | 34/40 [05:33<00:59,  9.93s/it][worker:ComfyUI-HYPano2] [VRAM] -211MB (now 19620MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5750 t=681.0s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +211MB (now 19831MB) reserved=21376MB peak=20348MB
+  Frame 41 saved (frame_040.jpg, t=682.0s)
+  [capture-periodic] freeze=3ms shot=219ms unfreeze=3ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +338MB (now 20170MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -551MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +349MB (now 19970MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5800 t=687.1s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=7% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -414MB (now 19830MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  88%|████████▊ | 35/40 [05:43<00:49,  9.94s/it][worker:ComfyUI-HYPano2] [VRAM] -211MB (now 19620MB) reserved=21376MB peak=20348MB
+  Frame 42 saved (frame_041.jpg, t=691.0s)
+  [capture-periodic] freeze=3ms shot=213ms unfreeze=4ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +211MB (now 19831MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5850 t=692.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +338MB (now 20170MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -551MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +349MB (now 19970MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5900 t=698.9s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +377MB (now 20348MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -518MB (now 19830MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  90%|█████████ | 36/40 [05:53<00:39,  9.94s/it][worker:ComfyUI-HYPano2] [VRAM] -211MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +211MB (now 19831MB) reserved=21376MB peak=20348MB
+  Frame 43 saved (frame_042.jpg, t=702.4s)
+  [capture-periodic] freeze=3ms shot=216ms unfreeze=3ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +497MB (now 20329MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -568MB (now 19761MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=5950 t=704.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=5% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +208MB (now 19970MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -414MB (now 19830MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +413MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [capture-loop] iter=6000 t=710.6s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=6% browser_rss=0.41GB
+  [ComfyUI]  92%|█████████▎| 37/40 [06:03<00:29,  9.95s/it][worker:ComfyUI-HYPano2] [VRAM] -262MB (now 19983MB) reserved=21376MB peak=20348MB
+  Frame 44 saved (frame_043.jpg, t=711.5s)
+  [capture-periodic] freeze=3ms shot=219ms unfreeze=4ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +208MB (now 19970MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=6050 t=716.7s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=4% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -414MB (now 19830MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  95%|█████████▌| 38/40 [06:13<00:19,  9.95s/it][worker:ComfyUI-HYPano2] [VRAM] -211MB (now 19620MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2]
+  [ComfyUI] === WATCHDOG TICK 12 ===
+  [ComfyUI] [worker:ComfyUI-HYPano2] Thread 0x00007921a1078640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007922f396d640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 363 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 660 in wait
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/tqdm/_monitor.py", line 60 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924adad8640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 106 in _vram_poller
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Current thread 0x00007924ae2dd640 (most recent call first):
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 52 in _watchdog
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 995 in run
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1044 in _bootstrap_inner
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/threading.py", line 1015 in _bootstrap
+  [ComfyUI] 
+  [ComfyUI] Thread 0x00007924ae8fa740 (most recent call first):
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_management.py", line 1329 in cast_to
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_management.py", line 1334 in cast_to_device
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 202 in _apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/model_base.py", line 182 in apply_model
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 325 in _calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 213 in _calc_cond_batch_outer
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 205 in calc_cond_batch
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 380 in sampling_function
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 964 in predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 961 in outer_predict_noise
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 954 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 400 in __call__
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/k_diffusion/sampling.py", line 205 in sample_euler
+  [ComfyUI]   File "/tmp/comfytest-home/.ce/.pixi/envs/hypano2-nodes/lib/python3.13/site-packages/torch/utils/_contextlib.py", line 124 in decorate_context
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 751 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 981 in inner_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 995 in outer_sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/patcher_extension.py", line 112 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1052 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1070 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/samplers.py", line 1180 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy/sample.py", line 66 in sample
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/custom_nodes/ComfyUI-HYPano2/nodes/sample.py", line 274 in execute
+  [ComfyUI]   File "/workspaces/HYPano2-2004/ComfyUI/comfy_api/latest/_io.py", line 1833 in EXECUTE_NORMALIZED
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1762 in main
+  [ComfyUI]   File "/tmp/comfyui_pvenv_3dhyt50c/persistent_worker.py", line 1807 in <module>
+  [ComfyUI] 
+  [ComfyUI] [worker:ComfyUI-HYPano2] === END ===
+  [ComfyUI] 
+  Frame 45 saved (frame_044.jpg, t=720.7s)
+  [capture-periodic] freeze=3ms shot=206ms unfreeze=3ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +280MB (now 19901MB) reserved=21376MB peak=20348MB
+  [capture-loop] iter=6100 t=722.5s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=2 ram=10.0/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=5% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +269MB (now 20170MB) reserved=21376MB peak=20348MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -410MB (now 19761MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +262MB (now 20244MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -344MB (now 19901MB) reserved=21376MB peak=20368MB
+  [capture-loop] iter=6150 t=728.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=4% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +430MB (now 20331MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI]  98%|█████████▊| 39/40 [06:23<00:09,  9.96s/it][worker:ComfyUI-HYPano2] [VRAM] -712MB (now 19620MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +362MB (now 19983MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -222MB (now 19761MB) reserved=21376MB peak=20368MB
+  Frame 46 saved (frame_045.jpg, t=732.1s)
+  [capture-periodic] freeze=3ms shot=212ms unfreeze=3ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +220MB (now 19981MB) reserved=21376MB peak=20368MB
+  [capture-loop] iter=6200 t=734.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=2 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=5% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -221MB (now 19761MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +483MB (now 20244MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -275MB (now 19970MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +274MB (now 20244MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [SubprocessWorker] callback 'report_progress' from call_id=2
+  [ComfyUI] 
+  [ComfyUI] 100%|██████████| 40/40 [06:33<00:00,  9.96s/it]
+  [ComfyUI] 100%|██████████| 40/40 [06:33<00:00,  9.84s/it]
+  [capture-loop] iter=6250 t=740.2s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=4 ram=9.9/31.2GB (32%) swap=5.5/32.0GB (17%) cpu=5% browser_rss=0.41GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -649MB (now 19596MB) reserved=21376MB peak=20368MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] samples: shape=(1, 16, 1, 120, 244) dtype=torch.float32 min=-4.103 max=4.49 mean=-0.05607 nan=0 inf=0
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] VAE decode...
+  [ComfyUI] [SubprocessWorker] callback 'request_vram_budget' from call_id=2
+  [ComfyUI] [comfy-env] VRAM request: 0.25GB, free before eviction: 2.20GB
+  [ComfyUI] [comfy-env] VRAM after eviction: 2.20GB
+  Frame 47 saved (frame_046.jpg, t=741.2s)
+  [capture-periodic] freeze=3ms shot=215ms unfreeze=7ms saved=True
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -5000MB (now 14596MB) reserved=15872MB peak=20368MB
+  [capture-loop] iter=6300 t=746.4s state={'complete': False, 'error': None, 'executedCount': 0, 'wsState': 1} eval_ms=3 ram=12.8/31.2GB (41%) swap=7.8/32.0GB (24%) cpu=7% browser_rss=0.40GB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] +1466MB (now 16062MB) reserved=17952MB peak=20368MB
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] decoded_raw: shape=(1, 1, 960, 1952, 3) dtype=torch.float32 min=0 max=1 mean=0.6408 nan=0 inf=0
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] decoded_post_squeeze: shape=(1, 960, 1952, 3) dtype=torch.float32 min=0 max=1 mean=0.6408 nan=0 inf=0
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] edge-blend width=32
+  [ComfyUI] [worker:ComfyUI-HYPano2] [HYPano2Sample] done -> (1, 960, 1920, 3)
+  [ComfyUI] [worker:ComfyUI-HYPano2] [VRAM] -1225MB (now 14838MB) reserved=18112MB peak=20368MB
+  [ComfyUI] [SubprocessWorker] got response: ok
+  [ComfyUI] [comfy-env] Created 3 model patchers: ['QwenImageTEModel__1', 'WanVAE_2', 'QwenImage_3']
+  [ComfyUI] [comfy-env] HYPano2Sample done (435.47s): result: NodeOutput
+  [ComfyUI] [VRAM] After HYPano2Sample: 18760 / 24124 MB
+  [ComfyUI] [VRAM] Loaded: SubprocessModel (0 MB), SubprocessModel (242 MB), SubprocessModel (0 MB)
+  [ComfyUI] Prompt executed in 00:12:28
+  Frame 48 saved (frame_047.jpg, t=750.5s)
+  [capture-periodic] freeze=3ms shot=213ms unfreeze=7ms saved=True
+  [capture-loop] iter=6350 t=752.2s state={'complete': True, 'error': None, 'executedCount': 1, 'wsState': 1} eval_ms=14 ram=12.4/31.2GB (40%) swap=8.4/32.0GB (26%) cpu=4% browser_rss=0.43GB
+  Node executed (1 total), capturing...
+  Frame 49 saved (frame_048.jpg, t=752.4s)
+  [capture-node] freeze=3ms shot=279ms unfreeze=0ms saved=True
+  Execution complete (t=752.4s)
+  Captured 49 unique frames over 752.73s
+  [debug] iframes: 0
+  [timing] trigger_3d_previews: 0.0s
+  Saved high-quality screenshot: image_to_panorama_executed.png
+  [timing] final_screenshot: 0.6s
+    Captured 50 video frames
