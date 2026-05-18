@@ -39,14 +39,6 @@ GENERAL_NEGATIVE_PROMPT = (
 )
 
 
-def _list_files(folder: str) -> list[str]:
-    """Filenames available for a given ComfyUI models subfolder."""
-    try:
-        return folder_paths.get_filename_list(folder)
-    except Exception:
-        return []
-
-
 def _install_norm_rescaled_cfg(model):
     """Attach upstream's norm-rescaled true CFG as a post-CFG hook.
 
@@ -87,11 +79,6 @@ class HYPano2Sample(io.ComfyNode):
 
     @classmethod
     def define_schema(cls):
-        unet_files = _list_files("diffusion_models") or ["<empty — run HYPano2DownloadModels first>"]
-        clip_files = _list_files("text_encoders") or ["<empty>"]
-        vae_files = _list_files("vae") or ["<empty>"]
-        lora_files = _list_files("loras") or ["<empty>"]
-
         return io.Schema(
             node_id="HYPano2Sample",
             display_name="HY-Pano-2 Sample",
@@ -107,18 +94,19 @@ class HYPano2Sample(io.ComfyNode):
                 io.Image.Input("image", tooltip="Input image to expand into a panorama."),
                 io.String.Input("prompt", multiline=True, default="A bright sunny outdoor day, peaceful atmosphere."),
                 io.String.Input("negative_prompt", multiline=True, default=""),
-                io.Combo.Input("unet_filename", options=unet_files,
-                               default=unet_files[0] if unet_files else "",
-                               tooltip="Qwen-Image-Edit UNet (models/diffusion_models/)."),
-                io.Combo.Input("clip_filename", options=clip_files,
-                               default=clip_files[0] if clip_files else "",
-                               tooltip="Qwen-VL text encoder (models/text_encoders/)."),
-                io.Combo.Input("vae_filename", options=vae_files,
-                               default=vae_files[0] if vae_files else "",
-                               tooltip="Qwen-Image VAE (models/vae/)."),
-                io.Combo.Input("lora_filename", options=lora_files,
-                               default=lora_files[0] if lora_files else "",
-                               tooltip="HY-Pano-2 LoRA (models/loras/)."),
+                io.String.Input("unet_filename",
+                                default="qwen_image_edit_2509_fp8mixed.safetensors",
+                                tooltip="UNet filename under models/diffusion_models/ (or models/unet/). "
+                                        "Run HYPano2DownloadModels once to fetch the defaults."),
+                io.String.Input("clip_filename",
+                                default="qwen_2.5_vl_7b_fp8_scaled.safetensors",
+                                tooltip="Qwen-VL text encoder under models/text_encoders/."),
+                io.String.Input("vae_filename",
+                                default="qwen_image_vae.safetensors",
+                                tooltip="Qwen-Image VAE under models/vae/."),
+                io.String.Input("lora_filename",
+                                default="pytorch_lora_weights.safetensors",
+                                tooltip="HY-Pano-2 LoRA under models/loras/."),
                 io.Float.Input("lora_strength", default=1.0, min=0.0, max=2.0, step=0.05),
                 io.Int.Input("seed", default=42, min=0, max=2**31 - 1),
                 io.Int.Input("width", default=1952, min=512, max=4096, step=16),
@@ -233,10 +221,20 @@ class HYPano2Sample(io.ComfyNode):
         import comfy.sd
         import comfy.utils
 
-        unet_path = folder_paths.get_full_path("diffusion_models", unet_filename)
-        clip_path = folder_paths.get_full_path("text_encoders", clip_filename)
-        vae_path = folder_paths.get_full_path("vae", vae_filename)
-        lora_path = folder_paths.get_full_path("loras", lora_filename) if lora_filename else None
+        def _resolve(folder: str, filename: str, what: str) -> str:
+            p = folder_paths.get_full_path(folder, filename)
+            if p is None:
+                raise RuntimeError(
+                    f"HYPano2Sample: {what} {filename!r} not found in "
+                    f"models/{folder}/. Run HYPano2DownloadModels first, or "
+                    f"place the file there manually."
+                )
+            return p
+
+        unet_path = _resolve("diffusion_models", unet_filename, "UNet")
+        clip_path = _resolve("text_encoders", clip_filename, "CLIP")
+        vae_path = _resolve("vae", vae_filename, "VAE")
+        lora_path = _resolve("loras", lora_filename, "LoRA") if lora_filename else None
 
         log.info("HYPano2Sample: loading UNet %s", unet_filename)
         model = comfy.sd.load_diffusion_model(unet_path)
