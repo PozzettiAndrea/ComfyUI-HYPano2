@@ -1,4 +1,4 @@
-"""HYPano2Sample — full sampling pipeline in a single subprocess-safe node.
+"""HYPano2Sample -- full sampling pipeline in a single subprocess-safe node.
 
 Loads UNet + CLIP + VAE + LoRA from disk (cached), encodes prompts via
 ComfyUI's native `TextEncodeQwenImageEditPlus`, runs the sampler with
@@ -7,7 +7,7 @@ simple, true_cfg_scale=7.5, steps=40), installs upstream's norm-rescaled
 CFG as a post-CFG hook on the live model, decodes via VAE, and edge-blends.
 
 All inputs are JSON-safe (strings / scalars / IMAGE tensor), so the node
-works across comfy-env's subprocess IPC boundary — unlike a MODEL-passthrough
+works across comfy-env's subprocess IPC boundary -- unlike a MODEL-passthrough
 node, which can't be serialized.
 """
 
@@ -36,7 +36,7 @@ log = logging.getLogger("hypano2")
 
 
 def _p(msg: str) -> None:
-    """Direct stderr print — bypasses Python's default WARNING-level filter
+    """Direct stderr print -- bypasses Python's default WARNING-level filter
     on the root logger so the line propagates through comfy-env's worker
     IPC to the host terminal as a '[worker:ComfyUI-HYPano2] ...' line.
     """
@@ -70,10 +70,17 @@ GENERAL_POSITIVE_PREFIX = (
     "throughout the extended areas, extend according to: "
 )
 GENERAL_POSITIVE_SUFFIX = " 8k UHD, masterpiece, razor-sharp details."
+# Upstream's Chinese negative prompt, written as \u escapes so the file is
+# pure-ASCII (Windows portable's cp1252 source-reader chokes on raw CJK).
+# Equivalent to the verbatim string in pipeline_with_qwen_image.py.
 GENERAL_NEGATIVE_PROMPT = (
-    "低分辨率，低画质，模糊。杂乱的背景，结构扭曲，模糊纹理，物体融合。构图混乱。"
-    "过度光滑，画面具有AI感。人脸畸形。巨大物体，巨大建筑，近景特写，近景压迫，比例失调。"
-    "车，车辆。画面上方的树叶。"
+    "\u4f4e\u5206\u8fa8\u7387\uff0c\u4f4e\u753b\u8d28\uff0c\u6a21\u7cca\u3002"
+    "\u6742\u4e71\u7684\u80cc\u666f\uff0c\u7ed3\u6784\u626d\u66f2\uff0c"
+    "\u6a21\u7cca\u7eb9\u7406\uff0c\u7269\u4f53\u878d\u5408\u3002\u6784\u56fe\u6df7\u4e71\u3002"
+    "\u8fc7\u5ea6\u5149\u6ed1\uff0c\u753b\u9762\u5177\u6709AI\u611f\u3002"
+    "\u4eba\u8138\u7578\u5f62\u3002\u5de8\u5927\u7269\u4f53\uff0c\u5de8\u5927\u5efa\u7b51\uff0c"
+    "\u8fd1\u666f\u7279\u5199\uff0c\u8fd1\u666f\u538b\u8feb\uff0c\u6bd4\u4f8b\u5931\u8c03\u3002"
+    "\u8f66\uff0c\u8f66\u8f86\u3002\u753b\u9762\u4e0a\u65b9\u7684\u6811\u53f6\u3002"
 )
 
 
@@ -188,7 +195,7 @@ class HYPano2Sample(io.ComfyNode):
         cls._log_runtime_diag()
         _tensor_stats("input_image", image)
 
-        # Optional border crop on the input image — matches upstream's
+        # Optional border crop on the input image -- matches upstream's
         # `pipeline_with_qwen_image.py:209-214`. Default 0.0 is a no-op.
         if crop_border and crop_border > 0:
             H, W = image.shape[1], image.shape[2]
@@ -235,7 +242,7 @@ class HYPano2Sample(io.ComfyNode):
         except Exception as _e:
             _p(f"neg_cond stats: skipped ({_e})")
 
-        # Empty latent. Matches EmptySD3LatentImage's shape — comfy.sample
+        # Empty latent. Matches EmptySD3LatentImage's shape -- comfy.sample
         # accepts the dict format from common_ksampler.
         import comfy.model_management
         latent_image = torch.zeros(
@@ -248,7 +255,7 @@ class HYPano2Sample(io.ComfyNode):
         # Patch the live ModelPatcher with upstream's norm-rescaled CFG.
         model_patched = _install_norm_rescaled_cfg(model)
 
-        # Run the sampler. Avoid `nodes.common_ksampler` — `nodes` resolves to
+        # Run the sampler. Avoid `nodes.common_ksampler` -- `nodes` resolves to
         # our pack's nodes/ package (sys.path puts the pack ahead of ComfyUI),
         # so the host `nodes.py` is shadowed. Call comfy.sample.sample directly
         # and inline the bits common_ksampler does.
@@ -310,7 +317,7 @@ class HYPano2Sample(io.ComfyNode):
         """
         import comfy.model_management as mm
         import torch
-        # Check the force_flash override first — sage_attention_enabled may
+        # Check the force_flash override first -- sage_attention_enabled may
         # still return True before our flag-flip propagates.
         try:
             import comfy.ldm.modules.attention as _attn_mod

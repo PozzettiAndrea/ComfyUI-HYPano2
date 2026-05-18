@@ -5,7 +5,7 @@ add per-stage tensor diagnostics in sample.py to localize the failure.
 Sage stays installed (just not dispatched to) so we can flip back easily.
 
 Call `force_flash()` from BOTH prestartup_script.py (host) and the top of
-nodes/sample.py (worker). Both calls are idempotent — sentinel on the
+nodes/sample.py (worker). Both calls are idempotent -- sentinel on the
 comfy attention module.
 """
 

@@ -1,7 +1,7 @@
 """HY-Pano-2 ERP edge blend.
 
 The actual panorama generation runs through ComfyUI's native Qwen-Image-Edit
-support (UNETLoader + LoraLoader + TextEncodeQwenImageEditPlus + KSampler) —
+support (UNETLoader + LoraLoader + TextEncodeQwenImageEditPlus + KSampler) --
 see the bundled workflow. The only HY-Pano-2-specific piece left in this
 pack is the seamless seam blend, kept here as a standalone IMAGE -> IMAGE
 node so it can chain off any sampler output, not just ours.

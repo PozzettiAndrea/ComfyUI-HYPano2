@@ -1,7 +1,7 @@
 """One-click downloader for the HY-Pano-2 stack.
 
 The actual model loading is done by ComfyUI's native UNETLoader / CLIPLoader
-/ VAELoader / LoraLoader — this node just makes sure all four files exist
+/ VAELoader / LoraLoader -- this node just makes sure all four files exist
 in the right ComfyUI subdirectories.
 """
 
@@ -17,7 +17,7 @@ log = logging.getLogger("hypano2")
 
 
 # huggingface_hub >= 0.30 transparently routes large LFS files through
-# Xet (https://huggingface.co/docs/hub/xet) — a content-addressed chunked
+# Xet (https://huggingface.co/docs/hub/xet) -- a content-addressed chunked
 # protocol whose client streams bytes through its own pipeline, bypassing
 # `huggingface_hub.utils.tqdm`. So neither the console tqdm nor our
 # ProgressBar bridge see any updates. Forcing the legacy HTTP path brings
@@ -34,7 +34,7 @@ _FILES = {
         # numerics. This is what `precision=fp8` resolves to by default.
         "fp8":     ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
                     "split_files/diffusion_models/qwen_image_edit_2509_fp8mixed.safetensors"),
-        # Raw fp8 cast — kept for users who explicitly want it. Lower quality.
+        # Raw fp8 cast -- kept for users who explicitly want it. Lower quality.
         "fp8_raw": ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
                     "split_files/diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors"),
     },
@@ -71,7 +71,7 @@ def _download(repo_id: str, filename: str, comfy_folder: str, expected_size: int
 
     Idempotent on re-runs: the basename in `comfy_folder` is a symlink to
     the file in HF's cache. We bail out early if that symlink is healthy
-    and the size matches (within 0.5% — HF Xet sometimes reports slightly
+    and the size matches (within 0.5% -- HF Xet sometimes reports slightly
     different padding). Broken symlinks left by interrupted downloads get
     cleaned up first.
     """
@@ -99,7 +99,7 @@ def _download(repo_id: str, filename: str, comfy_folder: str, expected_size: int
 
     log.info("HYPano2DownloadModels: fetching %s : %s  ->  %s", repo_id, filename, dest_dir)
     local = hf_hub_download(repo_id=repo_id, filename=filename)
-    # hf_hub_download is itself idempotent — second call hits HF's cache and
+    # hf_hub_download is itself idempotent -- second call hits HF's cache and
     # returns instantly. The work we save by short-circuiting above is just
     # the symlink dance + log spam.
     try:
@@ -114,7 +114,7 @@ def _probe_sizes(manifest):
     """Resolve each (repo, filename) to its remote size via HfApi.
 
     Returns a list parallel to `manifest` with `size_bytes` appended (0 on
-    lookup failure — ProgressBar tolerates a slight under-count).
+    lookup failure -- ProgressBar tolerates a slight under-count).
     """
     from huggingface_hub import HfApi
     api = HfApi()
@@ -172,7 +172,7 @@ class HYPano2DownloadModels(io.ComfyNode):
 
     Drops files in `models/diffusion_models/`, `models/text_encoders/`,
     `models/vae/`, `models/loras/`. Pick `fp8` (default) to fit a 24 GB card,
-    `bf16` for max quality on a ≥48 GB rig. Idempotent — re-runs with the
+    `bf16` for max quality on a >=48 GB rig. Idempotent -- re-runs with the
     same precision are a no-op.
     """
 
@@ -195,13 +195,13 @@ class HYPano2DownloadModels(io.ComfyNode):
                     options=["fp8", "bf16", "fp8_raw"],
                     default="fp8",
                     tooltip=(
-                        "fp8 (default): fp8mixed UNet (~20 GB) — fp8 weights "
+                        "fp8 (default): fp8mixed UNet (~20 GB) -- fp8 weights "
                         "with per-tensor scale factors that recover most of "
                         "bf16's dynamic range. Plus fp8_scaled text encoder "
                         "(~9 GB). Fits a 24 GB card.\n"
                         "bf16: bf16 UNet (~41 GB) + bf16 text encoder (~16 GB). "
                         "Gold standard, only viable on >=48 GB VRAM rigs.\n"
-                        "fp8_raw: unscaled fp8_e4m3fn UNet — same size as fp8 "
+                        "fp8_raw: unscaled fp8_e4m3fn UNet -- same size as fp8 "
                         "but worse numerics. Kept for users who specifically "
                         "want the raw cast."
                     ),
@@ -214,7 +214,7 @@ class HYPano2DownloadModels(io.ComfyNode):
 
     @classmethod
     def execute(cls, precision: str = "fp8"):
-        # fp8 and fp8_raw both pair with the fp8_scaled text encoder — the TE
+        # fp8 and fp8_raw both pair with the fp8_scaled text encoder -- the TE
         # only has fp8_scaled and bf16 variants on Comfy-Org's mirror.
         te_precision = "bf16" if precision == "bf16" else "fp8"
         manifest = [
