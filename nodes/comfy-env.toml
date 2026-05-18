@@ -14,3 +14,9 @@ comfy-kitchen = "*"
 scipy = "*"
 transformers = "*"
 torchsde = "*"
+
+[target.linux-64.pypi-dependencies]
+triton = ">=3.0.0"
+
+[target.win-64.pypi-dependencies]
+triton-windows = ">=3.5.0"

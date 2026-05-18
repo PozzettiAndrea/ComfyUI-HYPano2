@@ -17,9 +17,13 @@ def _stderr(msg: str) -> None:
 
 
 def force_flash() -> None:
-    """Pin ComfyUI's attention dispatch to flash_attn 2. Idempotent."""
+    """Pin ComfyUI's attention dispatch to flash_attn 2. Idempotent.
+
+    Patches `optimized_attention` directly instead of flipping the CLI flag
+    -- the flag triggers comfy's startup validator and fails on hosts where
+    flash-attn lives in the worker env but not the main process.
+    """
     try:
-        from comfy.cli_args import args
         import comfy.ldm.modules.attention as a
     except Exception as e:
         _stderr(f"could not import comfy attention module: {e}")
@@ -32,8 +36,6 @@ def force_flash() -> None:
         _stderr("flash_attn not importable in this env; leaving default")
         return
 
-    args.use_sage_attention = False
-    args.use_flash_attention = True
     a.optimized_attention = a.attention_flash
     a.optimized_attention_masked = a.attention_flash
     a._HYPANO2_FORCED_FLASH = True
