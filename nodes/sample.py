@@ -179,20 +179,36 @@ class HYPano2Sample(io.ComfyNode):
         # Patch the live ModelPatcher with upstream's norm-rescaled CFG.
         model_patched = _install_norm_rescaled_cfg(model)
 
-        # Run the sampler — same code path KSampler uses.
+        # Run the sampler. Avoid `nodes.common_ksampler` — `nodes` resolves to
+        # our pack's nodes/ package (sys.path puts the pack ahead of ComfyUI),
+        # so the host `nodes.py` is shadowed. Call comfy.sample.sample directly
+        # and inline the bits common_ksampler does.
         log.info(
             "HYPano2Sample: sampling %dx%d steps=%d cfg=%.1f seed=%d ...",
             width, height, num_inference_steps, true_cfg_scale, seed,
         )
-        import nodes as comfy_nodes
-        samples = comfy_nodes.common_ksampler(
-            model_patched, seed, num_inference_steps, true_cfg_scale,
-            "euler", "simple", positive, negative, latent, denoise=1.0,
-        )[0]
+        import comfy.sample
+        import latent_preview
+
+        latent_image = comfy.sample.fix_empty_latent_channels(
+            model_patched, latent["samples"], latent.get("downscale_ratio_spacial", None),
+        )
+        noise = comfy.sample.prepare_noise(latent_image, seed, None)
+        callback = latent_preview.prepare_callback(model_patched, num_inference_steps)
+        import comfy.utils
+        disable_pbar = not comfy.utils.PROGRESS_BAR_ENABLED
+
+        samples_tensor = comfy.sample.sample(
+            model_patched, noise, num_inference_steps, true_cfg_scale,
+            "euler", "simple", positive, negative, latent_image,
+            denoise=1.0, disable_noise=False, start_step=None, last_step=None,
+            force_full_denoise=False, noise_mask=None,
+            callback=callback, disable_pbar=disable_pbar, seed=seed,
+        )
 
         # VAE decode.
         log.info("HYPano2Sample: VAE decode...")
-        decoded = vae.decode(samples["samples"])
+        decoded = vae.decode(samples_tensor)
         # Comfy VAEs return (B, H, W, C) float[0,1] for image outputs already.
         if decoded.dim() == 4 and decoded.shape[-1] not in (1, 3, 4):
             # (B, C, H, W) -> (B, H, W, C)
