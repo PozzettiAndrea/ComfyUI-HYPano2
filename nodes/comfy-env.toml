@@ -5,3 +5,4 @@ packages = ["flash_attn", "sageattention"]
 huggingface_hub = "*"
 psutil = "*"
 safetensors = "*"
+einops = "*"
