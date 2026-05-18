@@ -154,6 +154,13 @@ class HYPano2Sample(io.ComfyNode):
                 io.Int.Input("blend_width", default=32, min=0, max=128, step=4),
                 io.Boolean.Input("use_template", default=True,
                                  tooltip="Wrap the prompt with upstream's prefix/suffix."),
+                io.Float.Input("crop_border", default=0.03, min=0.0, max=0.25, step=0.01,
+                               optional=True,
+                               tooltip="Fraction of image border to crop BEFORE inference "
+                                       "(removes compression artefacts on edges). "
+                                       "Upstream default is 0.0; we default to 0.03 "
+                                       "since the user observed edge artefacts. Set to "
+                                       "0.0 for pure upstream parity."),
             ],
             outputs=[io.Image.Output(display_name="image")],
         )
@@ -176,9 +183,20 @@ class HYPano2Sample(io.ComfyNode):
         true_cfg_scale=7.5,
         blend_width=32,
         use_template=True,
+        crop_border=0.03,
     ):
         cls._log_runtime_diag()
         _tensor_stats("input_image", image)
+
+        # Optional border crop on the input image — matches upstream's
+        # `pipeline_with_qwen_image.py:209-214`. Default 0.0 is a no-op.
+        if crop_border and crop_border > 0:
+            H, W = image.shape[1], image.shape[2]
+            hc, wc = int(crop_border * H), int(crop_border * W)
+            if hc > 0 or wc > 0:
+                image = image[:, hc:H - hc, wc:W - wc, :]
+                _p(f"crop_border={crop_border} -> cropped to {tuple(image.shape)}")
+
         model, clip, vae = cls._get_cached_models(
             unet_filename, clip_filename, vae_filename, lora_filename, lora_strength,
         )
