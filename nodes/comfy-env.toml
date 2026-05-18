@@ -4,3 +4,4 @@ packages = ["flash_attn", "sageattention"]
 [pypi-dependencies]
 huggingface_hub = "*"
 psutil = "*"
+safetensors = "*"
