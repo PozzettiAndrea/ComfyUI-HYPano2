@@ -1,35 +1,35 @@
 {
-  "timestamp": "2026-05-18T22:00:29.177430+00:00",
+  "timestamp": "2026-05-18T23:21:53.372859+00:00",
   "platform": "windows_portable",
   "hardware": {
     "os": "Windows-11-10.0.26100-SP0",
-    "cpu": "Intel64 Family 6 Model 79 Stepping 1, GenuineIntel"
+    "cpu": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD"
   },
   "commit_hash": "508319cd2323e77e2ad08766d24a5a7008cb5979",
-  "run_url": "https://github.com/PozzettiAndrea/comfy-gpu-ci/actions/runs/26061862404",
-  "success": false,
+  "run_url": "https://github.com/PozzettiAndrea/comfy-gpu-ci/actions/runs/26065290795",
+  "success": true,
   "summary": {
     "total": 1,
-    "passed": 0,
-    "failed": 1
+    "passed": 1,
+    "failed": 0
   },
   "workflows": [
     {
       "name": "image_to_panorama",
-      "status": "fail",
-      "duration_seconds": 458.99,
-      "error": "Workflow execution failed: {'prompt_id': 'a13fe799-ce17-48d5-a0f3-affe6de38863', 'node_id': '3', 'node_type': 'HYPano2Sample', 'executed': ['2', '1'], 'exception_message': 'ComfyUI-HYPano2: Socket closed but worker process still running.\\n  exit code: None\\n  worker log (C:\\\\Users\\\\ContainerUser\\\\AppData\\\\Local\\\\Temp\\\\comfy_worker_debug.log, last 20 lines):\\n    00:00:01 [VRAM] +396MB (now 9819MB) reserved=10336MB peak=9819MB\\n    00:00:02 [VRAM] +369MB (now 10188MB) reserved=10688MB peak=10188MB\\n    00:00:03 [VRAM] +360MB (now 10548MB) reserved=11072MB peak=10548MB\\n    00:00:04 [VRAM] +369MB (now 10917MB) reserved=11456MB peak=10917MB\\n    00:00:05 [VRAM] +378MB (now 11295MB) reserved=11808MB peak=11313MB\\n    00:00:06 [VRAM] +369MB (now 11664MB) reserved=12192MB peak=11664MB\\n    00:00:07 [VRAM] +369MB (now 12033MB) reserved=12544MB peak=12087MB\\n    00:00:08 [VRAM] +378MB (now 12411MB) reserved=12928MB peak=12411MB\\n    00:00:09 [VRAM] +369MB (now 12780MB) reserved=13312MB peak=12834MB\\n    00:00:10 [VRAM] +567MB (now 13347MB) reserved=13792MB peak=13347MB\\n    00:00:11 [VRAM] +486MB (now 13833MB) reserved=14272MB peak=13833MB\\n    00:00:13 [VRAM] +270MB (now 14103MB) reserved=14528MB peak=14103MB\\n    00:00:14 [VRAM] +702MB (now 14806MB) reserved=15232MB peak=14806MB\\n    00:00:15 [VRAM] +648MB (now 15454MB) reserved=15872MB peak=15454MB\\n    00:00:16 [VRAM] +648MB (now 16103MB) reserved=16544MB peak=16103MB\\n    00:00:17 [VRAM] +648MB (now 16751MB) reserved=17184MB peak=16751MB\\n    00:00:18 [VRAM] +324MB (now 17075MB) reserved=17504MB peak=17075MB\\n    00:00:19 [VRAM] +432MB (now 17508MB) reserved=17920MB peak=17508MB\\n    00:00:20 [VRAM] +648MB (now 18156MB) reserved=18592MB peak=18156MB\\n    00:00:26 [VRAM] -12961MB (now 5412MB) reserved=18816MB peak=18372MB\\n', 'exception_type': 'RuntimeError', 'traceback': ['  File \"C:\\\\workspaces\\\\HYPano2-2346\\\\portable-comfyui\\\\ComfyUI_windows_portable\\\\ComfyUI\\\\execution.py\", line 535, in execute\\n    output_data, output_ui, has_subgraph, has_pending_tasks = await get_output_data(prompt_id, unique_id, obj, input_data_all, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\\n                                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2346\\\\portable-comfyui\\\\ComfyUI_windows_portable\\\\ComfyUI\\\\execution.py\", line 335, in get_output_data\\n    return_values = await _async_map_node_over_list(prompt_id, unique_id, obj, input_data_all, obj.FUNCTION, allow_interrupt=True, execution_block_cb=execution_block_cb, pre_execute_cb=pre_execute_cb, v3_data=v3_data)\\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2346\\\\portable-comfyui\\\\ComfyUI_windows_portable\\\\ComfyUI\\\\execution.py\", line 309, in _async_map_node_over_list\\n    await process_inputs(input_dict, i)\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2346\\\\portable-comfyui\\\\ComfyUI_windows_portable\\\\ComfyUI\\\\execution.py\", line 297, in process_inputs\\n    result = f(**inputs)\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2346\\\\portable-comfyui\\\\ComfyUI_windows_portable\\\\python_embeded\\\\Lib\\\\site-packages\\\\comfy_env\\\\isolation\\\\metadata.py\", line 556, in proxy\\n    result = worker.call_method(\\n        module_name=mod,\\n    ...<4 lines>...\\n        timeout=600.0,\\n    )\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2346\\\\portable-comfyui\\\\ComfyUI_windows_portable\\\\python_embeded\\\\Lib\\\\site-packages\\\\comfy_env\\\\isolation\\\\workers\\\\subprocess.py\", line 669, in call_method\\n    response = self._send_request(request, timeout)\\n', '  File \"C:\\\\workspaces\\\\HYPano2-2346\\\\portable-comfyui\\\\ComfyUI_windows_portable\\\\python_embeded\\\\Lib\\\\site-packages\\\\comfy_env\\\\isolation\\\\workers\\\\subprocess.py\", line 589, in _send_request\\n    raise RuntimeError(\\n        f\"{self.name}: Socket closed but worker process still running.\\\\n{diag}\"\\n    ) from e\\n'], 'current_inputs': {'prompt': ['A bright sunny day, peaceful apartment.'], 'negative_prompt': [''], 'unet_filename': ['qwen_image_edit_2509_fp8mixed.safetensors'], 'clip_filename': ['qwen_2.5_vl_7b_fp8_scaled.safetensors'], 'vae_filename': ['qwen_image_vae.safetensors'], 'lora_filename': ['pytorch_lora_weights.safetensors'], 'lora_strength': [1], 'seed': [42], 'width': [1952], 'height': [960], 'num_inference_steps': [40], 'true_cfg_scale': [7.5], 'blend_width': [32], 'use_template': [True], 'crop_border': [0.03], 'image': ['tensor([[[[0.6588, 0.5059, 0.2824],\\n          [0.6549, 0.5020, 0.2784],\\n          [0.6627, 0.5020, 0.2784],\\n          ...,\\n          [0.2706, 0.1961, 0.1373],\\n          [0.2863, 0.2118, 0.1529],\\n          [0.3020, 0.2275, 0.1686]],\\n\\n         [[0.6588, 0.5059, 0.2824],\\n          [0.6588, 0.5059, 0.2824],\\n          [0.6667, 0.5059, 0.2824],\\n          ...,\\n          [0.2784, 0.2039, 0.1451],\\n          [0.2784, 0.2039, 0.1451],\\n          [0.2824, 0.2078, 0.1490]],\\n\\n         [[0.6588, 0.4980, 0.2706],\\n          [0.6627, 0.5020, 0.2745],\\n          [0.6706, 0.5098, 0.2824],\\n          ...,\\n          [0.2980, 0.2235, 0.1451],\\n          [0.3020, 0.2275, 0.1490],\\n          [0.3059, 0.2314, 0.1529]],\\n\\n         ...,\\n\\n         [[0.0941, 0.0353, 0.0078],\\n          [0.0941, 0.0353, 0.0078],\\n          [0.0902, 0.0314, 0.0039],\\n          ...,\\n          [0.2667, 0.1490, 0.0510],\\n          [0.2745, 0.1569, 0.0588],\\n          [0.2784, 0.1608, 0.0627]],\\n\\n         [[0.0941, 0.0353, 0.0000],\\n          [0.0941, 0.0353, 0.0000],\\n          [0.0941, 0.0353, 0.0000],\\n          ...,\\n          [0.2667, 0.1490, 0.0510],\\n          [0.2745, 0.1569, 0.0588],\\n          [0.2824, 0.1647, 0.0667]],\\n\\n         [[0.0941, 0.0353, 0.0000],\\n          [0.0980, 0.0392, 0.0039],\\n          [0.1020, 0.0431, 0.0078],\\n          ...,\\n          [0.2627, 0.1451, 0.0471],\\n          [0.2745, 0.1569, 0.0588],\\n          [0.2863, 0.1686, 0.0706]]]])']}, 'current_outputs': ['2', '3', '4', '1'], 'timestamp': 1779141628129}\n\nDetails:\nWorkflow: C:\\ComfyUI-HYPano2\\workflows\\image_to_panorama.json\nNode error: HYPano2Sample",
+      "status": "pass",
+      "duration_seconds": 1114.53,
+      "error": null,
       "hardware": {
         "os": "Windows-11-10.0.26100-SP0",
-        "cpu": "Intel64 Family 6 Model 79 Stepping 1, GenuineIntel"
+        "cpu": "AMD64 Family 23 Model 113 Stepping 0, AuthenticAMD"
       },
       "resources": {
         "ram": {
-          "peak": 26.6,
-          "avg": 3.61
+          "peak": 20.77,
+          "avg": 14.38
         },
-        "total_ram_gb": 31.9,
-        "samples": 450
+        "total_ram_gb": 23.9,
+        "samples": 1102
       }
     }
   ]

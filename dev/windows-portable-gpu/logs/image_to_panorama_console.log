@@ -9,13 +9,3 @@
 [Console-warning] [MaskEditor] ComfyApp.open_maskeditor is deprecated. Plugins should migrate to using the command system or direct node context menu integration.
 [Console-error] Failed to load resource: the server responded with a status of 404 (Not Found)
 [Console-log] [comfy-test] graphToPrompt: 4 nodes, missing class_type: [], sample: {"inputs":{"image":"office.jpg"},"class_type":"LoadImage","_meta":{"title":"Load Image"}}
-[Console-error] Failed to load resource: net::ERR_INSUFFICIENT_RESOURCES
-[Console-error] [Jobs API] Error fetching jobs: TypeError: Failed to fetch
-    at ComfyApi.fetchApi (http://127.0.0.1:41890/assets/api-D9vMMk51.js:4:1622)
-    at fetchJobsRaw (http://127.0.0.1:41890/assets/api-D9vMMk51.js:2:432663)
-    at fetchQueue (http://127.0.0.1:41890/assets/api-D9vMMk51.js:2:433246)
-    at ComfyApi.getQueue (http://127.0.0.1:41890/assets/api-D9vMMk51.js:4:8132)
-    at Proxy.update (http://127.0.0.1:41890/assets/dialogService-DSBgqcNn.js:153:129108)
-    at Proxy.wrappedAction (http://127.0.0.1:41890/assets/vendor-vue-core-DO0afONr.js:2:90552)
-    at jt.immediate (http://127.0.0.1:41890/assets/GraphView-B1Csq2pm.js:18:104438)
-    at http://127.0.0.1:41890/assets/vendor-vueuse-CvOts9A_.js:1:8391
