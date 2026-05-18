@@ -1,6 +1,9 @@
 [cuda]
 packages = ["flash_attn", "sageattention"]
 
+[dependencies]
+av = "*"
+
 [pypi-dependencies]
 huggingface_hub = "*"
 psutil = "*"
