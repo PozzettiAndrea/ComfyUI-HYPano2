@@ -1,6 +1,6 @@
 [project]
 name = "comfyui-hypano2"
-description = "ComfyUI wrapper for HY-Pano 2.0 (Tencent): image -> 360° equirectangular panorama via Qwen-Image-Edit + HY-Pano LoRA."
+description = "Warning, uses experimental package `comfy-env` to attempt a one click isolated install. Will download and use pixi package manager. ComfyUI wrapper for HY-Pano 2.0 (Tencent): image -> 360° equirectangular panorama via Qwen-Image-Edit + HY-Pano LoRA."
 version = "0.0.1"
 license = {file = "LICENSE"}
 

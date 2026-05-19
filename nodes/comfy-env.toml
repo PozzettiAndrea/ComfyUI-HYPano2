@@ -1,43 +1,22 @@
-# Isolated env for ComfyUI-HYPano2 nodes.
-#
-# Why isolation? The upstream `PanoDiffusionPipeline` subclasses
-# `diffusers.pipelines.qwenimage.pipeline_qwenimage_edit_plus.QwenImageEditPlusPipeline`
-# and imports private symbols from that module (`calculate_shift`,
-# `retrieve_timesteps`, `calculate_dimensions`). Minor-version drift in
-# diffusers breaks the import — so we hard-pin diffusers==0.36.0 and
-# its transformers/tokenizers/safetensors/numpy cohort. The host
-# ComfyUI env is free to evolve independently.
+[cuda]
+packages = ["flash_attn", "sageattention"]
 
 [dependencies]
 av = "*"
 
-[cuda]
-# flash_attn and sageattention are both consumed via diffusers'
-# transformer.set_attention_backend("flash" | "sage"). The actual choice is
-# driven by ComfyUI's startup detection (--use-sage-attention /
-# --use-flash-attention CLI flags), so installing both lets the user pick
-# at launch time without us hard-coding a backend.
-# cuda-wheels has prebuilt wheels for both on cu128 / py3.13 / torch 2.8;
-# sageattention v2.2.0 ships a native SM 8.6 cubin so consumer Ampere
-# (3090 / 3080 / 3070 / 3060) gets a native binary, not JIT fallback.
-packages = ["flash_attn", "sageattention"]
-
 [pypi-dependencies]
-# Hard pins from upstream `repo/hyworld2/panogen/requirements.txt`.
-# Reaching into diffusers' private qwenimage submodule means we cannot
-# float these.
-diffusers = "==0.36.0"
-transformers = { version = "==4.57.1", extras = ["accelerate", "tiktoken"] }
-tokenizers = "==0.22.0"
-safetensors = "==0.7.0"
-einops = "==0.8.1"
-# Upstream pins ==2.2.0, but the conda solve grabs 2.4.x. Numpy 2.x is
-# ABI-stable, so >=2.2,<3 keeps us on a 2.x line without fighting the
-# conda solver.
-numpy = ">=2.2,<3"
-huggingface_hub = { version = "*", extras = ["cli"] }
-loguru = ">=0.7.3"
-pillow = "*"
-# diffusers.load_lora_weights routes through PEFT for transformer LoRAs
-# (the HY-Pano-2 weights target the Qwen-Image-Edit transformer).
-peft = ">=0.13"
+huggingface_hub = "*"
+psutil = "*"
+safetensors = "*"
+einops = "*"
+comfy-aimdo = "*"
+comfy-kitchen = "*"
+scipy = "*"
+transformers = "*"
+torchsde = "*"
+
+[target.linux-64.pypi-dependencies]
+triton = ">=3.0.0"
+
+[target.win-64.pypi-dependencies]
+triton-windows = ">=3.5.0"

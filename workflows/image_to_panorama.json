@@ -1,15 +1,15 @@
 {
-  "id": "hypano2-image-to-panorama-v1",
+  "id": "hypano2-image-to-panorama-v3",
   "revision": 0,
-  "last_node_id": 4,
-  "last_link_id": 4,
+  "last_node_id": 5,
+  "last_link_id": 3,
   "nodes": [
     {
       "id": 1,
       "type": "LoadImage",
       "pos": [
-        40,
-        320
+        65.61863661853508,
+        47.6855773037351
       ],
       "size": [
         274,
@@ -35,24 +35,24 @@
       ],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.68",
+        "ver": "0.21.1",
         "Node name for S&R": "LoadImage"
       },
       "widgets_values": [
-        "office/office.jpg",
+        "office.jpg",
         "image"
       ]
     },
     {
       "id": 2,
-      "type": "HYPano2LoadModel",
+      "type": "HYPano2DownloadModels",
       "pos": [
-        40,
-        40
+        10.538583280738267,
+        451.2372732370701
       ],
       "size": [
-        388,
-        180
+        320,
+        90
       ],
       "flags": {},
       "order": 1,
@@ -60,93 +60,30 @@
       "inputs": [],
       "outputs": [
         {
-          "name": "model",
-          "type": "HYPANO2_MODEL",
-          "links": [
-            2
-          ]
+          "name": "status",
+          "type": "STRING",
+          "links": null
         }
       ],
       "properties": {
-        "cnr_id": "ComfyUI-HYPano2",
-        "ver": "0.0.1",
-        "Node name for S&R": "HYPano2LoadModel",
-        "aux_id": "PozzettiAndrea/ComfyUI-HYPano2"
+        "aux_id": "PozzettiAndrea/ComfyUI-HYPano2",
+        "ver": "3e4525a5f19f2f364903e54fcccf221df94c8408",
+        "Node name for S&R": "HYPano2DownloadModels"
       },
       "widgets_values": [
-        "Qwen/Qwen-Image-Edit-2509",
-        "tencent/HY-World-2.0",
-        "HY-Pano-2.0",
-        "bf16",
-        "comfy",
-        4
-      ]
-    },
-    {
-      "id": 3,
-      "type": "HYPano2Generate",
-      "pos": [
-        380,
-        280
-      ],
-      "size": [
-        380,
-        420
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "HYPANO2_MODEL",
-          "link": 2
-        },
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 1
-        }
-      ],
-      "outputs": [
-        {
-          "name": "panorama",
-          "type": "IMAGE",
-          "links": [
-            3
-          ]
-        }
-      ],
-      "properties": {
-        "cnr_id": "ComfyUI-HYPano2",
-        "ver": "0.0.1",
-        "Node name for S&R": "HYPano2Generate",
-        "aux_id": "PozzettiAndrea/ComfyUI-HYPano2"
-      },
-      "widgets_values": [
-        "A bright sunny outdoor day, peaceful atmosphere.",
-        "",
-        42,
-        960,
-        1952,
-        40,
-        1.0,
-        7.5,
-        32,
-        0.0,
-        true
+        "fp8"
       ]
     },
     {
       "id": 4,
       "type": "SaveImage",
       "pos": [
-        820,
-        320
+        840,
+        40
       ],
       "size": [
-        600,
-        280
+        527.5111515761462,
+        374.39585101309467
       ],
       "flags": {},
       "order": 3,
@@ -155,17 +92,70 @@
         {
           "name": "images",
           "type": "IMAGE",
-          "link": 3
+          "link": 2
         }
       ],
       "outputs": [],
       "properties": {
         "cnr_id": "comfy-core",
-        "ver": "0.3.68",
+        "ver": "0.21.1",
         "Node name for S&R": "SaveImage"
       },
       "widgets_values": [
         "hypano2"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "HYPano2Sample",
+      "pos": [
+        398.50184069062834,
+        44.49483800485976
+      ],
+      "size": [
+        400,
+        500
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "PozzettiAndrea/ComfyUI-HYPano2",
+        "ver": "3e4525a5f19f2f364903e54fcccf221df94c8408",
+        "Node name for S&R": "HYPano2Sample"
+      },
+      "widgets_values": [
+        "A bright sunny day, peaceful apartment.",
+        "",
+        "qwen_image_edit_2509_fp8mixed.safetensors",
+        "qwen_2.5_vl_7b_fp8_scaled.safetensors",
+        "qwen_image_vae.safetensors",
+        "pytorch_lora_weights.safetensors",
+        1,
+        42,
+        "fixed",
+        1952,
+        960,
+        40,
+        7.5,
+        32,
+        true
       ]
     }
   ],
@@ -175,19 +165,11 @@
       1,
       0,
       3,
-      1,
+      0,
       "IMAGE"
     ],
     [
       2,
-      2,
-      0,
-      3,
-      0,
-      "HYPANO2_MODEL"
-    ],
-    [
-      3,
       3,
       0,
       4,
@@ -199,13 +181,13 @@
   "config": {},
   "extra": {
     "ds": {
-      "scale": 0.9,
+      "scale": 1.0152559799477086,
       "offset": [
-        0,
-        0
+        125.25067389491231,
+        65.20091843682495
       ]
     },
-    "frontendVersion": "1.28.8"
+    "frontendVersion": "1.43.18"
   },
   "version": 0.4
 }

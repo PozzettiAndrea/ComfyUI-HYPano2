@@ -1,241 +1,250 @@
-"""HYPano2LoadModel — resolve the Qwen-Image-Edit base + HY-Pano-2 LoRA on disk
-and return a config dict consumed by HYPano2Generate.
+"""One-click downloader for the HY-Pano-2 stack.
 
-The actual pipeline is built lazily inside HYPano2Generate so we don't take
-the ~40 GB VRAM hit until the user runs the graph. This mirrors the pattern
-used by ComfyUI-HYWM2's LoadHYWM2Model: loader = "download + describe",
-inference node = "build pipeline + run forward".
+The actual model loading is done by ComfyUI's native UNETLoader / CLIPLoader
+/ VAELoader / LoraLoader -- this node just makes sure all four files exist
+in the right ComfyUI subdirectories.
 """
 
 import logging
+import os
 from contextlib import contextmanager
 from pathlib import Path
 
+import folder_paths
 from comfy_api.latest import io
-
-try:
-    from .comfy_utils import get_diffusers_models_path, get_hypano2_models_path
-except ImportError:
-    from comfy_utils import get_diffusers_models_path, get_hypano2_models_path
 
 log = logging.getLogger("hypano2")
 
 
-# Default HuggingFace sources matching the upstream Qwen backend defaults
-# (see repo/hyworld2/panogen/pipeline_with_qwen_image.py).
-DEFAULT_BASE_REPO = "Qwen/Qwen-Image-Edit-2509"
-DEFAULT_LORA_REPO = "tencent/HY-World-2.0"
-DEFAULT_LORA_SUBFOLDER = "HY-Pano-2.0"
-LORA_WEIGHT_NAME = "pytorch_lora_weights.safetensors"
+# huggingface_hub >= 0.30 transparently routes large LFS files through
+# Xet (https://huggingface.co/docs/hub/xet) -- a content-addressed chunked
+# protocol whose client streams bytes through its own pipeline, bypassing
+# `huggingface_hub.utils.tqdm`. So neither the console tqdm nor our
+# ProgressBar bridge see any updates. Forcing the legacy HTTP path brings
+# both back. We only set this if the user hasn't opted in explicitly.
+os.environ.setdefault("HF_HUB_DISABLE_XET", "1")
 
-# Bytes in the LoRA file on HuggingFace (per the model card json).
-_LORA_EXPECTED_SIZE = 849_544_392
+
+_FILES = {
+    "diffusion_models": {
+        "bf16":    ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
+                    "split_files/diffusion_models/qwen_image_edit_2509_bf16.safetensors"),
+        # fp8 = the scale-augmented hybrid (per-tensor scales recover most of
+        # bf16's dynamic range). Same VRAM as raw fp8_e4m3fn, materially better
+        # numerics. This is what `precision=fp8` resolves to by default.
+        "fp8":     ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
+                    "split_files/diffusion_models/qwen_image_edit_2509_fp8mixed.safetensors"),
+        # Raw fp8 cast -- kept for users who explicitly want it. Lower quality.
+        "fp8_raw": ("Comfy-Org/Qwen-Image-Edit_ComfyUI",
+                    "split_files/diffusion_models/qwen_image_edit_2509_fp8_e4m3fn.safetensors"),
+    },
+    "text_encoders": {
+        "bf16": ("Comfy-Org/Qwen-Image_ComfyUI",
+                 "split_files/text_encoders/qwen_2.5_vl_7b.safetensors"),
+        "fp8":  ("Comfy-Org/Qwen-Image_ComfyUI",
+                 "split_files/text_encoders/qwen_2.5_vl_7b_fp8_scaled.safetensors"),
+    },
+    "vae": {
+        "any": ("Comfy-Org/Qwen-Image_ComfyUI",
+                "split_files/vae/qwen_image_vae.safetensors"),
+    },
+    "loras": {
+        "any": ("tencent/HY-World-2.0",
+                "HY-Pano-2.0/pytorch_lora_weights.safetensors"),
+    },
+}
+
+
+def _target_dir(comfy_folder: str) -> Path:
+    """Resolve the ComfyUI directory the native loader looks in."""
+    paths = folder_paths.get_folder_paths(comfy_folder)
+    if not paths:
+        raise RuntimeError(
+            f"HYPano2DownloadModels: ComfyUI has no '{comfy_folder}' folder configured. "
+            f"Check extra_model_paths.yaml or your ComfyUI install."
+        )
+    return Path(paths[0])
+
+
+def _download(repo_id: str, filename: str, comfy_folder: str, expected_size: int = 0) -> Path:
+    """Download `filename` from `repo_id` into ComfyUI's `comfy_folder`.
+
+    Idempotent on re-runs: the basename in `comfy_folder` is a symlink to
+    the file in HF's cache. We bail out early if that symlink is healthy
+    and the size matches (within 0.5% -- HF Xet sometimes reports slightly
+    different padding). Broken symlinks left by interrupted downloads get
+    cleaned up first.
+    """
+    from huggingface_hub import hf_hub_download
+
+    dest_dir = _target_dir(comfy_folder)
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    dest = dest_dir / Path(filename).name
+
+    # Broken symlink from a previous crash -> remove so we can rewrite it.
+    if dest.is_symlink() and not dest.exists():
+        log.info("HYPano2DownloadModels: stale symlink, removing  %s", dest)
+        dest.unlink()
+
+    if dest.exists():
+        actual = dest.stat().st_size
+        if actual > 0 and (not expected_size or abs(actual - expected_size) < max(expected_size * 0.005, 1024)):
+            log.info("HYPano2DownloadModels: present  %s  (%.2f GB)", dest, actual / 1e9)
+            return dest
+        log.warning(
+            "HYPano2DownloadModels: size mismatch on %s (got %.2f GB, expected %.2f GB) - refetching",
+            dest, actual / 1e9, expected_size / 1e9,
+        )
+        dest.unlink()
+
+    log.info("HYPano2DownloadModels: fetching %s : %s  ->  %s", repo_id, filename, dest_dir)
+    local = hf_hub_download(repo_id=repo_id, filename=filename)
+    # hf_hub_download is itself idempotent -- second call hits HF's cache and
+    # returns instantly. The work we save by short-circuiting above is just
+    # the symlink dance + log spam.
+    try:
+        dest.symlink_to(local)
+    except OSError:
+        import shutil
+        shutil.copy2(local, dest)
+    return dest
+
+
+def _probe_sizes(manifest):
+    """Resolve each (repo, filename) to its remote size via HfApi.
+
+    Returns a list parallel to `manifest` with `size_bytes` appended (0 on
+    lookup failure -- ProgressBar tolerates a slight under-count).
+    """
+    from huggingface_hub import HfApi
+    api = HfApi()
+    by_repo = {}
+    for i, (repo_id, fname, folder) in enumerate(manifest):
+        by_repo.setdefault(repo_id, []).append((i, fname))
+    sizes = [0] * len(manifest)
+    for repo_id, items in by_repo.items():
+        try:
+            info = api.get_paths_info(repo_id=repo_id, paths=[fname for _, fname in items])
+            size_by_path = {p.path: getattr(p, "size", 0) or 0 for p in info}
+        except Exception as e:
+            log.warning("HYPano2DownloadModels: size probe failed for %s (%s)", repo_id, e)
+            size_by_path = {}
+        for idx, fname in items:
+            sizes[idx] = size_by_path.get(fname, 0)
+    return [(*m, sz) for m, sz in zip(manifest, sizes)]
 
 
 @contextmanager
-def _comfy_hf_progress(total_bytes: int):
-    """Wire huggingface_hub's internal tqdm into ComfyUI's ProgressBar.
+def _hf_progress_into_pbar(pbar, offset_ref, total):
+    """Bridge huggingface_hub's internal tqdm into ComfyUI's ProgressBar.
 
-    huggingface_hub >=1.x exposes a `tqdm_class` kwarg on hf_hub_download,
-    but the 0.36.x branch we're pinned to (transformers 4.57.1 caps it at
-    <1.0) doesn't — so we monkey-patch the tqdm subclass it uses for the
-    duration of the download instead. Every chunk update pushes bytes into
-    `comfy.utils.ProgressBar` so the queue UI shows live byte progress for
-    the ~810 MB LoRA download.
+    hf_hub_download writes its own bytes/sec tqdm to the console (we leave
+    that alone). We additionally patch tqdm.update so every chunk also
+    pushes `offset_ref[0] + tqdm.n` into the ComfyUI queue progress bar.
     """
-    try:
-        import comfy.utils
-        import huggingface_hub.utils.tqdm as hf_tqdm_mod
-        import huggingface_hub.file_download as fd
-    except ImportError:
-        yield
-        return
+    # `huggingface_hub.utils.tqdm` exports a `tqdm` class; importing the
+    # dotted path resolves the SYMBOL inside `huggingface_hub.utils`, which
+    # is the class itself, not the submodule. Grab the class directly to
+    # avoid the dotted-attribute confusion.
+    from huggingface_hub.utils.tqdm import tqdm as _hf_tqdm
+    original = _hf_tqdm.update
 
-    pbar = comfy.utils.ProgressBar(total_bytes)
-    original_update = hf_tqdm_mod.tqdm.update
-
-    def _patched_update(self, n=1):
-        ret = original_update(self, n)
-        if n and getattr(self, "total", None):
-            pbar.update_absolute(min(self.n, total_bytes), total_bytes)
+    def _patched(self, n=1):
+        ret = original(self, n)
+        try:
+            current = offset_ref[0] + int(self.n or 0)
+            if current > total:
+                current = total
+            pbar.update_absolute(current, total)
+        except Exception:
+            pass
         return ret
 
-    hf_tqdm_mod.tqdm.update = _patched_update
-    # `file_download.tqdm` is a re-export of the same class, so patching the
-    # class object covers both call sites.
+    _hf_tqdm.update = _patched
     try:
         yield
     finally:
-        hf_tqdm_mod.tqdm.update = original_update
+        _hf_tqdm.update = original
 
 
-def _download_lora(repo_id: str, subfolder: str) -> Path:
-    """Download the HY-Pano-2 LoRA file into ComfyUI/models/hypano2/<subfolder>/.
+class HYPano2DownloadModels(io.ComfyNode):
+    """Download Qwen-Image-Edit-2509 + Qwen-VL text encoder + Qwen VAE + HY-Pano-2 LoRA.
 
-    Returns the local path to the directory that holds
-    `pytorch_lora_weights.safetensors`.
-    """
-    target_dir = get_hypano2_models_path() / subfolder
-    target_dir.mkdir(parents=True, exist_ok=True)
-    lora_path = target_dir / LORA_WEIGHT_NAME
-
-    # Tolerate a 10% size deviation (the HF size field is occasionally
-    # off-by-a-few-bytes; we mostly want to detect "0-byte stub").
-    if lora_path.exists():
-        actual = lora_path.stat().st_size
-        if abs(actual - _LORA_EXPECTED_SIZE) < _LORA_EXPECTED_SIZE * 0.1:
-            log.info("HY-Pano-2 LoRA present at %s (%.1f MB)", lora_path, actual / 1e6)
-            return target_dir
-        log.warning(
-            "Existing LoRA at %s is %.1f MB, expected ~%.1f MB. Redownloading.",
-            lora_path, actual / 1e6, _LORA_EXPECTED_SIZE / 1e6,
-        )
-
-    from huggingface_hub import hf_hub_download
-
-    log.info("Downloading %s/%s from %s ...", subfolder, LORA_WEIGHT_NAME, repo_id)
-    with _comfy_hf_progress(_LORA_EXPECTED_SIZE):
-        hf_hub_download(
-            repo_id=repo_id,
-            filename=f"{subfolder}/{LORA_WEIGHT_NAME}" if subfolder else LORA_WEIGHT_NAME,
-            local_dir=str(get_hypano2_models_path()),
-        )
-    log.info("LoRA downloaded to %s", lora_path)
-    return target_dir
-
-
-def _resolve_base_model(repo_id: str) -> str:
-    """Return a local path or repo_id that diffusers can pass to from_pretrained.
-
-    If a local snapshot exists under `ComfyUI/models/diffusers/<repo>/`, use
-    that. Otherwise return the bare repo_id and let diffusers manage the HF
-    cache (the Qwen-Image-Edit-2509 snapshot is ~40 GB; we don't force a
-    re-download into our own folder layout).
-    """
-    safe_name = repo_id.replace("/", "_")
-    local = get_diffusers_models_path() / safe_name
-    if (local / "model_index.json").exists():
-        log.info("Using local Qwen-Image-Edit snapshot at %s", local)
-        return str(local)
-    log.info(
-        "No local snapshot at %s — diffusers will resolve %s via HF cache.",
-        local, repo_id,
-    )
-    return repo_id
-
-
-class HYPano2LoadModel(io.ComfyNode):
-    """Resolve the Qwen-Image-Edit base + HY-Pano-2 LoRA and return a handle.
-
-    The handle is a small JSON-safe dict consumed by HYPano2Generate, which
-    builds the diffusers pipeline lazily.
+    Drops files in `models/diffusion_models/`, `models/text_encoders/`,
+    `models/vae/`, `models/loras/`. Pick `fp8` (default) to fit a 24 GB card,
+    `bf16` for max quality on a >=48 GB rig. Idempotent -- re-runs with the
+    same precision are a no-op.
     """
 
     @classmethod
     def define_schema(cls):
         return io.Schema(
-            node_id="HYPano2LoadModel",
-            display_name="(Down)Load HY-Pano-2 Model",
+            node_id="HYPano2DownloadModels",
+            display_name="(Down)Load HY-Pano-2 stack",
             category="HYPano2",
+            is_output_node=True,
             description=(
-                "Resolve Qwen-Image-Edit-2509 + HY-Pano-2 LoRA (downloads the "
-                "LoRA from HuggingFace if missing). The diffusers pipeline is "
-                "built lazily inside HYPano2Generate."
+                "Downloads Qwen-Image-Edit-2509, the Qwen-VL text encoder, "
+                "the Qwen Image VAE, and the HY-Pano-2 LoRA into ComfyUI's "
+                "standard subdirs. Use stock UNETLoader / CLIPLoader / "
+                "VAELoader / LoraLoader to consume them."
             ),
             inputs=[
-                io.String.Input(
-                    "base_model",
-                    default=DEFAULT_BASE_REPO,
-                    multiline=False,
-                    tooltip=(
-                        "HuggingFace repo ID (or local path) for the "
-                        "Qwen-Image-Edit base. Default: Qwen/Qwen-Image-Edit-2509."
-                    ),
-                ),
-                io.String.Input(
-                    "lora_repo",
-                    default=DEFAULT_LORA_REPO,
-                    multiline=False,
-                    tooltip=(
-                        "HuggingFace repo containing the HY-Pano-2 LoRA. "
-                        "Default: tencent/HY-World-2.0."
-                    ),
-                ),
-                io.String.Input(
-                    "lora_subfolder",
-                    default=DEFAULT_LORA_SUBFOLDER,
-                    multiline=False,
-                    tooltip="Subfolder inside the LoRA repo. Default: HY-Pano-2.0.",
-                ),
                 io.Combo.Input(
-                    "torch_dtype",
-                    options=["bf16", "fp16"],
-                    default="bf16",
+                    "precision",
+                    options=["fp8", "bf16", "fp8_raw"],
+                    default="fp8",
                     tooltip=(
-                        "Inference dtype. Upstream defaults to bf16 — keep that "
-                        "unless your GPU lacks bf16 support."
-                    ),
-                ),
-                io.Combo.Input(
-                    "vram_mode",
-                    options=["comfy", "model", "off"],
-                    default="comfy",
-                    tooltip=(
-                        "VRAM management strategy.\n"
-                        "  comfy: ComfyUI ModelPatcher + diffusers block-level "
-                        "group offloading on the transformer (CUDA-stream "
-                        "prefetched). Co-operative with other queued workflows. "
-                        "Fits 24 GB. Default.\n"
-                        "  model: diffusers' enable_model_cpu_offload (whole-"
-                        "submodule swap). Needs >=48 GB VRAM.\n"
-                        "  off: keep the pipeline on GPU. H100/H200/A100-80G only."
-                    ),
-                ),
-                io.Int.Input(
-                    "blocks_per_group",
-                    default=4, min=1, max=16, step=1,
-                    tooltip=(
-                        "When vram_mode=comfy, number of transformer blocks "
-                        "resident on GPU at once. 4 -> ~2.7 GB peak resident "
-                        "on the 60-block Qwen-Image-Edit transformer. Increase "
-                        "if you have VRAM headroom (faster), decrease if you OOM."
+                        "fp8 (default): fp8mixed UNet (~20 GB) -- fp8 weights "
+                        "with per-tensor scale factors that recover most of "
+                        "bf16's dynamic range. Plus fp8_scaled text encoder "
+                        "(~9 GB). Fits a 24 GB card.\n"
+                        "bf16: bf16 UNet (~41 GB) + bf16 text encoder (~16 GB). "
+                        "Gold standard, only viable on >=48 GB VRAM rigs.\n"
+                        "fp8_raw: unscaled fp8_e4m3fn UNet -- same size as fp8 "
+                        "but worse numerics. Kept for users who specifically "
+                        "want the raw cast."
                     ),
                 ),
             ],
             outputs=[
-                io.Custom("HYPANO2_MODEL").Output(
-                    display_name="model",
-                    tooltip=(
-                        "HY-Pano-2 model handle. Pass to HYPano2Generate."
-                    ),
-                ),
+                io.String.Output(display_name="status"),
             ],
         )
 
     @classmethod
-    def execute(
-        cls,
-        base_model: str = DEFAULT_BASE_REPO,
-        lora_repo: str = DEFAULT_LORA_REPO,
-        lora_subfolder: str = DEFAULT_LORA_SUBFOLDER,
-        torch_dtype: str = "bf16",
-        vram_mode: str = "comfy",
-        blocks_per_group: int = 4,
-    ):
+    def execute(cls, precision: str = "fp8"):
+        from .log_hooks import install_hooks
+        install_hooks()
+        # fp8 and fp8_raw both pair with the fp8_scaled text encoder -- the TE
+        # only has fp8_scaled and bf16 variants on Comfy-Org's mirror.
+        te_precision = "bf16" if precision == "bf16" else "fp8"
+        manifest = [
+            (*_FILES["diffusion_models"][precision],    "diffusion_models"),
+            (*_FILES["text_encoders"][te_precision],    "text_encoders"),
+            (*_FILES["vae"]["any"],                     "vae"),
+            (*_FILES["loras"]["any"],                   "loras"),
+        ]
+        sized = _probe_sizes(manifest)
+        total = max(sum(s for *_, s in sized), 1)
         log.info(
-            "HYPano2LoadModel: base=%s lora=%s/%s dtype=%s vram_mode=%s blocks_per_group=%d",
-            base_model, lora_repo, lora_subfolder, torch_dtype, vram_mode, blocks_per_group,
+            "HYPano2DownloadModels: %d files, total %.1f GB to fetch (cached files skipped).",
+            len(sized), total / 1e9,
         )
 
-        lora_dir = _download_lora(lora_repo, lora_subfolder)
-        base_path = _resolve_base_model(base_model)
+        import comfy.utils
+        pbar = comfy.utils.ProgressBar(total)
+        offset = [0]
+        results = []
+        with _hf_progress_into_pbar(pbar, offset, total):
+            for repo_id, fname, folder, size in sized:
+                dest = _download(repo_id, fname, folder, expected_size=size)
+                offset[0] += size
+                pbar.update_absolute(offset[0], total)
+                results.append((folder, dest.name))
 
-        handle = {
-            "base_path": base_path,
-            "lora_dir": str(lora_dir),
-            "lora_weight_name": LORA_WEIGHT_NAME,
-            "torch_dtype": torch_dtype,
-            "vram_mode": vram_mode,
-            "blocks_per_group": int(blocks_per_group),
-        }
-        return io.NodeOutput(handle)
+        status = "\n".join(
+            f"{folder:>16}: {name}" for folder, name in results
+        ) + "\nUse UNETLoader / CLIPLoader / VAELoader / LoraLoaderModelOnly to load."
+        log.info("HYPano2DownloadModels: done. %s", status.replace("\n", " | "))
+        return io.NodeOutput(status)

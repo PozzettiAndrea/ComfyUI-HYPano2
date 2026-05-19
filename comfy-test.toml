@@ -3,10 +3,6 @@ levels = ["syntax", "install", "registration", "instantiation", "execution"]
 publish = true
 
 [test.workflows]
-# HY-Pano 2.0 is image -> 360° equirectangular panorama via Qwen-Image-Edit
-# + Tencent HY-Pano LoRA. Diffusion model, GPU-only. CPU rows are disabled
-# in [test.platforms] so the `!image_to_panorama` exclusion on the CPU list
-# is just defensive.
 timeout = 600
 cpu = ["!image_to_panorama"]
 gpu = ["image_to_panorama"]

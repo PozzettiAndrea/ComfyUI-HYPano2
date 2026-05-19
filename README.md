@@ -1,80 +1,110 @@
+> [!WARNING]
+> Warning, uses experimental package `comfy-env` to attempt a one click isolated install. Will download and use pixi package manager.
+
 # ComfyUI-HYPano2
 
 ComfyUI wrapper for **HY-Pano 2.0** — Tencent's panorama generator from the HY-World 2.0 pipeline.
 
-Image → 360° equirectangular panorama, via Qwen-Image-Edit-2509 + the HY-Pano-2 LoRA.
+Image → 360° equirectangular panorama, via ComfyUI's native Qwen-Image-Edit-2509 support + the HY-Pano-2 LoRA.
 
 | | |
 |---|---|
 | Upstream | [Tencent-Hunyuan/HY-World-2.0 → `hyworld2/panogen/`](https://github.com/Tencent-Hunyuan/HY-World-2.0/tree/main/hyworld2/panogen) |
 | Weights | [tencent/HY-World-2.0 → `HY-Pano-2.0/pytorch_lora_weights.safetensors`](https://huggingface.co/tencent/HY-World-2.0/blob/main/HY-Pano-2.0/pytorch_lora_weights.safetensors) (~810 MB) |
-| Base    | [Qwen/Qwen-Image-Edit-2509](https://huggingface.co/Qwen/Qwen-Image-Edit-2509) (~40 GB) |
+| Base    | [Comfy-Org/Qwen-Image-Edit_ComfyUI → `qwen_image_edit_2509_bf16.safetensors`](https://huggingface.co/Comfy-Org/Qwen-Image-Edit_ComfyUI) (~41 GB; ~20 GB fp8 variant available) |
 | License | Tencent Hunyuan Community License + Qwen License (read both before redistribution) |
 
 ## What's in scope
 
-Only the **Qwen-Image-Edit backend** from upstream is wrapped. The alternative full-stack
-HunyuanImage-3 backend (~80B parameters, 32-shard safetensors, ~162 GB) is **out of scope**:
-it requires H100/H200-class multi-GPU sharding via `device_map="auto"` and is not realistic
-for typical ComfyUI installs.
+Only the Qwen-Image-Edit backend from upstream is wrapped. The alternative HunyuanImage-3
+backend (~80B parameters) is **out of scope** — it requires H100-class multi-GPU sharding
+and is not realistic for typical ComfyUI installs.
+
+## How it works
+
+There is no custom inference code in this pack. Everything runs through ComfyUI's native
+Qwen-Image-Edit support:
+
+- `UNETLoader` mmaps `qwen_image_edit_2509_*.safetensors` from `models/diffusion_models/`.
+- `CLIPLoader` (type=`qwen_image`) loads the Qwen-VL text encoder from `models/text_encoders/`.
+- `VAELoader` loads `qwen_image_vae.safetensors` from `models/vae/`.
+- `LoraLoaderModelOnly` applies the HY-Pano-2 LoRA from `models/loras/`.
+- `TextEncodeQwenImageEditPlus` (from `comfy_extras.nodes_qwen`) is the exact in-tree
+  equivalent of diffusers' `QwenImageEditPlusPipeline.encode_prompt` — tokenizes prompt +
+  reference images and emits a `reference_latents` conditioning.
+- `KSampler` runs the denoising loop.
+- `VAEDecode` produces the ERP image.
+- `HYPano2BlendEdges` (this pack) cross-fades the wrap-around seam.
+
+Because the pack rides on stock ComfyUI, VRAM/RAM management comes for free:
+safetensors mmap → `ModelPatcher.partially_load` → weight-function streaming. Fits on
+24 GB cards without `--lowvram`, fits on 32 GB RAM machines without thrashing.
 
 ## Nodes
 
-- **`(Down)Load HY-Pano-2 Model`** — resolves the Qwen base + LoRA on disk. Downloads the ~810 MB LoRA on first run.
-- **`HY-Pano-2 Generate`** — image → 360° ERP panorama.
-- **`HY-Pano-2 Blend ERP Edges`** — standalone seam blender; works on any ERP panorama (handy
-  for chaining with [ComfyUI-HYWM2](https://github.com/PozzettiAndrea/ComfyUI-HYWM2)'s `SamplePanorama`).
+- **`(Down)Load HY-Pano-2 stack`** — one-click downloader. Fetches the four files from
+  HuggingFace into `models/diffusion_models/`, `models/text_encoders/`, `models/vae/`,
+  `models/loras/`.
+
+  | `precision` | UNet weight format | Text encoder | Fits |
+  |---|---|---|---|
+  | `fp8` (default) | fp8mixed (~20 GB, fp8 + per-tensor scales) | fp8_scaled (~9 GB) | 24 GB VRAM + 16 GB RAM |
+  | `bf16` | bf16 (~41 GB, gold standard) | bf16 (~16 GB) | ≥48 GB VRAM, or 24 GB VRAM + ≥48 GB free RAM |
+  | `fp8_raw` | fp8_e4m3fn (~20 GB, unscaled cast) | fp8_scaled (~9 GB) | 24 GB VRAM, slightly worse numerics |
+
+- **`HY-Pano-2 Norm-Rescaled CFG`** — patches a MODEL with upstream's CFG formula
+  (matches `pipeline_qwen_pano.py`): standard CFG blend, then per-spatial-location
+  norm rescale so the combined prediction's magnitude matches the conditional. Cuts
+  over-saturation at high `cfg`. Drops in between `LoraLoaderModelOnly` and
+  `KSampler`.
+- **`HY-Pano-2 Blend ERP Edges`** — cross-fade the left/right edges of an ERP panorama
+  so the seam disappears. Standalone IMAGE → IMAGE node; works on any panorama, not
+  just ones produced by this workflow (handy for chaining with [`ComfyUI-HYWM2`](https://github.com/PozzettiAndrea/ComfyUI-HYWM2)'s `SamplePanorama`).
+
+## Workflow
+
+`workflows/image_to_panorama.json` wires the full graph using stock loaders.
+
+## Performance
+
+`comfy-env-root.toml` declares `flash_attn` and `sageattention` as CUDA-wheel
+dependencies; `install.py` resolves them from
+[`cuda-wheels`](https://github.com/PozzettiAndrea/cuda-wheels) and pip-installs
+into the host ComfyUI env. To actually route attention through them, launch
+ComfyUI with one of:
+
+```
+python main.py --use-sage-attention   # fastest on Ampere consumer cards
+python main.py --use-flash-attention  # vanilla FlashAttention 2
+```
+
+Without either flag, ComfyUI falls back to torch SDPA (which on Ampere
+auto-routes to FA2 via cuDNN — small perf delta, but `--use-sage-attention`
+is a real win on consumer Ampere).
+
+## Sampler settings
+
+The bundled workflow ships with upstream HY-Pano-2's values:
+
+| KSampler widget | Value | Source |
+|---|---|---|
+| `steps` | 40 | upstream `pipeline_qwen_pano.py` HY-Pano default |
+| `cfg` | 7.5 | maps to upstream `true_cfg_scale` |
+| `sampler` | `euler` | upstream uses `FlowMatchEulerDiscreteScheduler` |
+| `scheduler` | `simple` | flow-match shift 1.15 set by `comfy.supported_models.QwenImage` |
+| `denoise` | 1.0 | full denoise — start from pure noise + reference latents |
+| LoRA strength | 1.0 | weights trained against this scale |
+
+Both `TextEncodeQwenImageEditPlus` nodes (positive and negative) receive the
+input image via `image1` — upstream encodes the negative prompt against the
+same conditioning image so CFG can subtract a matched negative direction.
 
 ## Pairing with ComfyUI-HYWM2
 
-This pack covers the **panorama generation** stage of HY-World 2.0. To go from a generated
-panorama to a 3DGS world, chain into [`ComfyUI-HYWM2`](https://github.com/PozzettiAndrea/ComfyUI-HYWM2):
-
 ```
-LoadImage → HYPano2Generate → HYWM2SamplePanorama → HYWM2Reconstruct → splat / mesh viewers
+LoadImage → [Qwen-Image-Edit-2509 + HY-Pano-2 LoRA] → HYPano2BlendEdges
+          → HYWM2SamplePanorama → HYWM2Reconstruct → splat / mesh viewers
 ```
-
-## Why a separate isolated env
-
-Upstream's pipeline imports private helpers from
-`diffusers.pipelines.qwenimage.pipeline_qwenimage_edit_plus`
-(`calculate_shift`, `retrieve_timesteps`, `calculate_dimensions`). Minor-version drift in
-`diffusers` breaks the import, so we hard-pin `diffusers==0.36.0` together with
-`transformers==4.57.1`, `tokenizers==0.22.0`, `safetensors==0.7.0`, and `numpy==2.2.0`.
-These would clash with ComfyUI's host venv (and with sibling packs like
-`ComfyUI-HYWM2` that pin `numpy<2`), so the nodes run inside an isolated
-[`comfy-env`](https://github.com/PozzettiAndrea/comfy-env) subprocess.
-
-## VRAM
-
-The loader exposes a 3-way `vram_mode` toggle plus a `blocks_per_group` knob:
-
-| `vram_mode` | Approach | Min free VRAM |
-|---|---|---|
-| `comfy` (default) | ComfyUI `ModelPatcher` co-operative bookkeeping + diffusers `apply_group_offloading` on the transformer with a second CUDA stream prefetching the next group while the current group's forward runs. Other queued workflows can evict the transformer between calls. | ~12 GB |
-| `model` | `enable_model_cpu_offload()` — whole-submodule swap. The Qwen-Image-Edit transformer alone is ~40 GB bf16, so this OOMs on anything smaller than ~48 GB. | ~48 GB |
-| `off` | Pipeline fully resident on GPU. Fastest. | ~48 GB |
-
-`blocks_per_group` (default 4) sets how many of the transformer's 60 blocks live on
-GPU at once when `vram_mode=comfy`. 4 → ~2.7 GB peak resident for the transformer's
-block stack; bump it for faster runs if you have VRAM headroom, drop it if you OOM.
-
-VAE slicing + tiling are always enabled so the final decode step doesn't spike VRAM
-at high output resolutions.
-
-## Attention kernel
-
-The transformer's attention backend follows **ComfyUI's startup-time detection** —
-launch ComfyUI with one of `--use-sage-attention`, `--use-flash-attention`, or no flag
-(torch SDPA fallback), and our node automatically calls
-`pipe.transformer.set_attention_backend(...)` with the matching diffusers backend
-(`sage`, `flash`, `xformers`, or `native`). Single source of truth: no separate
-combo box on our node, no settings drift between core ComfyUI samplers and HYPano2.
-
-Both `flash_attn` (v2.8.3) and `sageattention` (v2.2.0) are auto-installed via
-[`cuda-wheels`](https://github.com/PozzettiAndrea/cuda-wheels) — prebuilt for cu128 /
-py3.13 / torch 2.8, with a native SM 8.6 cubin for Ampere consumer cards (no JIT
-fallback on a 3090).
 
 ## Citation
 
