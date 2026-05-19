@@ -1,2 +1,2 @@
 huggingface_hub
-comfy-env==0.3.89
+comfy-env==0.4.1
